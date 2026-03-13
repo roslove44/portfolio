@@ -1,24 +1,28 @@
-import { Github, Linkedin, FileText } from "lucide-react";
+import { FileTextIcon } from "lucide-react";
+import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
+import { SOCIAL_LINKS } from "@/data/constants";
 
 const links = [
-	{ href: "https://github.com/rostandmigan", icon: Github, label: "GitHub" },
-	{ href: "https://linkedin.com/in/rostandmigan", icon: Linkedin, label: "LinkedIn" },
-	{ href: "/resume", icon: FileText, label: "Resume", internal: true },
-] as const;
+	{ href: SOCIAL_LINKS.github, icon: GitHubIcon, label: "GitHub" },
+	{ href: SOCIAL_LINKS.linkedin, icon: LinkedInIcon, label: "LinkedIn" },
+	{ href: SOCIAL_LINKS.x, icon: XIcon, label: "X" },
+	{ href: "/resume", icon: FileTextIcon, label: "Resume", internal: true },
+];
 
 export default function SocialLinks() {
 	return (
 		<div className="flex items-center gap-3">
-			{links.map(({ href, icon: Icon, label }) => (
+			{links.map(({ href, icon: Icon, label }, i) => (
 				<a
 					key={label}
 					href={href}
 					target={href.startsWith("http") ? "_blank" : undefined}
 					rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
 					aria-label={label}
+					title={label}
 					className="text-text-secondary transition-colors hover:text-text-primary"
 				>
-					<Icon size={20} />
+					<Icon className={i === links.length - 1 ? "size-4" : "size-5"} />
 				</a>
 			))}
 		</div>

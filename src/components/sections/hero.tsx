@@ -24,14 +24,14 @@ export default function Hero() {
 
 	return (
 		<section className="py-8">
-			<div className="flex items-start justify-between">
+			<div className="flex items-center justify-between">
 				<h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
 					{t("greeting")}
 				</h1>
 				<SocialLinks />
 			</div>
 
-			<ul className="mt-6 space-y-2 text-text-secondary text-[15px]">
+			<ul className="mt-6 space-y-2 text-text-primary text-[15px]">
 				<Bullet>{t("bullet1")}</Bullet>
 				<Bullet>
 					{t("bullet2_prefix")}
@@ -51,7 +51,7 @@ export default function Hero() {
 				</Bullet>
 			</ul>
 
-			<p className="mt-8 text-text-secondary text-[15px]">
+			<p className="mt-6 text-text-primary text-[15px]">
 				{t("cta")}
 				<button className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent">
 					{t("ctaLink")}

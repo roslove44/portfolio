@@ -47,7 +47,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 	const theme = cookieStore.get("theme")?.value;
 
 	return (
-		<html lang={locale} className={theme === "dark" ? "dark" : ""} suppressHydrationWarning>
+		<html lang={locale} className={`scroll-smooth ${theme === "dark" ? "dark" : ""}`} suppressHydrationWarning data-scroll-behavior="smooth">
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
 			>
