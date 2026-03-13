@@ -19,6 +19,14 @@
 		"cta": "Vous avez un projet qui mérite d'être construit ? Parlons-en ",
 		"ctaLink": "ici"
 	},
+	"about": {
+		"title": "À propos",
+		"hook": "La finance m'a appris à lire les systèmes. Le code m'a appris à les construire.",
+		"p1": "À un moment, analyser ne suffisait plus ; je voulais créer. Ce qui m'a fait basculer ? L'open-source. En finance, en gestion, presque tout est fermé, propriétaire, statique. Des logiciels figés pour des métiers qui évoluent. Ça m'a convaincu qu'on pouvait faire autrement.",
+		"p2": "En 2022, j'ai appris à coder par moi-même. Pas de bootcamp, pas de formation structurée. Juste de la curiosité, de la discipline, et beaucoup de projets cassés avant d'en shipper de vrais.",
+		"p3": "Ce qui m'anime aujourd'hui, c'est un constat simple : le marché africain est massif, sous-équipé, et mal servi par des outils pensés ailleurs. Ça m'énerve ; et cette énergie va quelque part.",
+		"closing": "Je construis des logiciels ouverts, qui répondent à des vrais besoins, pour des vrais contextes."
+	},
 	"footer": {
 		"cta": "Un projet en tête ?",
 		"ctaLink": "On en parle"

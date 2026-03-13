@@ -19,6 +19,14 @@
 		"cta": "Have a project that needs to actually ship? Let's talk ",
 		"ctaLink": "here"
 	},
+	"about": {
+		"title": "About me",
+		"hook": "Finance taught me how to read systems. Code taught me how to build them.",
+		"p1": "At some point, analyzing wasn't enough ; I wanted to create. What pushed me over the edge? Open-source. In finance and business management, almost everything is closed, proprietary, static. Rigid software for industries that keep evolving. That convinced me something better was possible.",
+		"p2": "In 2022, I taught myself to code. No bootcamp, no structured curriculum. Just curiosity, discipline, and a lot of broken projects before shipping real ones.",
+		"p3": "What drives me now is a simple observation: the African market is massive, underequipped, and poorly served by tools built for somewhere else. That frustrates me ; and that frustration goes somewhere.",
+		"closing": "I build open software that solves real problems, for real contexts."
+	},
 	"footer": {
 		"cta": "Got a project in mind?",
 		"ctaLink": "Let's talk"

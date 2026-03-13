@@ -67,6 +67,28 @@ body {
 	animation: bot-float 3s ease-in-out infinite;
 }
 
+@keyframes icon-swap {
+	0%, 40% { opacity: 1; transform: rotateY(0deg); }
+	45%, 95% { opacity: 0; transform: rotateY(90deg); }
+	100% { opacity: 1; transform: rotateY(0deg); }
+}
+
+@keyframes icon-swap-alt {
+	0%, 40% { opacity: 0; transform: rotateY(-90deg); }
+	45%, 95% { opacity: 1; transform: rotateY(0deg); }
+	100% { opacity: 0; transform: rotateY(-90deg); }
+}
+
+.animate-icon-swap {
+	animation: icon-swap 4s ease-in-out infinite;
+	backface-visibility: hidden;
+}
+
+.animate-icon-swap-alt {
+	animation: icon-swap-alt 4s ease-in-out infinite;
+	backface-visibility: hidden;
+}
+
 .theme-transitioning::view-transition-old(root),
 .theme-transitioning::view-transition-new(root) {
 	animation: none;
