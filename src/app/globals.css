@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+:root {
+	--background: #ffffff;
+	--surface: #f9fafb;
+	--text-primary: #111827;
+	--text-secondary: #6b7280;
+	--accent: #2563eb;
+	--accent-hover: #1d4ed8;
+	--border: #e5e7eb;
+}
+
+.dark {
+	--background: #0a0a0b;
+	--surface: #18181b;
+	--text-primary: #f9fafb;
+	--text-secondary: #9ca3af;
+	--accent: #60a5fa;
+	--accent-hover: #3b82f6;
+	--border: #27272a;
+}
+
+@theme inline {
+	--color-background: var(--background);
+	--color-surface: var(--surface);
+	--color-text-primary: var(--text-primary);
+	--color-text-secondary: var(--text-secondary);
+	--color-accent: var(--accent);
+	--color-accent-hover: var(--accent-hover);
+	--color-border: var(--border);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+}
+
+html,
+body {
+	background: var(--background);
+}
+
+body {
+	color: var(--text-primary);
+}
+
+::selection {
+	background: var(--accent);
+	color: #ffffff;
+}
+
+.dark ::selection {
+	background: var(--accent);
+	color: #0a0a0b;
+}
+
+@keyframes bot-float {
+	0%, 100% {
+		transform: translateY(0) rotate(0deg);
+	}
+	25% {
+		transform: translateY(-2px) rotate(3deg);
+	}
+	75% {
+		transform: translateY(1px) rotate(-2deg);
+	}
+}
+
+.animate-bot-float {
+	animation: bot-float 3s ease-in-out infinite;
+}
+
+.theme-transitioning::view-transition-old(root),
+.theme-transitioning::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+}

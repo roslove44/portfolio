@@ -1,0 +1,26 @@
+{
+	"metadata": {
+		"title": "Rostand MIGAN | Full Stack Developer & Builder",
+		"description": "Full stack developer. I write code the way I think clearly, efficiently, and always with the end user in mind. Lately, that's been a lot of fintech."
+	},
+	"header": {
+		"home": "Home",
+		"resume": "Resume",
+		"contact": "Contact"
+	},
+	"hero": {
+		"greeting": "Hi, I'm Rostand",
+		"bullet1": "I'm a full stack developer, I build things that work : web apps, fintech tools, and ideas that refuse to stay in my head.",
+		"bullet2_prefix": "I work with ",
+		"and": "and",
+		"bullet2_suffix": " ; whatever solves the problem best",
+		"bullet3_prefix": "Currently building ",
+		"bullet3_suffix": ", an open-source platform for business management professionals in West Africa",
+		"cta": "Have a project that needs to actually ship? Let's talk ",
+		"ctaLink": "here"
+	},
+	"footer": {
+		"cta": "Got a project in mind?",
+		"ctaLink": "Let's talk"
+	}
+}
