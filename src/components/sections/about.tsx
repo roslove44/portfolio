@@ -9,14 +9,14 @@ export default function About() {
 	const t = useTranslations("about");
 
 	return (
-		<section className="border-y border-border py-6">
-			<h2 className="mb-4 font-semibold tracking-widest text-text-primary">
+		<section className="border-y border-border py-3">
+			<h2 className="mb-2 font-semibold tracking-widest text-text-primary">
 				{t("title")}
 			</h2>
 			<Disclosure>
 				{({ open }) => (
 					<>
-						<DisclosureButton className="group flex w-full items-center gap-2 text-left text-[15px] font-medium transition-colors hover:text-accent">
+						<DisclosureButton className="group flex w-full items-center gap-2 text-left text-[15px] transition-colors hover:text-accent">
 							<ChevronRightIcon
 								size={18}
 								className={`shrink-0 text-text-secondary transition-transform duration-200 group-hover:text-accent ${open ? "rotate-90" : ""}`}

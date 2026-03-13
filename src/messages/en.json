@@ -28,7 +28,9 @@
 		"closing": "I build open software that solves real problems, for real contexts."
 	},
 	"stack": {
-		"teaser": "I build with <bold>Symfony</bold>, <bold>Next.js</bold>, <bold>Go</bold> and more",
+		"title": "Stack",
+		"statement": "Every project has its context. My stack adapts.",
+		"cta": "Explore my stack",
 		"help": "Available commands: help, ls, ls [category], ls --all, clear",
 		"notFound": "command not found. Type \"help\" for available commands",
 		"desc": {

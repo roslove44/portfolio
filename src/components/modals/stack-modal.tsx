@@ -233,10 +233,10 @@ export default function StackModal({ open, onClose }: { open: boolean; onClose: 
 							initial={{ opacity: 0, scale: 0.95, y: 20 }}
 							animate={{ opacity: 1, scale: 1, y: 0 }}
 							exit={{ opacity: 0, scale: 0.95, y: 20 }}
-							transition={{ duration: 0.8, ease: "easeInOut" }}
+							transition={{ duration: 0.7, ease: "easeInOut" }}
 						>
 							<DialogPanel
-								className="w-full sm:min-w-lg max-w-2xl overflow-hidden rounded-t-lg border border-terminal-border bg-terminal-bg font-mono text-sm shadow-2xl"
+								className="w-full mx-auto max-w-11/12 min-w-11/12 sm:max-w-lg md:min-w-lg md:max-w-2xl overflow-hidden rounded-t-lg border border-terminal-border bg-terminal-bg font-mono text-sm shadow-2xl"
 							>
 								{/* macOS top bar */}
 								<div className="flex items-center gap-2 border-b border-terminal-border bg-terminal-header px-4 py-2.5">
@@ -303,15 +303,15 @@ const TerminalLine = memo(function TerminalLine({ line }: { line: Line }) {
 			return <div className="mt-2 text-terminal-category">{line.text}/</div>;
 		case "item":
 			return (
-				<div className={`flex items-baseline pl-2${line.last ? " mb-2" : ""}`}>
+				<div className={`flex items-baseline gap-x-2 pl-2${line.last ? " mb-2" : ""}`}>
 					<span className="shrink-0 text-terminal-text">{line.text}</span>
 					<span
-						className="mx-1.5 min-w-2 flex-1 overflow-hidden text-terminal-text-dim"
+						className="mx-1.5 hidden min-w-2 flex-1 overflow-hidden text-terminal-text-dim sm:inline"
 						aria-hidden="true"
 					>
 						{DOTS}
 					</span>
-					<span className="shrink-0 text-terminal-text-muted">{line.desc}</span>
+					<span className="min-w-0 flex-1 truncate text-right text-terminal-text-muted sm:flex-none sm:shrink-0">{line.desc}</span>
 				</div>
 			);
 		case "text":

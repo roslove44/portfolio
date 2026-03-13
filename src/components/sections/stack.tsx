@@ -2,28 +2,27 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import StackModal from "@/components/modals/stack-modal";
+import { ChevronRightIcon } from "lucide-react";
 
 export default function Stack() {
 	const t = useTranslations("stack");
 	const [open, setOpen] = useState(false);
 
 	return (
-		<section className="py-6">
-			<button
-				onClick={() => setOpen(true)}
-				className="group text-left text-[15px] text-text-secondary transition-colors hover:text-accent"
-			>
-				{t.rich("teaser", {
-					bold: (chunks) => (
-						<span className="font-semibold text-text-primary transition-colors group-hover:text-accent">
-							{chunks}
-						</span>
-					),
-				})}
-				<span className="ml-1 inline-block transition-transform group-hover:translate-x-0.5">
-					→
-				</span>
-			</button>
+		<section className="py-3">
+			<h2 className="mb-2 font-semibold tracking-widest text-text-primary">
+				{t("title")}
+			</h2>
+			<p className="text-[15px] text-text-primary">
+				<ChevronRightIcon
+					size={18}
+					className={`shrink-0 inline me-2 text-text-secondary transition-transform duration-200 group-hover:text-accent ${open ? "rotate-90" : ""}`}
+				/>
+				{t("statement")} {" "}
+				<button onClick={() => setOpen(true)} className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent">
+					{t("cta")}
+				</button>
+			</p>
 			<StackModal open={open} onClose={() => setOpen(false)} />
 		</section>
 	);

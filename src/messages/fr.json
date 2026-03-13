@@ -28,7 +28,9 @@
 		"closing": "Je construis des logiciels ouverts, qui répondent à des vrais besoins, pour des vrais contextes."
 	},
 	"stack": {
-		"teaser": "Je build avec <bold>Symfony</bold>, <bold>Next.js</bold>, <bold>Go</bold> et plus encore",
+		"title": "Stack",
+		"statement": "Chaque projet a son contexte. Ma stack s'adapte.",
+		"cta": "Explorer ma stack",
 		"help": "Commandes disponibles : help, ls, ls [catégorie], ls --all, clear",
 		"notFound": "commande introuvable. Tapez \"help\" pour les commandes disponibles",
 		"desc": {
