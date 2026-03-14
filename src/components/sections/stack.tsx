@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import StackModal from "@/components/modals/stack-modal";
 import { ChevronRightIcon, ScrollText } from "lucide-react";
+import { STACK_CATEGORIES } from "@/data/constants";
 
 export default function Stack() {
 	const t = useTranslations("stack");
@@ -23,6 +24,14 @@ export default function Stack() {
 					{t("cta")} <ScrollText size={16} className="ml-px inline-block animate-bot-float text-accent" />
 				</button>
 			</p>
+			<dl className="sr-only">
+				{Object.values(STACK_CATEGORIES).flat().map((tech) => (
+					<div key={tech.key}>
+						<dt>{tech.name}</dt>
+						<dd>{t(`desc.${tech.key}`)}</dd>
+					</div>
+				))}
+			</dl>
 			<StackModal open={open} onClose={() => setOpen(false)} />
 		</section>
 	);
