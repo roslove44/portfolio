@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import Hero from "@/components/sections/hero";
 import About from "@/components/sections/about";
 import Stack from "@/components/sections/stack";
+import Activity from "@/components/sections/activity";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
 	const { locale } = await params;
@@ -12,6 +13,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 			<Hero />
 			<About />
 			<Stack />
+			<Activity />
 		</>
 	);
 }

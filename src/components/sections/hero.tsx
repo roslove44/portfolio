@@ -54,9 +54,8 @@ export default function Hero() {
 			<p className="mt-6 text-text-primary text-[15px]">
 				{t("cta")}
 				<button className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent">
-					{t("ctaLink")}
+					{t("ctaLink")} <Bot size={16} className="ml-px inline-block animate-bot-float text-accent" />
 				</button>
-				<Bot size={16} className="ml-1.5 inline-block animate-bot-float text-accent" />
 			</p>
 		</section>
 	);

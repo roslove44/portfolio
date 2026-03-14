@@ -70,6 +70,31 @@
 			"vscode": "Éditeur de code"
 		}
 	},
+	"activity": {
+		"title": "Activité",
+		"total": "{count} contributions sur la dernière année",
+		"less": "Moins",
+		"more": "Plus",
+		"months": {
+			"jan": "Jan",
+			"feb": "Fév",
+			"mar": "Mar",
+			"apr": "Avr",
+			"may": "Mai",
+			"jun": "Juin",
+			"jul": "Juil",
+			"aug": "Août",
+			"sep": "Sep",
+			"oct": "Oct",
+			"nov": "Nov",
+			"dec": "Déc"
+		},
+		"days": {
+			"mon": "Lun",
+			"wed": "Mer",
+			"fri": "Ven"
+		}
+	},
 	"footer": {
 		"cta": "Un projet en tête ?",
 		"ctaLink": "On en parle"

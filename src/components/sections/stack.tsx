@@ -2,7 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import StackModal from "@/components/modals/stack-modal";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, ScrollText } from "lucide-react";
 
 export default function Stack() {
 	const t = useTranslations("stack");
@@ -20,7 +20,7 @@ export default function Stack() {
 				/>
 				{t("statement")} {" "}
 				<button onClick={() => setOpen(true)} className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent">
-					{t("cta")}
+					{t("cta")} <ScrollText size={16} className="ml-px inline-block animate-bot-float text-accent" />
 				</button>
 			</p>
 			<StackModal open={open} onClose={() => setOpen(false)} />

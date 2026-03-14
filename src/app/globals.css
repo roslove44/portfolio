@@ -1,176 +1,209 @@
 @import "tailwindcss";
 
 :root {
-	--background: #ffffff;
-	--surface: #f9fafb;
-	--text-primary: #111827;
-	--text-secondary: #6b7280;
-	--accent: #2563eb;
-	--accent-hover: #1d4ed8;
-	--border: #e5e7eb;
+  --background: #ffffff;
+  --surface: #f9fafb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --border: #e5e7eb;
 
-	/* Terminal (always dark, mode-independent) */
-	--terminal-bg: oklch(0.21 0.006 285.885);
-	--terminal-header: oklch(0.274 0.006 286.033);
-	--terminal-border: oklch(0.372 0.013 285.805);
-	--terminal-text: oklch(0.92 0.004 286.32);
-	--terminal-text-subtle: oklch(0.871 0.006 286.286);
-	--terminal-text-muted: oklch(0.705 0.015 286.067);
-	--terminal-text-dim: oklch(0.442 0.017 285.786);
-	--terminal-prompt: oklch(0.765 0.177 163.223);
-	--terminal-category: oklch(0.746 0.16 232.661);
-	--terminal-error: oklch(0.704 0.191 22.216);
-	--terminal-dot-close: oklch(0.637 0.237 25.331);
-	--terminal-dot-minimize: oklch(0.795 0.184 86.047);
-	--terminal-dot-maximize: oklch(0.723 0.219 149.579);
-	--terminal-backdrop: oklch(0 0 0 / 0.6);
+  /* Terminal (always dark, mode-independent) */
+  --terminal-bg: oklch(0.21 0.006 285.885);
+  --terminal-header: oklch(0.274 0.006 286.033);
+  --terminal-border: oklch(0.372 0.013 285.805);
+  --terminal-text: oklch(0.92 0.004 286.32);
+  --terminal-text-subtle: oklch(0.871 0.006 286.286);
+  --terminal-text-muted: oklch(0.705 0.015 286.067);
+  --terminal-text-dim: oklch(0.442 0.017 285.786);
+  --terminal-prompt: oklch(0.765 0.177 163.223);
+  --terminal-category: oklch(0.746 0.16 232.661);
+  --terminal-error: oklch(0.704 0.191 22.216);
+  --terminal-dot-close: oklch(0.637 0.237 25.331);
+  --terminal-dot-minimize: oklch(0.795 0.184 86.047);
+  --terminal-dot-maximize: oklch(0.723 0.219 149.579);
+  --terminal-backdrop: oklch(0 0 0 / 0.6);
 }
 
 .dark {
-	--background: #0a0a0b;
-	--surface: #18181b;
-	--text-primary: #f9fafb;
-	--text-secondary: #9ca3af;
-	--accent: #60a5fa;
-	--accent-hover: #3b82f6;
-	--border: #27272a;
+  --background: #0a0a0b;
+  --surface: #18181b;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --accent: #60a5fa;
+  --accent-hover: #3b82f6;
+  --border: #27272a;
 }
 
 @theme inline {
-	--color-background: var(--background);
-	--color-surface: var(--surface);
-	--color-text-primary: var(--text-primary);
-	--color-text-secondary: var(--text-secondary);
-	--color-accent: var(--accent);
-	--color-accent-hover: var(--accent-hover);
-	--color-border: var(--border);
-	--color-terminal-bg: var(--terminal-bg);
-	--color-terminal-header: var(--terminal-header);
-	--color-terminal-border: var(--terminal-border);
-	--color-terminal-text: var(--terminal-text);
-	--color-terminal-text-subtle: var(--terminal-text-subtle);
-	--color-terminal-text-muted: var(--terminal-text-muted);
-	--color-terminal-text-dim: var(--terminal-text-dim);
-	--color-terminal-prompt: var(--terminal-prompt);
-	--color-terminal-category: var(--terminal-category);
-	--color-terminal-error: var(--terminal-error);
-	--color-terminal-dot-close: var(--terminal-dot-close);
-	--color-terminal-dot-minimize: var(--terminal-dot-minimize);
-	--color-terminal-dot-maximize: var(--terminal-dot-maximize);
-	--color-terminal-backdrop: var(--terminal-backdrop);
-	--font-sans: var(--font-geist-sans);
-	--font-mono: var(--font-geist-mono);
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-border: var(--border);
+  --color-terminal-bg: var(--terminal-bg);
+  --color-terminal-header: var(--terminal-header);
+  --color-terminal-border: var(--terminal-border);
+  --color-terminal-text: var(--terminal-text);
+  --color-terminal-text-subtle: var(--terminal-text-subtle);
+  --color-terminal-text-muted: var(--terminal-text-muted);
+  --color-terminal-text-dim: var(--terminal-text-dim);
+  --color-terminal-prompt: var(--terminal-prompt);
+  --color-terminal-category: var(--terminal-category);
+  --color-terminal-error: var(--terminal-error);
+  --color-terminal-dot-close: var(--terminal-dot-close);
+  --color-terminal-dot-minimize: var(--terminal-dot-minimize);
+  --color-terminal-dot-maximize: var(--terminal-dot-maximize);
+  --color-terminal-backdrop: var(--terminal-backdrop);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 html,
 body {
-	background: var(--background);
+  background: var(--background);
 }
 
 body {
-	color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 ::selection {
-	background: var(--accent);
-	color: #ffffff;
+  background: var(--accent);
+  color: #ffffff;
 }
 
 .dark ::selection {
-	background: var(--accent);
-	color: #0a0a0b;
+  background: var(--accent);
+  color: #0a0a0b;
 }
 
 @keyframes bot-float {
-	0%, 100% {
-		transform: translateY(0) rotate(0deg);
-	}
-	25% {
-		transform: translateY(-2px) rotate(3deg);
-	}
-	75% {
-		transform: translateY(1px) rotate(-2deg);
-	}
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-2px) rotate(3deg);
+  }
+  75% {
+    transform: translateY(1px) rotate(-2deg);
+  }
 }
 
 .animate-bot-float {
-	animation: bot-float 3s ease-in-out infinite;
+  animation: bot-float 3s ease-in-out infinite;
 }
 
 @keyframes icon-swap {
-	0%, 40% { opacity: 1; transform: rotateY(0deg); }
-	45%, 95% { opacity: 0; transform: rotateY(90deg); }
-	100% { opacity: 1; transform: rotateY(0deg); }
+  0%,
+  40% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  45%,
+  95% {
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
 }
 
 @keyframes icon-swap-alt {
-	0%, 40% { opacity: 0; transform: rotateY(-90deg); }
-	45%, 95% { opacity: 1; transform: rotateY(0deg); }
-	100% { opacity: 0; transform: rotateY(-90deg); }
+  0%,
+  40% {
+    opacity: 0;
+    transform: rotateY(-90deg);
+  }
+  45%,
+  95% {
+    opacity: 1;
+    transform: rotateY(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: rotateY(-90deg);
+  }
 }
 
 .animate-icon-swap {
-	animation: icon-swap 4s ease-in-out infinite;
-	backface-visibility: hidden;
+  animation: icon-swap 4s ease-in-out infinite;
+  backface-visibility: hidden;
 }
 
 .animate-icon-swap-alt {
-	animation: icon-swap-alt 4s ease-in-out infinite;
-	backface-visibility: hidden;
+  animation: icon-swap-alt 4s ease-in-out infinite;
+  backface-visibility: hidden;
 }
 
 @keyframes cursor-blink {
-	0%, 50% { opacity: 1; }
-	51%, 100% { opacity: 0; }
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .animate-cursor-blink {
-	animation: cursor-blink 1s step-end infinite;
+  animation: cursor-blink 1s step-end infinite;
 }
 
 /* Terminal scrollbar — VS Code style: transparent until hover, no buttons */
 .terminal-scroll::-webkit-scrollbar {
-	width: 6px;
+  width: 6px;
 }
 
 .terminal-scroll::-webkit-scrollbar-track {
-	background: transparent;
+  background: transparent;
 }
 
 .terminal-scroll::-webkit-scrollbar-thumb {
-	background: transparent;
-	border-radius: 0;
-	transition: background 0.2s;
+  background: transparent;
+  border-radius: 0;
+  transition: background 0.2s;
 }
 
 .terminal-scroll:hover::-webkit-scrollbar-thumb {
-	background: var(--terminal-border);
+  background: var(--terminal-border);
 }
 
 .terminal-scroll:hover::-webkit-scrollbar-thumb:hover {
-	background: var(--terminal-text-dim);
+  background: var(--terminal-text-dim);
 }
 
 .terminal-scroll::-webkit-scrollbar-button:vertical:start,
 .terminal-scroll::-webkit-scrollbar-button:vertical:end {
-	display: none;
-	height: 0;
+  display: none;
+  height: 0;
 }
 
 /* Firefox fallback */
 @supports not selector(::-webkit-scrollbar) {
-	.terminal-scroll {
-		scrollbar-width: thin;
-		scrollbar-color: transparent transparent;
-	}
+  .terminal-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
 
-	.terminal-scroll:hover {
-		scrollbar-color: var(--terminal-border) transparent;
-	}
+  .terminal-scroll:hover {
+    scrollbar-color: var(--terminal-border) transparent;
+  }
 }
 
 .theme-transitioning::view-transition-old(root),
 .theme-transitioning::view-transition-new(root) {
-	animation: none;
-	mix-blend-mode: normal;
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+button {
+  cursor: pointer;
 }
