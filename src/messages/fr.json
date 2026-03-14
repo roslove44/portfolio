@@ -95,6 +95,39 @@
 			"fri": "Ven"
 		}
 	},
+	"projects": {
+		"title": "Projets",
+		"tabs": {
+			"featured": "En vedette",
+			"latest": "Récents"
+		},
+		"comptaopen": {
+			"name": "ComptaOpen",
+			"summary": "Plateforme open-source de comptabilité et gestion d'entreprise au Bénin.",
+			"desc": [
+				"Plateforme open-source qui démocratise l'accès aux ressources comptables, fiscales et de gestion au Bénin.",
+				"Conçu pour un marché où la plupart des outils pros sont fermés, chers, et pensés pour ailleurs.",
+				"Vision long terme : un ERP collaboratif browser-based adapté aux réglementations UEMOA."
+			]
+		},
+		"gestiloc": {
+			"name": "Gestiloc",
+			"summary": "Outil de gestion locative avec dashboard admin et suivi des paiements.",
+			"desc": [
+				"Outil de gestion locative développé pour un client — dashboard admin, suivi locataires, gestion des paiements.",
+				"Backend Symfony complet avec MySQL, conçu pour la gestion immobilière réelle."
+			]
+		},
+		"gmaps-scraper": {
+			"name": "GoogleMapsScraper",
+			"summary": "Script Python d'extraction de données business depuis Google Maps.",
+			"desc": [
+				"Script Python d'extraction de données business depuis Google Maps.",
+				"Rapide, ciblé, efficace. Conçu pour automatiser la génération de leads depuis les fiches Google Maps."
+			]
+		},
+		"others": "J'ai aussi livré plusieurs sites web avec Symfony et WordPress, moins tape-à-l'œil, mais ils tournent et ils sont en ligne."
+	},
 	"footer": {
 		"cta": "Un projet en tête ?",
 		"ctaLink": "On en parle"

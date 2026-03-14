@@ -10,7 +10,7 @@ export default function About() {
 
 	return (
 		<section className="border-y border-border py-3">
-			<h2 className="mb-2 font-semibold tracking-widest text-text-primary">
+			<h2 className="mb-2 font-semibold tracking-wide text-text-primary">
 				{t("title")}
 			</h2>
 			<Disclosure>

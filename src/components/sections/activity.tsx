@@ -10,7 +10,7 @@ export default async function Activity() {
 
 	return (
 		<section className="py-3">
-			<h2 className="sr-only mb-4 font-semibold tracking-widest text-text-primary">
+			<h2 className="sr-only mb-4 font-semibold tracking-wide text-text-primary">
 				{t("title")}
 			</h2>
 			<ContributionGraph
