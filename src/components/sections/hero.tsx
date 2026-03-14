@@ -41,12 +41,11 @@ export default function Hero() {
 				</Bullet>
 				<Bullet>
 					{t("bullet3_prefix")}
-					<a
-						href="https://comptaopen.com"
+					<span
 						className="text-text-primary underline decoration-accent/30 underline-offset-4 hover:decoration-accent"
 					>
 						ComptaOpen
-					</a>
+					</span>
 					{t("bullet3_suffix")}
 				</Bullet>
 			</ul>

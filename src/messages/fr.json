@@ -15,7 +15,7 @@
 		"and": "et",
 		"bullet2_suffix": " ; ce qui résout le problème, c'est ce que j'utilise",
 		"bullet3_prefix": "En ce moment je construis ",
-		"bullet3_suffix": ", une plateforme open-source pour les professionnels de la gestion d'entreprise en Afrique de l'Ouest",
+		"bullet3_suffix": ", une plateforme open-source pour les professionnels de la gestion d'entreprise en Afrique de l'Ouest. Détails ci-dessous.",
 		"cta": "Vous avez un projet qui mérite d'être construit ? Parlons-en ",
 		"ctaLink": "ici"
 	},
@@ -109,11 +109,15 @@
 		},
 		"comptaopen": {
 			"name": "ComptaOpen",
-			"summary": "Plateforme open-source de comptabilité et gestion d'entreprise au Bénin.",
+			"role": "Fondateur & Développeur Full Stack",
+			"type": "Projet public — en cours",
+			"summary": "Plateforme freemium qui centralise ressources, outils et informations comptables et fiscales pour les professionnels de la gestion d'entreprise.",
 			"desc": [
-				"Plateforme open-source qui démocratise l'accès aux ressources comptables, fiscales et de gestion au Bénin.",
-				"Conçu pour un marché où la plupart des outils pros sont fermés, chers, et pensés pour ailleurs.",
-				"Vision long terme : un ERP collaboratif browser-based adapté aux réglementations UEMOA."
+				"Module Ressources : partage et accès à des documents publics de gestion (thèses, modèles, législation, examens)",
+				"Système freemium avec gestion des membres, accès différenciés et logique d'abonnement",
+				"Module Outils : calculateurs et utilitaires métier adaptés aux réalités fiscales locales",
+				"Module Articles : publication de contenu éditorial sur la comptabilité et la fiscalité UEMOA",
+				"Architecture pensée pour évoluer vers ComptaOpenLabs, un ERP collaboratif taillé pour les cabinets comptables"
 			]
 		},
 		"gestiloc": {
@@ -130,14 +134,22 @@
 			]
 		},
 		"gmaps-scraper": {
-			"name": "GoogleMapsScraper",
-			"summary": "Script Python d'extraction de données business depuis Google Maps.",
+			"name": "GoogleMapsScrape",
+			"type": "Outil open source",
+			"summary": "Extraire des milliers de prospects depuis Google Maps en quelques clics.",
 			"desc": [
-				"Script Python d'extraction de données business depuis Google Maps.",
-				"Rapide, ciblé, efficace. Conçu pour automatiser la génération de leads depuis les fiches Google Maps."
+				"CLI interactif bilingue (FR/EN) avec 3 modes : recherche ciblée, scraping en masse et fusion de données",
+				"Extraction complète des fiches : nom, note, avis, téléphone, site web, adresse...",
+				"Couverture géographique étendue : 36 000+ villes françaises et pays préconfigurés (Bénin, Côte d'Ivoire)",
+				"Bibliothèque de 370+ types d'activités pour cibler précisément chaque secteur métier",
+				"Export CSV structuré avec score de notoriété calculé automatiquement (note x nombre d'avis)",
+				"Mets une étoile, forke-le, utilise-le."
 			]
 		},
-		"others": "J'ai aussi livré plusieurs sites web avec Symfony et WordPress, moins tape-à-l'œil, mais ils tournent et ils sont en ligne."
+		"others": {
+			"summary": "J'ai aussi livré plusieurs sites web avec Symfony et WordPress, moins tape-à-l'œil, mais ils tournent bien.",
+			"cta": "Voir tous les projets"
+		}
 	},
 	"footer": {
 		"cta": "Un projet en tête ?",

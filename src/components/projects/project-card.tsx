@@ -46,7 +46,7 @@ export default function ProjectCard({ project, t, onClick }: Props) {
 			<h3 className="text-sm font-medium tracking-tight text-text-primary">
 				{t(`${project.key}.name`)}
 			</h3>
-			<p className="mt-0.5 text-[12.5px] text-text-secondary">
+			<p className="mt-0.5 text-[12.5px] text-text-secondary line-clamp-3 lg:line-clamp-2">
 				{t(`${project.key}.summary`)}
 			</p>
 		</button>

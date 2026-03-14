@@ -15,7 +15,7 @@
 		"and": "and",
 		"bullet2_suffix": " ; whatever solves the problem best",
 		"bullet3_prefix": "Currently building ",
-		"bullet3_suffix": ", an open-source platform for business management professionals in West Africa",
+		"bullet3_suffix": ", an open-source platform for business management professionals in West Africa. Details below.",
 		"cta": "Have a project that needs to actually ship? Let's talk ",
 		"ctaLink": "here"
 	},
@@ -109,11 +109,15 @@
 		},
 		"comptaopen": {
 			"name": "ComptaOpen",
-			"summary": "Open-source platform for accounting and business management in Benin.",
+			"role": "Founder & Full Stack Developer",
+			"type": "Public project — in progress",
+			"summary": "Freemium platform centralizing accounting and tax resources, tools and information for business management professionals.",
 			"desc": [
-				"Open-source platform democratizing accounting, tax, and business management resources in Benin.",
-				"Built for a market where most professional tools are closed, expensive, and designed for somewhere else.",
-				"Long-term vision: a collaborative, browser-based ERP adapted to UEMOA regulations."
+				"Resources module : sharing and access to public management documents (theses, templates, legislation, exams)",
+				"Freemium system with member management, tiered access and subscription logic",
+				"Tools module : business calculators and utilities adapted to local tax realities",
+				"Articles module : editorial content on accounting and WAEMU taxation",
+				"Architecture designed to evolve into ComptaOpenLabs, a collaborative ERP built for accounting firms"
 			]
 		},
 		"gestiloc": {
@@ -130,14 +134,22 @@
 			]
 		},
 		"gmaps-scraper": {
-			"name": "GoogleMapsScraper",
-			"summary": "Python script for extracting business data from Google Maps.",
+			"name": "GoogleMapsScrape",
+			"type": "Open source tool",
+			"summary": "Extract thousands of prospects from Google Maps in just a few clicks.",
 			"desc": [
-				"Python script for extracting business data from Google Maps.",
-				"Quick, focused, gets the job done. Built to automate lead generation from map listings."
+				"Bilingual interactive CLI (FR/EN) with 3 modes : targeted search, bulk scraping and data merging",
+				"Full listing extraction : name, rating, reviews, phone, website, address and more",
+				"Extended geographic coverage : 36,000+ French cities and preconfigured countries (Benin, Ivory Coast)",
+				"Library of 370+ business activity types to precisely target any industry",
+				"Structured CSV export with auto-calculated popularity score (rating x review count)",
+				"Star it, fork it, use it."
 			]
 		},
-		"others": "Also shipped several websites with Symfony and WordPress, less flashy, but they work and they're live."
+		"others": {
+			"summary": "I've also shipped several websites with Symfony and WordPress ; less flashy, but they're live and they work.",
+			"cta": "View all projects"
+		}
 	},
 	"footer": {
 		"cta": "Got a project in mind?",

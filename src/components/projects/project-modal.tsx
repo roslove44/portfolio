@@ -194,7 +194,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 							</div>
 
 							{/* Content */}
-							<div className="-mt-1 px-5 pb-5">
+							<div className="px-5 pb-5">
 								{/* Title + links */}
 								<div className="flex items-start justify-between gap-3">
 									<h3 className="text-lg font-semibold text-text-primary">
@@ -243,14 +243,14 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 
 								{/* Stack tags */}
 								<div className="mt-6 rounded-lg border border-terminal-border bg-terminal-bg p-2">
-									<p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-text-secondary text-center">
+									<p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-terminal-text-muted text-center">
 										Stack
 									</p>
 									<div className="flex flex-wrap justify-center gap-1.5">
 										{project.stack.map((tech) => (
 											<span
 												key={tech}
-												className="rounded-full border-terminal-border bg-terminal-header px-2.5 py-0.5 text-[11px] font-medium text-terminal-text-muted"
+												className="rounded-full border-terminal-border bg-terminal-header px-2.5 py-0.5 text-[11px] font-medium text-terminal-text-muted shadow-2xl shadow-terminal-header/50"
 											>
 												{tech}
 											</span>

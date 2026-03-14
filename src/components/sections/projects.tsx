@@ -5,6 +5,8 @@ import { motion } from "motion/react";
 import { PROJECTS, type Project } from "@/data/projects";
 import ProjectCard from "@/components/projects/project-card";
 import ProjectModal, { type CardRect } from "@/components/projects/project-modal";
+import { Link } from "@/i18n/navigation";
+import { ArrowRight } from "lucide-react";
 
 const TABS = ["featured", "latest"] as const;
 type Tab = (typeof TABS)[number];
@@ -71,10 +73,13 @@ export default function Projects() {
 				))}
 			</div>
 
-			<div className="mt-4 text-right">
-				<span className="text-[13px] text-text-secondary">
-					{t("others")}
-				</span>
+			<div className="mt-4 text-center lg:text-right">
+				<p className="text-[13px] text-text-secondary tracking-wide">
+					{t("others.summary")}
+				</p>
+				<Link href="/projects" className="mt-1 text-[13px] text-text-secondary inline-flex items-center gap-1 px-2 py-1 rounded-md transition-colors hover:bg-border/50 hover:text-text-primary">
+					{t("others.cta")} <ArrowRight size={14} />
+				</Link>
 			</div>
 			<ProjectModal
 				project={selected?.project ?? null}

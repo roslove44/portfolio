@@ -16,9 +16,9 @@ export const PROJECTS: Project[] = [
 		key: "comptaopen",
 		featured: true,
 		date: "2026-01-01",
-		stack: ["Next.js", "TypeScript", "AdonisJS", "PostgreSQL", "Docker", "Gotenberg"],
+		stack: ["Next.js", "TypeScript", "AdonisJS", "PostgreSQL", "Docker", "Gotenberg", "TipTap"],
 		cover: "cover.webp",
-		video: "https://youtu.be/ufcDIOS1HRo?list=RDufcDIOS1HRo",
+		video: "https://youtu.be/ufcDIOS1HRo?list=RDufcDIOS1HRo", // test video, will replace with a proper demo once I have one
 	},
 	{
 		key: "gestiloc",
@@ -31,9 +31,10 @@ export const PROJECTS: Project[] = [
 	},
 	{
 		key: "gmaps-scraper",
-		featured: false,
+		featured: true,
 		date: "2025-01-13",
-		stack: ["Python"],
+		stack: ["Python", "Selenium", "BeautifulSoup"],
 		github: "https://github.com/roslove44/GoogleMapsScrape",
+		cover: "cover.webp",
 	},
 ];
