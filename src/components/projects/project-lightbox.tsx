@@ -22,12 +22,14 @@ function toEmbedUrl(url: string): string {
 	return url;
 }
 
-export function buildSlides(project: { key: string; video?: string; images?: string[] }): Slide[] {
+export function buildSlides(project: { key: string; cover?: string; video?: string; images?: string[] }): Slide[] {
 	const slides: Slide[] = [];
 	if (project.video) {
 		slides.push({ type: "video", embedUrl: toEmbedUrl(project.video) });
 	}
-	slides.push({ type: "image", src: `/projects/${project.key}/cover.webp`, alt: project.key });
+	if (project.cover) {
+		slides.push({ type: "image", src: `/projects/${project.key}/${project.cover}`, alt: project.key });
+	}
 	if (project.images) {
 		for (const img of project.images) {
 			slides.push({ type: "image", src: `/projects/${project.key}/${img}`, alt: project.key });

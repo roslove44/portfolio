@@ -3,8 +3,8 @@ import { useState, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
-import { ExternalLinkIcon, PlayIcon, XIcon } from "lucide-react";
-import { GitHubAltIcon } from "@/components/ui/icons";
+import { ExternalLinkIcon, PlayIcon, XIcon as XMarkIcon } from "lucide-react";
+import { GitHubAltIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
 import ProjectLightbox, { buildSlides } from "./project-lightbox";
@@ -90,6 +90,12 @@ interface ModalContentProps {
 	onClose: () => void;
 }
 
+const SOCIAL_ICONS = {
+	github: GitHubIcon,
+	x: XIcon,
+	linkedin: LinkedInIcon,
+} as const;
+
 function ModalContent({ project, flip, onClose }: ModalContentProps) {
 	const t = useTranslations("projects");
 	const [coverError, setCoverError] = useState(false);
@@ -103,8 +109,8 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 
 	const slides = useMemo(() => buildSlides(project), [project]);
 	const desc = t.raw(`${project.key}.desc`) as string[];
-	const hasCover = !coverError;
-	const coverSrc = `/projects/${project.key}/cover.webp`;
+	const hasCover = !!project.cover && !coverError;
+	const coverSrc = project.cover ? `/projects/${project.key}/${project.cover}` : "";
 	const coverSlideIndex = project.video ? 1 : 0;
 
 	return (
@@ -126,7 +132,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 						transition={flip.transition}
 					>
 						<DialogPanel
-							className="relative w-full max-w-2xl overflow-hidden rounded-t-xl border border-border/40 bg-background shadow-2xl dark:border-border/60 dark:shadow-[0_0_30px_-5px_rgba(96,165,250,0.08)] sm:rounded-xl pb-3"
+							className="relative w-full max-w-2xl overflow-hidden rounded-t-xl border border-border/40 bg-background shadow-2xl dark:border-border/60 dark:shadow-[0_0_30px_-5px_rgba(96,165,250,0.08)] sm:rounded-xl"
 						>
 							{/* Close button */}
 							<button
@@ -134,7 +140,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 								className="absolute right-3 top-3 z-10 rounded-full bg-black/40 p-1.5 text-white/80 transition hover:bg-black/60 hover:text-white"
 								aria-label="Close"
 							>
-								<XIcon size={16} />
+								<XMarkIcon size={16} />
 							</button>
 
 							{/* Cover image area */}
@@ -156,30 +162,39 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 										{project.video && (
 											<div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
 												<PlayIcon size={12} className="fill-white" />
-												Video
+												{t("labels.video")}
+												<span className="relative flex size-2">
+													<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white dark:bg-accent opacity-75"></span>
+													<span className="relative inline-flex size-2 rounded-full bg-white dark:bg-accent"></span>
+												</span>
 											</div>
 										)}
 									</button>
 								) : (
-									<div
-										className="h-full w-full bg-border"
-										style={{ maskImage: COVER_MASK, WebkitMaskImage: COVER_MASK }}
-									>
+									<>
+										<div
+											className="h-full w-full bg-border"
+											style={{ maskImage: COVER_MASK, WebkitMaskImage: COVER_MASK }}
+										/>
 										{project.video && (
 											<button
 												onClick={() => openLightbox(0)}
 												className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm transition hover:bg-black/70"
 											>
 												<PlayIcon size={12} className="fill-white" />
-												Video
+												{t("labels.video")}
+												<span className="relative flex size-2">
+													<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white dark:bg-accent opacity-75"></span>
+													<span className="relative inline-flex size-2 rounded-full bg-white dark:bg-accent"></span>
+												</span>
 											</button>
 										)}
-									</div>
+									</>
 								)}
 							</div>
 
 							{/* Content */}
-							<div className="-mt-4 px-5 pb-5">
+							<div className="-mt-1 px-5 pb-5">
 								{/* Title + links */}
 								<div className="flex items-start justify-between gap-3">
 									<h3 className="text-lg font-semibold text-text-primary">
@@ -211,26 +226,64 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 									</div>
 								</div>
 
+								<p className="text-sm text-text-secondary">
+									{t(`${project.key}.summary`)}
+								</p>
+
 								{/* Description paragraphs */}
-								<div className="mt-3 space-y-2">
-									{desc.map((paragraph, i) => (
-										<p key={i} className="text-sm text-text-secondary">
-											{paragraph}
-										</p>
-									))}
+								<div className="mt-3 mb-6 h-auto">
+									<div className="max-w-none">
+										{desc.map((paragraph, i) => (
+											<p key={i} className="text-sm text-shadow-text-primary leading-snug not-first:mt-2">
+												{paragraph}
+											</p>
+										))}
+									</div>
 								</div>
 
 								{/* Stack tags */}
-								<div className="mt-4 flex flex-wrap gap-1.5">
-									{project.stack.map((tech) => (
-										<span
-											key={tech}
-											className="rounded-full bg-accent/10 px-2.5 py-0.5 text-[11px] font-medium text-accent"
-										>
-											{tech}
-										</span>
-									))}
+								<div className="mt-6 rounded-lg border border-terminal-border bg-terminal-bg p-2">
+									<p className="mb-2 text-[11px] font-medium uppercase tracking-wider text-text-secondary text-center">
+										Stack
+									</p>
+									<div className="flex flex-wrap justify-center gap-1.5">
+										{project.stack.map((tech) => (
+											<span
+												key={tech}
+												className="rounded-full border-terminal-border bg-terminal-header px-2.5 py-0.5 text-[11px] font-medium text-terminal-text-muted"
+											>
+												{tech}
+											</span>
+										))}
+									</div>
 								</div>
+
+								{/* Role / Type / Owner */}
+								{(t.has(`${project.key}.role`) || t.has(`${project.key}.type`) || project.owner) && (
+									<div className="mt-3 flex flex-wrap items-center justify-center divide-x divide-border/40 text-xs text-text-secondary">
+										{t.has(`${project.key}.role`) && (
+											<AdditionalInfo label={t("labels.role")}>{t(`${project.key}.role`)}</AdditionalInfo>
+										)}
+										{t.has(`${project.key}.type`) && (
+											<AdditionalInfo label={t("labels.type")}>{t(`${project.key}.type`)}</AdditionalInfo>
+										)}
+										{project.owner && (() => {
+											const Icon = SOCIAL_ICONS[project.owner.social];
+											return (
+												<AdditionalInfo label={t("labels.owner")}>
+													<a
+														href={project.owner.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														className="inline-flex items-center gap-1 transition-colors hover:text-accent"
+													>
+														<Icon className="size-3" /> {project.owner.name}
+													</a>
+												</AdditionalInfo>
+											);
+										})()}
+									</div>
+								)}
 							</div>
 						</DialogPanel>
 					</motion.div>
@@ -244,6 +297,15 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 				onClose={() => setLightboxOpen(false)}
 			/>
 		</>
+	);
+}
+
+function AdditionalInfo({ label, children }: { label: string; children: React.ReactNode }) {
+	return (
+		<div className="inline-flex flex-col items-center gap-0.5 px-3">
+			<span className="text-[11px] font-medium">{children}</span>
+			<span className="text-[9px] uppercase tracking-widest text-text-secondary/60">{label}</span>
+		</div>
 	);
 }
 

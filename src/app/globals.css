@@ -36,6 +36,8 @@
   --border: #27272a;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);

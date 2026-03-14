@@ -101,6 +101,12 @@
 			"featured": "Featured",
 			"latest": "Latest"
 		},
+		"labels": {
+			"role": "Role",
+			"type": "Type",
+			"owner": "Owner",
+			"video": "Overview"
+		},
 		"comptaopen": {
 			"name": "ComptaOpen",
 			"summary": "Open-source platform for accounting and business management in Benin.",
@@ -111,11 +117,16 @@
 			]
 		},
 		"gestiloc": {
-			"name": "Gestiloc",
-			"summary": "Rental management tool with admin dashboard and payment workflows.",
+			"name": "Gestiloc.io",
+			"role": "Full Stack Developer",
+			"type": "Collaborative project",
+			"summary": "Property management SaaS built for landlords and agencies ; everything in one place.",
 			"desc": [
-				"Rental management tool built for a client — admin dashboard, tenant tracking, payment workflows.",
-				"Full Symfony backend with MySQL, designed to handle real-world property management needs."
+				"Complete auth system : registration, email confirmation, password recovery and profile management",
+				"Multi-currency property and tenant management with strict business rules",
+				"Full lease lifecycle : creation, editing, status tracking and detailed visualization",
+				"Rich contract editor integrated directly into the platform",
+				"Admin panel built from scratch : dashboard, user management and full subscription handling"
 			]
 		},
 		"gmaps-scraper": {

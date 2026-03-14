@@ -101,6 +101,12 @@
 			"featured": "En vedette",
 			"latest": "Récents"
 		},
+		"labels": {
+			"role": "Rôle",
+			"type": "Type",
+			"owner": "Propriétaire",
+			"video": "Présentation"
+		},
 		"comptaopen": {
 			"name": "ComptaOpen",
 			"summary": "Plateforme open-source de comptabilité et gestion d'entreprise au Bénin.",
@@ -111,11 +117,16 @@
 			]
 		},
 		"gestiloc": {
-			"name": "Gestiloc",
-			"summary": "Outil de gestion locative avec dashboard admin et suivi des paiements.",
+			"name": "Gestiloc.io",
+			"role": "Développeur Full Stack",
+			"type": "Projet collaboratif",
+			"summary": "SaaS de gestion locative pensé pour les propriétaires et agences, tout au même endroit.",
 			"desc": [
-				"Outil de gestion locative développé pour un client — dashboard admin, suivi locataires, gestion des paiements.",
-				"Backend Symfony complet avec MySQL, conçu pour la gestion immobilière réelle."
+				"Système d'auth complet : inscription, confirmation, récupération de mot de passe et gestion de profil",
+				"Gestion multi-devises des propriétés et locataires avec règles métier strictes",
+				"Cycle de vie complet des baux : création, modification, statuts et visualisation détaillée",
+				"Éditeur de contrats riche intégré directement dans la plateforme",
+				"Panel admin construit de A à Z : tableau de bord, utilisateurs et gestion des abonnements"
 			]
 		},
 		"gmaps-scraper": {
