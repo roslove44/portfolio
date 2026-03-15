@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	return {
 		title: post.title,
 		description: post.description,
+		...(post.cover && { openGraph: { images: [post.cover] } }),
 		...(post.updatedAt && { other: { "article:modified_time": post.updatedAt } }),
 	};
 }

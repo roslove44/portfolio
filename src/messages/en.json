@@ -159,6 +159,7 @@
 	},
 	"blog": {
 		"title": "Blog",
+		"list": "All posts",
 		"pageTitle": "Blog | Rostand MIGAN",
 		"cta": "See all posts",
 		"empty": "No posts yet. Stay tuned.",

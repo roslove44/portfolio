@@ -9,6 +9,7 @@ export type BlogPost = {
 	updatedAt?: string;
 	description: string;
 	tags: string[];
+	cover?: string;
 };
 
 export type BlogPostWithContent = BlogPost & {
@@ -26,23 +27,24 @@ export function getBlogPosts(locale: string): BlogPost[] {
 	const dir = path.join(BLOG_DIR, locale);
 	if (!fs.existsSync(dir)) return [];
 
-	return fs
-		.readdirSync(dir)
-		.filter((file) => file.endsWith(".mdx"))
-		.map((file) => {
-			const { data } = parseFrontmatter(file, dir);
-			if (data.draft) return null;
-			return {
-				slug: file.replace(/\.mdx$/, ""),
-				title: data.title ?? "",
-				date: data.date ?? "",
-				updatedAt: data.updatedAt,
-				description: data.description ?? "",
-				tags: data.tags ?? [],
-			};
-		})
-		.filter((post): post is BlogPost => post !== null)
-		.sort((a, b) => b.date.localeCompare(a.date));
+	const posts: BlogPost[] = [];
+
+	for (const file of fs.readdirSync(dir)) {
+		if (!file.endsWith(".mdx")) continue;
+		const { data } = parseFrontmatter(file, dir);
+		if (data.draft) continue;
+		posts.push({
+			slug: file.replace(/\.mdx$/, ""),
+			title: data.title ?? "",
+			date: data.date ?? "",
+			updatedAt: data.updatedAt,
+			description: data.description ?? "",
+			tags: data.tags ?? [],
+			cover: data.cover,
+		});
+	}
+
+	return posts.sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export function getBlogPost(locale: string, slug: string): BlogPostWithContent | null {
@@ -61,6 +63,7 @@ export function getBlogPost(locale: string, slug: string): BlogPostWithContent |
 		updatedAt: data.updatedAt,
 		description: data.description ?? "",
 		tags: data.tags ?? [],
+		cover: data.cover,
 		content,
 	};
 }

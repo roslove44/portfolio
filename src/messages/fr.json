@@ -159,6 +159,7 @@
 	},
 	"blog": {
 		"title": "Blog",
+		"list": "Tous les articles",
 		"pageTitle": "Blog | Rostand MIGAN",
 		"cta": "Voir tous les articles",
 		"empty": "Aucun article pour le moment.",

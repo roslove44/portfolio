@@ -32,6 +32,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 				{t("title")}
 			</h1>
 
+			<h2 className="sr-only">
+				{t("list")}
+			</h2>
+
 			{posts.length === 0 ? (
 				<p className="text-sm text-text-secondary">{t("empty")}</p>
 			) : (
