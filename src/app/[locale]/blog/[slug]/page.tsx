@@ -5,7 +5,9 @@ import rehypePrettyCode from "rehype-pretty-code";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPost, getAllSlugs } from "@/lib/blog";
+import { getReadingTime } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
+import ReadingProgress from "@/components/blog/reading-progress";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -33,8 +35,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	const post = getBlogPost(locale, slug);
 	if (!post) notFound();
 
+	const readingTime = getReadingTime(post.content);
+
 	return (
 		<article className="py-8">
+			<ReadingProgress />
 			<Link
 				href="/blog"
 				className="mb-6 inline-flex items-center gap-1 text-sm text-text-secondary transition-colors hover:text-accent"
@@ -60,13 +65,18 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 							</span>
 						</>
 					)}
-					{post.tags.length > 0 && (
-						<>
-							<span className="text-text-secondary/80">·</span>
-							<span>{post.tags.join(", ")}</span>
-						</>
-					)}
+					<span className="text-text-secondary/80">·</span>
+					<span>{readingTime} min {locale === "fr" ? "de lecture" : "read"}</span>
 				</div>
+				{post.tags && post.tags.length > 0 && (
+					<div className="mt-1.5 text-sm flex flex-wrap gap-x-1.5 gap-y-0.5 font-medium" aria-label={`Tags: ${post.tags.join(", ")}`} role="list">
+						{post.tags.map((tech) => (
+							<span key={tech} className="text-text-secondary" role="listitem" aria-label={tech}>
+								<span aria-hidden="true">#</span>{tech}
+							</span>
+						))}
+					</div>
+				)}
 			</header>
 
 			<div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-pre:m-0 prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
