@@ -110,7 +110,7 @@
 		"comptaopen": {
 			"name": "ComptaOpen",
 			"role": "Founder & Full Stack Developer",
-			"type": "Public project — in progress",
+			"type": "Public project - in progress",
 			"summary": "Freemium platform centralizing accounting and tax resources, tools and information for business management professionals.",
 			"desc": [
 				"Resources module : sharing and access to public management documents (theses, templates, legislation, exams)",
@@ -156,6 +156,13 @@
 		"command": "cat ./resume.pdf",
 		"punchline": "no segfault, just solid experience.",
 		"cta": "Download my resume"
+	},
+	"blog": {
+		"title": "Blog",
+		"pageTitle": "Blog | Rostand MIGAN",
+		"cta": "See all posts",
+		"empty": "No posts yet. Stay tuned.",
+		"backHome": "Home"
 	},
 	"footer": {
 		"cta": "Got a project in mind?",

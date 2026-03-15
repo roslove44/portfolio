@@ -1,0 +1,77 @@
+---
+title: "ComptaOpen - 21 mois seul face au code"
+date: "2026-03-20"
+description: "Ce qu'on ne montre pas sur GitHub : la solitude, les doutes, et ce que ça coûte vraiment de construire seul."
+tags: ["comptaopen", "indie-hacker", "building-in-public"]
+draft: false
+---
+
+Il y a des projets qu'on commence parce qu'on voit un problème que personne ne résout. ComptaOpen est né comme ça.
+
+L'idée : démocratiser l'accès à l'information fiscale et comptable au Bénin. Pas une idée abstraite ; un vrai vide. Des professionnels qui interprètent les mêmes textes de loi différemment. Des entrepreneurs qui ne savent pas à qui faire confiance. Des étudiants qui apprennent sans ressources externes. J'ai décidé de construire la plateforme qui manquait.
+
+Ce que je n'avais pas encore mesuré, c'est ce que ça allait me coûter.
+
+---
+
+## Août 2024 : le premier commit
+
+Le 11 août 2024, je pose le premier composant. Un bouton. Typé, avec ses variants, ses états.
+
+Il y a quelque chose d'étrange dans ce moment ; une clarté presque naïve. On ne voit pas encore la masse de ce qui reste à faire. On code un bouton, puis un Header, puis une Card. Le projet ressemble à quelque chose en quelques semaines.
+
+Mais ComptaOpen n'est pas un blog avec un formulaire de contact. C'est une plateforme. Et une plateforme, ça veut dire : un éditeur rich text avec des extensions custom pour les écritures comptables SYSCOHADA, un système d'articles complet (feed, likes, bookmarks, commentaires, suivi d'auteurs), des espaces professionnels, une bibliothèque de documents avec génération PDF via Gotenberg, un tableau de bord utilisateur, une authentification cookie-based, et un backend que je construis aussi en parallèle.
+
+<BlogImage src="/projects/comptaopen/cover.webp" alt="ComptaOpen Articles" caption="ComptaOpen — scope articles" />
+
+Seul. Et en parallèle de tout le reste ; missions freelance, projets clients, vie. ComptaOpen était un side project. Ce statut a changé en février 2026.
+
+---
+
+## Ce que personne ne voit dans un commit
+
+509 commits en 21 mois. Ce chiffre dit quelque chose, mais il ne dit pas tout.
+
+Il ne dit pas les nuits à déboguer un comportement de Tiptap que rien dans la doc n'explique. Il ne dit pas le moment où tu réalises que ton architecture de Server Actions est un mille-feuilles et qu'il faut tout refactoriser ; pas parce que ça ne marchait pas, mais parce que ça ne _tiendrait_ pas. Il ne dit pas la solitude de prendre seul des décisions d'architecture sur un projet qui grandit, sans personne à qui demander _"est-ce que je me plante ?"_.
+
+Il ne dit pas non plus les jours de grâce : quand une feature complexe s'assemble proprement du premier coup, quand le design trouve son équilibre, quand le code est lisible et que tu sens que tu progresses vraiment.
+
+Coder seul, c'est ça. Les deux à la fois, sans filet.
+
+---
+
+## Le 1er février 2026 : quelque chose change
+
+À cette date, je commite quelque chose de différent : l'intégration de Claude et du framework BMAD dans mon workflow.
+
+Ce n'est pas un aveu d'échec. C'est une décision lucide.
+
+J'avais passé des mois à progresser par accumulation ; chaque problème résolu ajoutait une couche. Mais certaines décisions méritaient d'être challengées, discutées, confrontées à d'autres perspectives. Claude est devenu ce que j'appelle en interne un _partenaire technique asymétrique_ : disponible à 2h du matin, capable de traverser 500 fichiers de codebase en quelques secondes, sans ego dans le retour qu'il donne.
+
+Ce qui a changé concrètement : la vitesse des refactors lourds (migration complète d'Axios vers fetch natif, restructuration de l'arborescence des utils, centralisation des constantes), la qualité des revues de code, la capacité à challenger mes propres choix d'architecture en temps réel.
+
+Ce qui n'a pas changé : c'est moi qui décide. Toujours.
+
+---
+
+## Où j'en suis aujourd'hui
+
+Le frontend est quasi complet sur les domaines core. Le système d'articles tourne. Les profils et espaces professionnels sont en place. Le backend avance en parallèle.
+
+Ce qu'il reste ? L'upload direct client vers backend (contourner le passage par Next.js pour les fichiers lourds). La finalisation du dashboard. Des ajustements de performance. Et surtout ; la mise en production.
+
+La date que je me suis fixée : **1er mai 2026**.
+
+Pas parce que ce sera parfait. Parce que le parfait est l'ennemi du fait. Et parce que ComptaOpen n'a de sens qu'en étant utilisé par de vraies personnes, confronté à de vraies utilisations, amélioré par du vrai feedback.
+
+---
+
+## Pourquoi j'écris ça
+
+Pas pour me plaindre. Pas non plus pour me glorifier.
+
+J'écris ça parce que si tu es en train de construire quelque chose seul ; que ce soit une app, une idée, un business ; et que tu te demandes si c'est normal de trouver ça dur parfois : oui. C'est normal. Ce n'est pas un signal que tu devrais arrêter.
+
+C'est simplement le prix de construire quelque chose qui n'existait pas.
+
+ComptaOpen sera en ligne le 1er mai. Avec ses imperfections, ses coins arrondis, et ses 509 commits de sueur derrière.

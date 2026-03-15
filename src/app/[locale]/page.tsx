@@ -5,6 +5,7 @@ import Stack from "@/components/sections/stack";
 import Activity from "@/components/sections/activity";
 import Projects from "@/components/sections/projects";
 import Resume from "@/components/sections/resume";
+import Blog from "@/components/sections/blog";
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
 	const { locale } = await params;
@@ -18,6 +19,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 			<Activity />
 			<Projects />
 			<Resume />
+			<Blog />
 		</>
 	);
 }

@@ -1,0 +1,78 @@
+---
+title: "ComptaOpen - 21 Months Alone With the Code"
+date: "2026-03-20"
+updatedAt: "2026-03-21"
+description: "What GitHub doesn't show: the solitude, the doubts, and what it really costs to build alone."
+tags: ["comptaopen", "indie-hacker", "building-in-public"]
+draft: false
+---
+
+Some projects start because you see a problem no one is solving. ComptaOpen was born that way.
+
+The idea: democratize access to tax and accounting information in Benin. Not an abstract concept ; a real gap. Professionals interpreting the same laws differently. Entrepreneurs who don't know who to trust. Students learning without external resources. I decided to build the platform that was missing.
+
+What I hadn't measured yet was what it would cost me.
+
+---
+
+## August 2024: the first commit
+
+On August 11, 2024, I wrote the first component. A button. Typed, with its variants and states.
+
+There's something strange about that moment ; an almost naive clarity. You can't see the mass of what's left to do yet. You code a button, then a Header, then a Card. The project looks like something within a few weeks.
+
+But ComptaOpen isn't a blog with a contact form. It's a platform. And a platform means: a rich text editor with custom extensions for SYSCOHADA accounting entries, a full article system (feed, likes, bookmarks, comments, author following), professional workspaces, a document library with PDF generation via Gotenberg, a user dashboard, cookie-based authentication, and a backend I'm also building in parallel.
+
+<BlogImage src="/projects/comptaopen/cover.webp" alt="ComptaOpen Articles" caption="ComptaOpen — articles scope" />
+
+Alone. And alongside everything else ; freelance work, client projects, life. ComptaOpen was a side project. That status changed in February 2026.
+
+---
+
+## What no one sees in a commit
+
+509 commits in 21 months. That number says something, but it doesn't say everything.
+
+It doesn't say the nights spent debugging a Tiptap behavior that nothing in the docs explains. It doesn't say the moment you realize your Server Actions architecture is a layer cake and you need to refactor everything ; not because it didn't work, but because it wouldn't _hold_. It doesn't say the loneliness of making architecture decisions alone on a growing project, with no one to ask _"am I getting this wrong?"_.
+
+It also doesn't say the days of grace: when a complex feature assembles cleanly on the first try, when the design finds its balance, when the code is readable and you feel yourself genuinely improving.
+
+Coding alone is both of those things. At the same time, without a net.
+
+---
+
+## February 1, 2026: something changes
+
+On that date, I commit something different: integrating Claude and the BMAD framework into my workflow.
+
+It's not an admission of failure. It's a clear-headed decision.
+
+I'd spent months progressing through accumulation ; each solved problem added a layer. But certain decisions deserved to be challenged, discussed, confronted with other perspectives. Claude became what I internally call an _asymmetric technical partner_: available at 2 AM, able to traverse 500 codebase files in seconds, with zero ego in the feedback it gives.
+
+What concretely changed: the speed of heavy refactors (complete migration from Axios to native fetch, restructuring the utils tree, centralizing constants), the quality of code reviews, the ability to challenge my own architecture choices in real time.
+
+What didn't change: I make the decisions. Always.
+
+---
+
+## Where I am today
+
+The frontend is nearly complete on the core domains. The article system works. Profiles and professional workspaces are in place. The backend is progressing in parallel.
+
+What's left? Direct client-to-backend uploads (bypassing Next.js for heavy files). Finalizing the dashboard. Performance tuning. And above all ; going to production.
+
+The date I've set for myself: **May 1, 2026**.
+
+Not because it'll be perfect. Because perfect is the enemy of done. And because ComptaOpen only makes sense when it's used by real people, confronted with real usage, improved by real feedback.
+
+---
+
+## Why I'm writing this
+
+Not to complain. Not to glorify myself either.
+
+I'm writing this because if you're building something alone ; whether it's an app, an idea, a business ; and you're wondering if it's normal to find it hard sometimes: yes. It's normal. It's not a signal that you should stop.
+
+It's simply the price of building something that didn't exist before.
+
+ComptaOpen will be live on May 1st. With its imperfections, its rounded corners, and its 509 commits of sweat behind it.

@@ -1,7 +1,7 @@
 {
 	"metadata": {
 		"title": "Rostand MIGAN | Développeur Full Stack & Builder",
-		"description": "Développeur full stack. J'écris du code comme je pense — clairement, efficacement, toujours avec l'utilisateur final en tête. Ces derniers temps, beaucoup de fintech."
+		"description": "Développeur full stack. J'écris du code comme je pense, clairement, efficacement, toujours avec l'utilisateur final en tête. Ces derniers temps, beaucoup de fintech."
 	},
 	"header": {
 		"home": "Accueil",
@@ -110,7 +110,7 @@
 		"comptaopen": {
 			"name": "ComptaOpen",
 			"role": "Fondateur & Développeur Full Stack",
-			"type": "Projet public — en cours",
+			"type": "Projet public - en cours",
 			"summary": "Plateforme freemium qui centralise ressources, outils et informations comptables et fiscales pour les professionnels de la gestion d'entreprise.",
 			"desc": [
 				"Module Ressources : partage et accès à des documents publics de gestion (thèses, modèles, législation, examens)",
@@ -156,6 +156,13 @@
 		"command": "cat ./resume.pdf",
 		"punchline": "pas de segfault, juste de l'expérience solide.",
 		"cta": "Télécharger mon CV"
+	},
+	"blog": {
+		"title": "Blog",
+		"pageTitle": "Blog | Rostand MIGAN",
+		"cta": "Voir tous les articles",
+		"empty": "Aucun article pour le moment.",
+		"backHome": "Accueil"
 	},
 	"footer": {
 		"cta": "Un projet en tête ?",
