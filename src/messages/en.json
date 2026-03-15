@@ -112,6 +112,10 @@
 			"tool": "Tool",
 			"website": "Website"
 		},
+		"status": {
+			"in-progress": "In progress",
+			"completed": "Completed"
+		},
 		"labels": {
 			"role": "Role",
 			"type": "Type",

@@ -7,17 +7,17 @@ interface Props {
 	t: (key: string) => string;
 	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
 	showStack?: boolean;
+	showDate?: boolean;
 }
 
-export default function ProjectCard({ project, t, onClick, showStack = false }: Props) {
+export default function ProjectCard({ project, t, onClick, showStack = false, showDate = false }: Props) {
 	return (
 		<button
 			type="button"
 			onClick={onClick}
 			className="group relative rounded-sm border border-transparent px-2 py-1.5 text-left transition-all duration-200 hover:border-border/60 hover:bg-surface/60 hover:shadow-xs hover:backdrop-blur-md dark:hover:border-border/40 dark:hover:bg-surface/40"
 		>
-			{/* Hover icons — top right */}
-			<div className="absolute right-2 top-2 flex items-center gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+			<div className={`absolute right-2 ${showDate ? "bottom-2" : "top-2"} flex items-center gap-1.5 opacity-0 transition-opacity duration-200 group-hover:opacity-100`}>
 				{project.github && (
 					<a
 						href={project.github}
@@ -44,9 +44,21 @@ export default function ProjectCard({ project, t, onClick, showStack = false }: 
 				)}
 			</div>
 
-			<h3 className="text-sm font-medium tracking-tight text-text-primary">
-				{t(`${project.key}.name`)}
-			</h3>
+			<div className="flex items-start justify-between gap-2">
+				<h3 className="text-sm font-medium tracking-tight text-text-primary">
+					{t(`${project.key}.name`)}
+				</h3>
+				{showDate && (
+					project.status === "in-progress" ? (
+						<span className="shrink-0 text-xs text-accent">{t("status.in-progress")}</span>
+					) : (
+						<time className="shrink-0 text-xs text-text-secondary" dateTime={project.date}>
+							{new Date(project.date).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+						</time>
+					)
+				)}
+			</div>
+
 			<p className="mt-0.5 text-[12.5px] text-text-secondary line-clamp-3 lg:line-clamp-2">
 				{t(`${project.key}.summary`)}
 			</p>

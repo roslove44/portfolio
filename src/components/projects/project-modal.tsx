@@ -132,7 +132,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 						transition={flip.transition}
 					>
 						<DialogPanel
-							className="relative w-full max-w-2xl overflow-hidden rounded-t-xl border border-border/40 bg-background shadow-2xl dark:border-border/60 dark:shadow-[0_0_30px_-5px_rgba(96,165,250,0.08)] sm:rounded-xl"
+							className="relative w-full max-w-2xl max-h-[80vh] overflow-y-auto overflow-x-hidden rounded-t-md sm:rounded-t-xl border border-border/40 bg-background shadow-2xl dark:border-border/60 dark:shadow-[0_0_30px_-5px_rgba(96,165,250,0.08)] sm:max-h-[85vh] sm:rounded-xl"
 						>
 							{/* Close button */}
 							<button

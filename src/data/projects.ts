@@ -6,6 +6,7 @@ export const HIGHLIGHTED_PROJECTS: Project[] = [
 	{
 		key: "comptaopen",
 		type: "saas",
+		status: "in-progress",
 		featured: true,
 		date: "2026-01-01",
 		stack: ["Next.js", "TypeScript", "AdonisJS", "PostgreSQL", "Docker", "Gotenberg", "TipTap"],

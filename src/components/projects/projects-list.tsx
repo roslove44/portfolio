@@ -73,6 +73,7 @@ export default function ProjectsList() {
 								project={project}
 								t={t}
 								showStack
+								showDate
 								onClick={(e) => {
 									const r = e.currentTarget.getBoundingClientRect();
 									setSelected({ project, rect: { top: r.top, left: r.left, width: r.width, height: r.height } });
