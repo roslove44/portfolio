@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "motion/react";
-import { PROJECTS, type Project } from "@/data/projects";
+import { HIGHLIGHTED_PROJECTS, type Project } from "@/data/projects";
 import ProjectCard from "@/components/projects/project-card";
 import ProjectModal, { type CardRect } from "@/components/projects/project-modal";
 import { Link } from "@/i18n/navigation";
@@ -12,8 +12,8 @@ const TABS = ["featured", "latest"] as const;
 type Tab = (typeof TABS)[number];
 
 function getProjectsByTab(tab: Tab) {
-	if (tab === "featured") return PROJECTS.filter((p) => p.featured);
-	return [...PROJECTS].sort((a, b) => b.date.localeCompare(a.date));
+	if (tab === "featured") return HIGHLIGHTED_PROJECTS.filter((p) => p.featured);
+	return [...HIGHLIGHTED_PROJECTS].sort((a, b) => b.date.localeCompare(a.date));
 }
 
 export default function Projects() {

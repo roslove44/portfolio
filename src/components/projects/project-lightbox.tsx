@@ -4,6 +4,7 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import Image from "next/image";
+import { toEmbedUrl } from "@/utils/video";
 
 type Slide = { type: "image"; src: string; alt: string } | { type: "video"; embedUrl: string };
 
@@ -12,14 +13,6 @@ interface Props {
 	initialIndex: number;
 	open: boolean;
 	onClose: () => void;
-}
-
-function toEmbedUrl(url: string): string {
-	const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-	if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0`;
-	const vm = url.match(/vimeo\.com\/(\d+)/);
-	if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
-	return url;
 }
 
 export function buildSlides(project: { key: string; cover?: string; video?: string; images?: string[] }): Slide[] {

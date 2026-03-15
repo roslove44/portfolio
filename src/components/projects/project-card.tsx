@@ -6,9 +6,10 @@ interface Props {
 	project: Project;
 	t: (key: string) => string;
 	onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+	showStack?: boolean;
 }
 
-export default function ProjectCard({ project, t, onClick }: Props) {
+export default function ProjectCard({ project, t, onClick, showStack = false }: Props) {
 	return (
 		<button
 			type="button"
@@ -49,6 +50,15 @@ export default function ProjectCard({ project, t, onClick }: Props) {
 			<p className="mt-0.5 text-[12.5px] text-text-secondary line-clamp-3 lg:line-clamp-2">
 				{t(`${project.key}.summary`)}
 			</p>
+			{showStack && project.stack.length > 0 && (
+				<div className="mt-1.5 flex flex-wrap gap-x-1.5 gap-y-0.5 font-medium" aria-label={`Stack: ${project.stack.join(", ")}`} role="list">
+					{project.stack.map((tech) => (
+						<span key={tech} className="text-[11px] text-text-secondary" role="listitem" aria-label={tech}>
+							<span aria-hidden="true">#</span>{tech}
+						</span>
+					))}
+				</div>
+			)}
 		</button>
 	);
 }

@@ -97,9 +97,20 @@
 	},
 	"projects": {
 		"title": "Projets",
+		"list": "Tous les projets",
+		"pageTitle": "Projets | Rostand MIGAN",
+		"backHome": "Accueil",
+		"empty": "Aucun projet ne correspond à ce filtre.",
 		"tabs": {
 			"featured": "En vedette",
 			"latest": "Récents"
+		},
+		"filters": {
+			"all": "Tous",
+			"saas": "SaaS",
+			"app": "App",
+			"tool": "Outil",
+			"website": "Site web"
 		},
 		"labels": {
 			"role": "Rôle",

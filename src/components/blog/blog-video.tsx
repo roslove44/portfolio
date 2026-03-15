@@ -3,6 +3,7 @@ import { useState } from "react";
 import { PlayIcon } from "lucide-react";
 import Image from "next/image";
 import ProjectLightbox from "@/components/projects/project-lightbox";
+import { toEmbedUrl, getVideoThumbnail } from "@/utils/video";
 
 interface Props {
 	url: string;
@@ -10,23 +11,10 @@ interface Props {
 	thumbnail?: string;
 }
 
-function toEmbedUrl(url: string): string {
-	const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-	if (yt) return `https://www.youtube-nocookie.com/embed/${yt[1]}?autoplay=1&rel=0`;
-	const vm = url.match(/vimeo\.com\/(\d+)/);
-	if (vm) return `https://player.vimeo.com/video/${vm[1]}?autoplay=1`;
-	return url;
-}
-
-function getYouTubeThumbnail(url: string): string | null {
-	const yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
-	return yt ? `https://img.youtube.com/vi/${yt[1]}/maxresdefault.jpg` : null;
-}
-
 export default function BlogVideo({ url, title = "Video", thumbnail }: Props) {
 	const [open, setOpen] = useState(false);
 	const embedUrl = toEmbedUrl(url);
-	const thumbSrc = thumbnail ?? getYouTubeThumbnail(url);
+	const thumbSrc = thumbnail ?? getVideoThumbnail(url);
 	const slides = [{ type: "video" as const, embedUrl }];
 
 	return (

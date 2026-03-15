@@ -22,11 +22,12 @@ export default function BlogCard({ post }: Props) {
 			<p className="mt-0.5 text-[13px] text-text-secondary line-clamp-2">
 				{post.description}
 			</p>
-			{post.tags.length > 0 && (
-				<div className="mt-1.5 flex flex-wrap gap-1">
+
+			{post.tags && post.tags.length > 0 && (
+				<div className="mt-1.5 flex flex-wrap gap-x-1.5 gap-y-0.5 font-medium" aria-label={`Tags: ${post.tags.join(", ")}`} role="list">
 					{post.tags.map((tag) => (
-						<span key={tag} className="text-[11px] text-text-secondary/70">
-							{tag}
+						<span key={tag} className="text-[11px] text-text-secondary" role="listitem" aria-label={tag}>
+							<span aria-hidden="true">#</span>{tag}
 						</span>
 					))}
 				</div>

@@ -1,20 +1,8 @@
 import fs from "fs";
 import path from "path";
 import matter from "gray-matter";
-
-export type BlogPost = {
-	slug: string;
-	title: string;
-	date: string;
-	updatedAt?: string;
-	description: string;
-	tags: string[];
-	cover?: string;
-};
-
-export type BlogPostWithContent = BlogPost & {
-	content: string;
-};
+import type { BlogPost, BlogPostWithContent } from "@/types/blog";
+export type { BlogPost, BlogPostWithContent } from "@/types/blog";
 
 const BLOG_DIR = path.join(process.cwd(), "content/blog");
 

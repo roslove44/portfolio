@@ -35,7 +35,7 @@ function useFlipTransform(cardRect: CardRect | null) {
 			return {
 				initial: { opacity: 0, y: 40 },
 				exit: { opacity: 0, y: 40 },
-				transition: { duration: 0.35, ease: "easeOut" as const },
+				transition: { duration: 0.4, ease: "easeOut" as const },
 			};
 		}
 
@@ -65,7 +65,7 @@ function useFlipTransform(cardRect: CardRect | null) {
 			return {
 				initial: { opacity: 0, y: Math.max(deltaY, 60) },
 				exit: { opacity: 0, y: Math.max(deltaY, 60) },
-				transition: { type: "spring" as const, stiffness: 300, damping: 30, opacity: { duration: 0.3 } },
+				transition: { type: "spring" as const, stiffness: 200, damping: 25, opacity: { duration: 0.35 } },
 			};
 		}
 
@@ -76,7 +76,7 @@ function useFlipTransform(cardRect: CardRect | null) {
 		return {
 			initial: { opacity: 0, scale, x: deltaX, y: deltaY },
 			exit: { opacity: 0, scale, x: deltaX, y: deltaY },
-			transition: { type: "spring" as const, stiffness: 300, damping: 30, opacity: { duration: 0.3 } },
+			transition: { type: "spring" as const, stiffness: 200, damping: 25, opacity: { duration: 0.35 } },
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [cardRect?.top, cardRect?.left, cardRect?.width, cardRect?.height]);
