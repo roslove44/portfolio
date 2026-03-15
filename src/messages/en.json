@@ -151,6 +151,12 @@
 			"cta": "View all projects"
 		}
 	},
+	"resume": {
+		"title": "Resume",
+		"command": "cat ./resume.pdf",
+		"punchline": "no segfault, just solid experience.",
+		"cta": "Download my resume"
+	},
 	"footer": {
 		"cta": "Got a project in mind?",
 		"ctaLink": "Let's talk"

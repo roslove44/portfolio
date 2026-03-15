@@ -151,6 +151,12 @@
 			"cta": "Voir tous les projets"
 		}
 	},
+	"resume": {
+		"title": "CV",
+		"command": "cat ./resume.pdf",
+		"punchline": "pas de segfault, juste de l'expérience solide.",
+		"cta": "Télécharger mon CV"
+	},
 	"footer": {
 		"cta": "Un projet en tête ?",
 		"ctaLink": "On en parle"

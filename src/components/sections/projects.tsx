@@ -73,12 +73,13 @@ export default function Projects() {
 				))}
 			</div>
 
-			<div className="mt-4 text-center lg:text-right">
-				<p className="text-[13px] text-text-secondary tracking-wide">
-					{t("others.summary")}
-				</p>
-				<Link href="/projects" className="mt-1 text-[13px] text-text-secondary inline-flex items-center gap-1 px-2 py-1 rounded-md transition-colors hover:bg-border/50 hover:text-text-primary">
-					{t("others.cta")} <ArrowRight size={14} />
+			<div className="mt-2 flex items-center gap-2 justify-end text-[13px]">
+				<Link
+					href="/projects"
+					className="font-medium text-secondary underline decoration-text-secondary/30 underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+				>
+					{t("others.cta")}
+					<ArrowRight size={16} className="ms-1 inline-block text-secondary" />
 				</Link>
 			</div>
 			<ProjectModal

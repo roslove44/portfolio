@@ -16,7 +16,7 @@ export default function SocialLinks() {
 				<a
 					key={label}
 					href={href}
-					target={href.startsWith("http") ? "_blank" : undefined}
+					target={href.startsWith("http") ? "_blank" : "_blank"} // Idk why too
 					rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
 					aria-label={label}
 					title={label}

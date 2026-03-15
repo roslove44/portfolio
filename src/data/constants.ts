@@ -3,6 +3,7 @@ export const SOCIAL_LINKS = {
 	linkedin: "https://www.linkedin.com/in/rostand-migan/",
 	x: "https://x.com/migan_rostand",
 	email: "hello@rostand.dev",
+	gmail: "rostandmigan68@gmail.com"
 } as const;
 
 export type Tech = { name: string; key: string };
