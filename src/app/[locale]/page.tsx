@@ -18,8 +18,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 			<Stack />
 			<Activity />
 			<Projects />
-			<Resume />
 			<Blog />
+			<Resume />
 		</>
 	);
 }

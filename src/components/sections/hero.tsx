@@ -1,6 +1,6 @@
 import { useTranslations } from "next-intl";
-import { Bot } from "lucide-react";
 import SocialLinks from "@/components/ui/social-links";
+import ContactCta from "@/components/ui/contact-cta";
 
 function Bullet({ children }: { children: React.ReactNode }) {
 	return (
@@ -51,10 +51,8 @@ export default function Hero() {
 			</ul>
 
 			<p className="mt-6 text-text-primary text-[15px]">
-				{t("cta")}
-				<button className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent">
-					{t("ctaLink")} <Bot size={16} className="ml-px inline-block animate-bot-float text-accent" />
-				</button>
+				{t("cta")} {" "}
+				<ContactCta text={t("ctaLink")} />
 			</p>
 		</section>
 	);

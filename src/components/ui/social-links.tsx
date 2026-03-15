@@ -1,4 +1,4 @@
-import { FileTextIcon } from "lucide-react";
+import { FileTextIcon, MailIcon } from "lucide-react";
 import { GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
 import { SOCIAL_LINKS } from "@/data/constants";
 
@@ -6,6 +6,7 @@ const links = [
 	{ href: SOCIAL_LINKS.github, icon: GitHubIcon, label: "GitHub" },
 	{ href: SOCIAL_LINKS.linkedin, icon: LinkedInIcon, label: "LinkedIn" },
 	{ href: SOCIAL_LINKS.x, icon: XIcon, label: "X" },
+	{ href: `mailto:${SOCIAL_LINKS.email}`, icon: MailIcon, label: "Email" },
 	{ href: "/resume", icon: FileTextIcon, label: "Resume", internal: true },
 ];
 

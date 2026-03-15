@@ -1,3 +1,5 @@
+export const CAL_LINK = "rostand-dev/let-s-build-something";
+
 export const SOCIAL_LINKS = {
 	github: "https://github.com/roslove44",
 	linkedin: "https://www.linkedin.com/in/rostand-migan/",

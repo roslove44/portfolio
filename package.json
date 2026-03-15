@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@calcom/embed-react": "^1.5.3",
     "@headlessui/react": "^2.2.9",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.577.0",
