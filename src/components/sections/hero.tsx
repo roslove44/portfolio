@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import SocialLinks from "@/components/ui/social-links";
 import ContactCta from "@/components/ui/contact-cta";
+import Avatar from "@/components/ui/avatar";
 
 function Bullet({ children }: { children: React.ReactNode }) {
 	return (
@@ -24,10 +25,13 @@ export default function Hero() {
 
 	return (
 		<section className="py-8">
-			<div className="flex items-center justify-between">
-				<h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-					{t("greeting")}
-				</h1>
+			<div className="flex items-center justify-between flex-col sm:flex-row gap-2">
+				<div className="flex items-center gap-3">
+					<h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+						{t("greeting")}
+					</h1>
+					<Avatar />
+				</div>
 				<SocialLinks />
 			</div>
 

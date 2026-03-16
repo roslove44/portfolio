@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
-import ProjectLightbox from "@/components/projects/project-lightbox";
+import Lightbox from "@/components/ui/lightbox";
 
 interface Props {
 	images: string[];
@@ -42,7 +42,7 @@ export default function BlogGallery({ images, alts = [], columns = 2 }: Props) {
 				))}
 			</div>
 
-			<ProjectLightbox slides={slides} initialIndex={lightboxIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} />
+			<Lightbox slides={slides} initialIndex={lightboxIndex} open={lightboxOpen} onClose={() => setLightboxOpen(false)} />
 		</>
 	);
 }

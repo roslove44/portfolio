@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PlayIcon } from "lucide-react";
 import Image from "next/image";
-import ProjectLightbox from "@/components/projects/project-lightbox";
+import Lightbox from "@/components/ui/lightbox";
 import { toEmbedUrl, getVideoThumbnail } from "@/utils/video";
 
 interface Props {
@@ -61,7 +61,7 @@ export default function BlogVideo({ url, title = "Video", thumbnail }: Props) {
 				)}
 			</figure>
 
-			<ProjectLightbox slides={slides} initialIndex={0} open={open} onClose={() => setOpen(false)} />
+			<Lightbox slides={slides} initialIndex={0} open={open} onClose={() => setOpen(false)} />
 		</>
 	);
 }

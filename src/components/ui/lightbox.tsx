@@ -4,9 +4,8 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import Image from "next/image";
-import { toEmbedUrl } from "@/utils/video";
 
-type Slide = { type: "image"; src: string; alt: string } | { type: "video"; embedUrl: string };
+export type Slide = { type: "image"; src: string; alt: string; legend?: string } | { type: "video"; embedUrl: string; legend?: string };
 
 interface Props {
 	slides: Slide[];
@@ -15,23 +14,7 @@ interface Props {
 	onClose: () => void;
 }
 
-export function buildSlides(project: { key: string; cover?: string; video?: string; images?: string[] }): Slide[] {
-	const slides: Slide[] = [];
-	if (project.video) {
-		slides.push({ type: "video", embedUrl: toEmbedUrl(project.video) });
-	}
-	if (project.cover) {
-		slides.push({ type: "image", src: `/projects/${project.key}/${project.cover}`, alt: project.key });
-	}
-	if (project.images) {
-		for (const img of project.images) {
-			slides.push({ type: "image", src: `/projects/${project.key}/${img}`, alt: project.key });
-		}
-	}
-	return slides;
-}
-
-export default function ProjectLightbox({ slides, initialIndex, open, onClose }: Props) {
+export default function Lightbox({ slides, initialIndex, open, onClose }: Props) {
 	const [index, setIndex] = useState(initialIndex);
 
 	const prev = useCallback(() => setIndex((i) => (i > 0 ? i - 1 : slides.length - 1)), [slides.length]);
@@ -96,6 +79,13 @@ export default function ProjectLightbox({ slides, initialIndex, open, onClose }:
 									/>
 								)}
 
+								{/* Legend */}
+								{slide.legend && (
+									<p className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-sm text-white/70">
+										{slide.legend}
+									</p>
+								)}
+
 								{/* Navigation */}
 								{slides.length > 1 && (
 									<>
@@ -115,7 +105,7 @@ export default function ProjectLightbox({ slides, initialIndex, open, onClose }:
 										</button>
 
 										{/* Dots */}
-										<div className="absolute -bottom-8 left-1/2 flex -translate-x-1/2 gap-1.5">
+										<div className={`absolute left-1/2 flex -translate-x-1/2 gap-1.5 ${slide.legend ? "-bottom-14" : "-bottom-8"}`}>
 											{slides.map((_, i) => (
 												<button
 													key={i}

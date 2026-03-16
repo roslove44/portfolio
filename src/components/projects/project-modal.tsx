@@ -7,7 +7,24 @@ import { ExternalLinkIcon, PlayIcon, XIcon as XMarkIcon } from "lucide-react";
 import { GitHubAltIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
 import Image from "next/image";
 import type { Project } from "@/data/projects";
-import ProjectLightbox, { buildSlides } from "./project-lightbox";
+import Lightbox, { type Slide } from "@/components/ui/lightbox";
+import { toEmbedUrl } from "@/utils/video";
+
+function buildSlides(project: { key: string; cover?: string; video?: string; images?: string[] }): Slide[] {
+	const slides: Slide[] = [];
+	if (project.video) {
+		slides.push({ type: "video", embedUrl: toEmbedUrl(project.video) });
+	}
+	if (project.cover) {
+		slides.push({ type: "image", src: `/projects/${project.key}/${project.cover}`, alt: project.key });
+	}
+	if (project.images) {
+		for (const img of project.images) {
+			slides.push({ type: "image", src: `/projects/${project.key}/${img}`, alt: project.key });
+		}
+	}
+	return slides;
+}
 
 const COVER_MASK = "linear-gradient(rgb(0,0,0) 0%, rgba(0,0,0,0.99) 18.5%, rgba(0,0,0,0.953) 34.3%, rgba(0,0,0,0.894) 47.6%, rgba(0,0,0,0.824) 58.5%, rgba(0,0,0,0.74) 67.5%, rgba(0,0,0,0.647) 74.7%, rgba(0,0,0,0.55) 80.3%, rgba(0,0,0,0.45) 84.7%, rgba(0,0,0,0.353) 88%, rgba(0,0,0,0.26) 90.5%, rgba(0,0,0,0.176) 92.5%, rgba(0,0,0,0.106) 94.2%, rgba(0,0,0,0.047) 95.9%, rgba(0,0,0,0.01) 97.7%, transparent 100%)";
 
@@ -290,7 +307,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 				</div>
 			</Dialog>
 
-			<ProjectLightbox
+			<Lightbox
 				slides={slides}
 				initialIndex={lightboxIndex}
 				open={lightboxOpen}

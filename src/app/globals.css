@@ -160,6 +160,29 @@ body {
   animation: cursor-blink 1s step-end infinite;
 }
 
+/* Avatar glow — spinning conic gradient border */
+@property --avatar-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.avatar-glow {
+  background: conic-gradient(from var(--avatar-angle), var(--accent), transparent 40%, var(--accent) 60%, transparent);
+  animation: avatar-spin 3s linear infinite;
+  transition: box-shadow 0.3s;
+}
+
+.avatar-glow:hover {
+  box-shadow: 0 0 12px var(--accent);
+}
+
+@keyframes avatar-spin {
+  to {
+    --avatar-angle: 360deg;
+  }
+}
+
 /* Terminal scrollbar — VS Code style: transparent until hover, no buttons */
 .terminal-scroll::-webkit-scrollbar {
   width: 6px;
