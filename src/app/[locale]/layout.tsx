@@ -8,7 +8,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Script from "next/script";
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
-import { SITE_URL, TWITTER_HANDLE } from "@/data/constants";
+import { SITE_URL, TWITTER_HANDLE, SOCIAL_LINKS } from "@/data/constants";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import ThemeCookieSync from "@/components/ui/theme-cookie-sync";
@@ -92,6 +92,30 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 				<Script id="microsoft-clarity" strategy="afterInteractive">
 					{`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vwsayk7lxq");`}
 				</Script>
+				<script
+					type="application/ld+json"
+					dangerouslySetInnerHTML={{
+						__html: JSON.stringify({
+							"@context": "https://schema.org",
+							"@graph": [
+								{
+									"@type": "WebSite",
+									name: "Rostand MIGAN",
+									url: SITE_URL,
+									inLanguage: ["en", "fr"],
+								},
+								{
+									"@type": "Person",
+									name: "Rostand MIGAN",
+									url: SITE_URL,
+									jobTitle: "Full-Stack Developer",
+									address: { "@type": "PostalAddress", addressLocality: "Cotonou", addressCountry: "BJ" },
+									sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
+								},
+							],
+						}),
+					}}
+				/>
 			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
