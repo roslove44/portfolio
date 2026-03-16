@@ -1,187 +1,194 @@
 {
-	"metadata": {
-		"title": "Rostand MIGAN | Full Stack Developer & Builder",
-		"description": "Full stack developer. I write code the way I think clearly, efficiently, and always with the end user in mind. Lately, that's been a lot of fintech."
-	},
-	"header": {
-		"home": "Home",
-		"resume": "Resume",
-		"contact": "Contact"
-	},
-	"hero": {
-		"greeting": "Hi, I'm Rostand",
-		"bullet1": "I'm a full stack developer, I build things that work : web apps, fintech tools, and ideas that refuse to stay in my head.",
-		"bullet2_prefix": "I work with ",
-		"and": "and",
-		"bullet2_suffix": " ; whatever solves the problem best",
-		"bullet3_prefix": "Currently building ",
-		"bullet3_suffix": ", an open-source platform for business management professionals in West Africa. Details below.",
-		"cta": "Have a project that needs to actually ship?",
-		"ctaLink": "Let's talk here"
-	},
-	"about": {
-		"title": "About me",
-		"hook": "Finance taught me how to read systems. Code taught me how to build them.",
-		"p1": "At some point, analyzing wasn't enough ; I wanted to create. What pushed me over the edge? Open-source. In finance and business management, almost everything is closed, proprietary, static. Rigid software for industries that keep evolving. That convinced me something better was possible.",
-		"p2": "In 2022, I taught myself to code. No bootcamp, no structured curriculum. Just curiosity, discipline, and a lot of broken projects before shipping real ones.",
-		"p3": "What drives me now is a simple observation: the African market is massive, underequipped, and poorly served by tools built for somewhere else. That frustrates me ; and that frustration goes somewhere.",
-		"closing": "I build open software that solves real problems, for real contexts."
-	},
-	"stack": {
-		"title": "Stack",
-		"statement": "Every project has its context. My stack adapts.",
-		"cta": "Explore my stack",
-		"help": "Available commands: help, ls, ls [category], ls --all, clear",
-		"notFound": "command not found. Type \"help\" for available commands",
-		"desc": {
-			"nextjs": "React framework, SSR/SSG",
-			"react": "UI library",
-			"typescript": "Static typing",
-			"tailwindcss": "Utility-first CSS",
-			"motion": "Animations & transitions",
-			"symfony": "PHP framework, robust & modular",
-			"laravel": "PHP framework, elegant syntax",
-			"adonisjs": "Node.js MVC framework",
-			"nodejs": "Server-side JavaScript runtime",
-			"go": "Compiled, fast, concurrent",
-			"python": "Versatile scripting language",
-			"php": "Web-native language",
-			"apiplatform": "REST & GraphQL in Symfony",
-			"docker": "Containerization",
-			"linux": "Server OS & VPS management",
-			"postgresql": "Advanced relational database",
-			"mysql": "Popular relational database",
-			"sqlite": "Embedded relational database",
-			"redis": "In-memory data store",
-			"mongodb": "Document database",
-			"wordpress": "whatever CMS I'm in, I make it work",
-			"payloadcms": "headless, TypeScript-native",
-			"directus": "headless, SQL-powered",
-			"claudecode": "AI-assisted development",
-			"mcp": "design & integration",
-			"jest": "JavaScript testing",
-			"vitest": "Vite-native testing",
-			"playwright": "End-to-end testing",
-			"cypress": "Component & E2E testing",
-			"git": "Version control",
-			"githubactions": "CI/CD automation",
-			"vercel": "Deployment platform",
-			"figma": "UI/UX design",
-			"vscode": "Code editor"
-		}
-	},
-	"activity": {
-		"title": "Activity",
-		"total": "{count} contributions in the last year",
-		"less": "Less",
-		"more": "More",
-		"months": {
-			"jan": "Jan",
-			"feb": "Feb",
-			"mar": "Mar",
-			"apr": "Apr",
-			"may": "May",
-			"jun": "Jun",
-			"jul": "Jul",
-			"aug": "Aug",
-			"sep": "Sep",
-			"oct": "Oct",
-			"nov": "Nov",
-			"dec": "Dec"
-		},
-		"days": {
-			"mon": "Mon",
-			"wed": "Wed",
-			"fri": "Fri"
-		}
-	},
-	"projects": {
-		"title": "Projects",
-		"pageTitle": "Projects | Rostand MIGAN",
-		"backHome": "Home",
-		"empty": "No projects match this filter.",
-		"list": "All projects",
-		"tabs": {
-			"featured": "Featured",
-			"latest": "Latest"
-		},
-		"filters": {
-			"all": "All",
-			"saas": "SaaS",
-			"app": "App",
-			"tool": "Tool",
-			"website": "Website"
-		},
-		"status": {
-			"in-progress": "In progress",
-			"completed": "Completed"
-		},
-		"labels": {
-			"role": "Role",
-			"type": "Type",
-			"owner": "Owner",
-			"video": "Overview"
-		},
-		"comptaopen": {
-			"name": "ComptaOpen",
-			"role": "Founder & Full Stack Developer",
-			"type": "Public project - in progress",
-			"summary": "Freemium platform centralizing accounting and tax resources, tools and information for business management professionals.",
-			"desc": [
-				"Resources module : sharing and access to public management documents (theses, templates, legislation, exams)",
-				"Freemium system with member management, tiered access and subscription logic",
-				"Tools module : business calculators and utilities adapted to local tax realities",
-				"Articles module : editorial content on accounting and WAEMU taxation",
-				"Architecture designed to evolve into ComptaOpenLabs, a collaborative ERP built for accounting firms"
-			]
-		},
-		"gestiloc": {
-			"name": "Gestiloc.io",
-			"role": "Full Stack Developer",
-			"type": "Collaborative project",
-			"summary": "Property management SaaS built for landlords and agencies ; everything in one place.",
-			"desc": [
-				"Complete auth system : registration, email confirmation, password recovery and profile management",
-				"Multi-currency property and tenant management with strict business rules",
-				"Full lease lifecycle : creation, editing, status tracking and detailed visualization",
-				"Rich contract editor integrated directly into the platform",
-				"Admin panel built from scratch : dashboard, user management and full subscription handling"
-			]
-		},
-		"gmaps-scraper": {
-			"name": "GoogleMapsScrape",
-			"type": "Open source tool",
-			"summary": "Extract thousands of prospects from Google Maps in just a few clicks.",
-			"desc": [
-				"Bilingual interactive CLI (FR/EN) with 3 modes : targeted search, bulk scraping and data merging",
-				"Full listing extraction : name, rating, reviews, phone, website, address and more",
-				"Extended geographic coverage : 36,000+ French cities and preconfigured countries (Benin, Ivory Coast)",
-				"Library of 370+ business activity types to precisely target any industry",
-				"Structured CSV export with auto-calculated popularity score (rating x review count)",
-				"Star it, fork it, use it."
-			]
-		},
-		"others": {
-			"summary": "I've also shipped several websites with Symfony and WordPress ; less flashy, but they're live and they work.",
-			"cta": "View all projects"
-		}
-	},
-	"resume": {
-		"title": "Resume",
-		"command": "cat ./resume.pdf",
-		"punchline": "no segfault, just solid experience.",
-		"cta": "Download my resume"
-	},
-	"blog": {
-		"title": "Blog",
-		"list": "All posts",
-		"pageTitle": "Blog | Rostand MIGAN",
-		"cta": "See all posts",
-		"empty": "No posts yet. Stay tuned.",
-		"backHome": "Home"
-	},
-	"footer": {
-		"cta": "Got a project in mind?",
-		"ctaLink": "Let's talk"
-	}
+  "metadata": {
+    "title": "Rostand MIGAN | Full Stack Developer & Builder",
+    "description": "Full stack developer. I write code the way I think clearly, efficiently, and always with the end user in mind. Lately, that's been a lot of fintech."
+  },
+  "header": {
+    "home": "Home",
+    "resume": "Resume",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hi, I'm Rostand",
+    "bullet1": "I'm a full stack developer, I build things that work : web apps, fintech tools, and ideas that refuse to stay in my head.",
+    "bullet2_prefix": "I work with ",
+    "and": "and",
+    "bullet2_suffix": " ; whatever solves the problem best",
+    "bullet3_prefix": "Currently building ",
+    "bullet3_suffix": ", an open-source platform for business management professionals in West Africa. Details below.",
+    "cta": "Have a project that needs to actually ship?",
+    "ctaLink": "Let's talk here"
+  },
+  "about": {
+    "title": "About me",
+    "hook": "Finance taught me how to read systems. Code taught me how to build them.",
+    "p1": "At some point, analyzing wasn't enough ; I wanted to create. What pushed me over the edge? Open-source. In finance and business management, almost everything is closed, proprietary, static. Rigid software for industries that keep evolving. That convinced me something better was possible.",
+    "p2": "In 2022, I taught myself to code. No bootcamp, no structured curriculum. Just curiosity, discipline, and a lot of broken projects before shipping real ones.",
+    "p3": "What drives me now is a simple observation: the African market is massive, underequipped, and poorly served by tools built for somewhere else. That frustrates me ; and that frustration goes somewhere.",
+    "closing": "I build open software that solves real problems, for real contexts."
+  },
+  "stack": {
+    "title": "Stack",
+    "statement": "Every project has its context. My stack adapts.",
+    "cta": "Explore my stack",
+    "help": "Available commands: help, ls, ls [category], ls --all, clear",
+    "notFound": "command not found. Type \"help\" for available commands",
+    "desc": {
+      "nextjs": "React framework, SSR/SSG",
+      "react": "UI library",
+      "typescript": "Static typing",
+      "tailwindcss": "Utility-first CSS",
+      "motion": "Animations & transitions",
+      "symfony": "PHP framework, robust & modular",
+      "laravel": "PHP framework, elegant syntax",
+      "adonisjs": "Node.js MVC framework",
+      "nodejs": "Server-side JavaScript runtime",
+      "go": "Compiled, fast, concurrent",
+      "python": "Versatile scripting language",
+      "php": "Web-native language",
+      "apiplatform": "REST & GraphQL in Symfony",
+      "docker": "Containerization",
+      "linux": "Server OS & VPS management",
+      "postgresql": "Advanced relational database",
+      "mysql": "Popular relational database",
+      "sqlite": "Embedded relational database",
+      "redis": "In-memory data store",
+      "mongodb": "Document database",
+      "wordpress": "whatever CMS I'm in, I make it work",
+      "payloadcms": "headless, TypeScript-native",
+      "directus": "headless, SQL-powered",
+      "claudecode": "AI-assisted development",
+      "mcp": "design & integration",
+      "jest": "JavaScript testing",
+      "vitest": "Vite-native testing",
+      "playwright": "End-to-end testing",
+      "cypress": "Component & E2E testing",
+      "git": "Version control",
+      "githubactions": "CI/CD automation",
+      "vercel": "Deployment platform",
+      "figma": "UI/UX design",
+      "vscode": "Code editor"
+    }
+  },
+  "activity": {
+    "title": "Activity",
+    "total": "{count} contributions in the last year",
+    "less": "Less",
+    "more": "More",
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    },
+    "days": {
+      "mon": "Mon",
+      "wed": "Wed",
+      "fri": "Fri"
+    }
+  },
+  "projects": {
+    "title": "Projects",
+    "pageTitle": "Projects | Rostand MIGAN",
+    "backHome": "Home",
+    "empty": "No projects match this filter.",
+    "list": "All projects",
+    "tabs": {
+      "featured": "Featured",
+      "latest": "Latest"
+    },
+    "filters": {
+      "all": "All",
+      "saas": "SaaS",
+      "app": "App",
+      "tool": "Tool",
+      "website": "Website"
+    },
+    "status": {
+      "in-progress": "In progress",
+      "completed": "Completed"
+    },
+    "labels": {
+      "role": "Role",
+      "type": "Type",
+      "owner": "Owner",
+      "video": "Overview"
+    },
+    "comptaopen": {
+      "name": "ComptaOpen",
+      "role": "Founder & Full Stack Developer",
+      "type": "Public project - in progress",
+      "summary": "Freemium platform centralizing accounting and tax resources, tools and information for business management professionals.",
+      "desc": [
+        "Resources module : sharing and access to public management documents (theses, templates, legislation, exams)",
+        "Freemium system with member management, tiered access and subscription logic",
+        "Tools module : business calculators and utilities adapted to local tax realities",
+        "Articles module : editorial content on accounting and WAEMU taxation",
+        "Architecture designed to evolve into ComptaOpenLabs, a collaborative ERP built for accounting firms"
+      ]
+    },
+    "gestiloc": {
+      "name": "Gestiloc.io",
+      "role": "Full Stack Developer",
+      "type": "Collaborative project",
+      "summary": "Property management SaaS built for landlords and agencies ; everything in one place.",
+      "desc": [
+        "Complete auth system : registration, email confirmation, password recovery and profile management",
+        "Multi-currency property and tenant management with strict business rules",
+        "Full lease lifecycle : creation, editing, status tracking and detailed visualization",
+        "Rich contract editor integrated directly into the platform",
+        "Admin panel built from scratch : dashboard, user management and full subscription handling"
+      ]
+    },
+    "gmaps-scraper": {
+      "name": "GoogleMapsScrape",
+      "type": "Open source tool",
+      "summary": "Extract thousands of prospects from Google Maps in just a few clicks.",
+      "desc": [
+        "Bilingual interactive CLI (FR/EN) with 3 modes : targeted search, bulk scraping and data merging",
+        "Full listing extraction : name, rating, reviews, phone, website, address and more",
+        "Extended geographic coverage : 36,000+ French cities and preconfigured countries (Benin, Ivory Coast)",
+        "Library of 370+ business activity types to precisely target any industry",
+        "Structured CSV export with auto-calculated popularity score (rating x review count)",
+        "Star it, fork it, use it."
+      ]
+    },
+    "others": {
+      "summary": "I've also shipped several websites with Symfony and WordPress ; less flashy, but they're live and they work.",
+      "cta": "View all projects"
+    }
+  },
+  "resume": {
+    "title": "Resume",
+    "command": "cat ./resume.pdf",
+    "punchline": "no segfault, just solid experience.",
+    "cta": "Download my resume"
+  },
+  "blog": {
+    "title": "Blog",
+    "list": "All posts",
+    "pageTitle": "Blog | Rostand MIGAN",
+    "cta": "See all posts",
+    "empty": "No posts yet. Stay tuned.",
+    "backHome": "Home"
+  },
+  "footer": {
+    "cta": "Got a project in mind?",
+    "ctaLink": "Let's talk"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "This page doesn't exist or has been moved.",
+    "backHome": "Back to home",
+    "projects": "Projects",
+    "blog": "Blog"
+  }
 }
