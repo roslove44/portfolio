@@ -8,7 +8,7 @@ import { NextIntlClientProvider } from "next-intl";
 import Script from "next/script";
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
-import { SITE_URL, TWITTER_HANDLE, SOCIAL_LINKS } from "@/data/constants";
+import { SITE_URL, TWITTER_HANDLE, SOCIAL_LINKS, STACK_CATEGORIES } from "@/data/constants";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import ThemeCookieSync from "@/components/ui/theme-cookie-sync";
@@ -108,7 +108,25 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 									"@type": "Person",
 									name: "Rostand MIGAN",
 									url: SITE_URL,
+									image: `${SITE_URL}/avatar.webp`,
 									jobTitle: "Full-Stack Developer",
+									description: "Full stack developer building web applications, SaaS platforms and developer tools. Comfortable across the entire stack, from React and Next.js to Symfony, Node.js and Go.",
+									knowsAbout: [
+										"Full-Stack Development", "Fintech", "SaaS", "Open Source",
+										"REST API", "GraphQL", "Web Performance", "SEO", "Accessibility",
+										...Object.values(STACK_CATEGORIES).flat().map((t) => t.name),
+									],
+									hasOccupation: {
+										"@type": "Occupation",
+										name: "Full-Stack Developer",
+										occupationalCategory: "15-1252.00",
+										skills: Object.values(STACK_CATEGORIES).flat().map((t) => t.name).join(", "),
+									},
+									knowsLanguage: [
+										{ "@type": "Language", name: "French", alternateName: "fr" },
+										{ "@type": "Language", name: "English", alternateName: "en" },
+									],
+									nationality: { "@type": "Country", name: "Benin" },
 									address: { "@type": "PostalAddress", addressLocality: "Cotonou", addressCountry: "BJ" },
 									sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
 								},
