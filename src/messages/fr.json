@@ -182,7 +182,13 @@
   },
   "footer": {
     "cta": "Un projet en tête ?",
-    "ctaLink": "On en parle"
+    "ctaLink": "On en parle",
+    "nav": {
+      "home": "Accueil",
+      "projects": "Projets",
+      "blog": "Blog",
+      "resume": "CV"
+    }
   },
   "notFound": {
     "title": "Page introuvable",

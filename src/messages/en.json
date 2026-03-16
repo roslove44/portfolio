@@ -182,7 +182,13 @@
   },
   "footer": {
     "cta": "Got a project in mind?",
-    "ctaLink": "Let's talk"
+    "ctaLink": "Let's talk",
+    "nav": {
+      "home": "Home",
+      "projects": "Projects",
+      "blog": "Blog",
+      "resume": "Resume"
+    }
   },
   "notFound": {
     "title": "Page not found",
