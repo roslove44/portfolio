@@ -22,7 +22,7 @@ npm run dev
 
 ## Design
 
-Inspired by [sashi.dev](https://sashi.dev).
+Inspired by [sachi.dev/](https://sachi.dev/).
 
 ## License
 
