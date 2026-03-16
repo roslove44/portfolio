@@ -57,6 +57,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			title: t("title"),
 			description: t("description"),
 		},
+		appleWebApp: { title: "Portfolio - Rostand MIGAN" },
 		alternates: {
 			canonical: url,
 			languages: {
@@ -66,7 +67,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			},
 			types: { "application/rss+xml": "/feed.xml" },
 		},
-		icons: { icon: "/favicon.ico" },
 	};
 }
 
