@@ -4,7 +4,7 @@ import LangSwitch from "@/components/ui/lang-switch";
 
 export default function Header() {
 	return (
-		<header className="flex items-center justify-between py-8">
+		<header className="flex items-end justify-between py-8">
 			<Link href="/" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
 				rostand.dev
 			</Link>

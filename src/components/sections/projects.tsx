@@ -42,7 +42,7 @@ export default function Projects() {
 								onClick={() => setTab(id)}
 								className="relative z-10 rounded-md px-1.5 py-px transition-colors"
 							>
-								<span className={`text-xs font-medium ${isActive ? "text-text-primary" : "text-text-secondary hover:text-text-primary"}`}>
+								<span className={`text-xs font-medium ${isActive ? "text-text-primary" : "text-text-primary/70 hover:text-text-primary"}`}>
 									{t(`tabs.${id}`)}
 								</span>
 								{isActive && (

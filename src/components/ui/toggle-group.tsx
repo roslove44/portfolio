@@ -19,7 +19,7 @@ export default function ToggleGroup({ items, value, onChange, layoutId = "toggle
     return (
         <div
             role="radiogroup"
-            className="relative flex h-5 items-center gap-0.5 rounded-lg border border-border bg-border/50 px-0.5 dark:bg-surface"
+            className="relative flex h-7 items-center gap-0.5 rounded-lg border border-border bg-border/50 px-0.5 dark:bg-surface"
         >
             {items.map((item) => {
                 const isActive = value === item.value;
@@ -30,7 +30,7 @@ export default function ToggleGroup({ items, value, onChange, layoutId = "toggle
                         aria-checked={isActive}
                         aria-label={item.label}
                         onClick={(e) => onChange(item.value, e)}
-                        className="relative z-10 rounded-md px-1 py-0.5 transition-colors"
+                        className="relative z-10 shrink-0 flex h-6 w-6 items-center justify-center rounded-md transition-colors"
                     >
                         <span
                             className={

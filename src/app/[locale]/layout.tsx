@@ -58,7 +58,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 					<ThemeCookieSync />
 					<NextIntlClientProvider>
 						<div className="min-h-screen bg-background text-text-primary">
-							<main className="mx-auto max-w-3xl px-6">
+							<main className="mx-auto max-w-3xl px-3 sm:px-6">
 								<Header />
 								{children}
 								<Footer />
