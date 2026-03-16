@@ -1,3 +1,5 @@
+export const SITE_URL = "https://rostand.dev";
+
 export const CAL_LINK = "rostand-dev/let-s-build-something";
 
 export const SOCIAL_LINKS = {
