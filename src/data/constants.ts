@@ -10,6 +10,8 @@ export const SOCIAL_LINKS = {
 	gmail: "rostandmigan68@gmail.com"
 } as const;
 
+export const TWITTER_HANDLE = "@migan_rostand";
+
 export type Tech = { name: string; key: string };
 
 export const STACK_CATEGORIES: Record<string, Tech[]> = {

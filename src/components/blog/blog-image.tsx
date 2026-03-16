@@ -19,6 +19,7 @@ export default function BlogImage({ src, alt = "", caption }: Props) {
 				<button
 					type="button"
 					onClick={() => setOpen(true)}
+					aria-label={alt ? `View image: ${alt}` : "View image in fullscreen"}
 					className="group relative w-full cursor-zoom-in overflow-hidden rounded-lg border border-border/30"
 				>
 					<Image

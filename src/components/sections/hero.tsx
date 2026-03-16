@@ -6,7 +6,7 @@ import Avatar from "@/components/ui/avatar";
 function Bullet({ children }: { children: React.ReactNode }) {
 	return (
 		<li className="relative pl-4">
-			<span className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rounded-full bg-text-secondary" />
+			<span className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rounded-full bg-text-secondary" aria-hidden="true" />
 			{children}
 		</li>
 	);

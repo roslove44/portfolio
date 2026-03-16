@@ -22,7 +22,7 @@ export default function About() {
 								className={`shrink-0 text-text-secondary transition-transform duration-200 group-hover:text-accent ${open ? "rotate-90" : ""}`}
 							/>
 							{t("hook")}
-							<span className="relative ml-1.5 inline-flex size-5 shrink-0 items-center justify-center">
+							<span className="relative ml-1.5 inline-flex size-5 shrink-0 items-center justify-center" aria-hidden="true">
 								<LandmarkIcon size={16} className="absolute animate-icon-swap text-accent" />
 								<CodeXmlIcon size={16} className="absolute animate-icon-swap-alt text-accent" />
 							</span>

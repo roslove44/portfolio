@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPost, getAllSlugs } from "@/lib/blog";
@@ -9,6 +10,7 @@ import { getReadingTime } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
 import { routing } from "@/i18n/routing";
+import { SITE_URL, SOCIAL_LINKS } from "@/data/constants";
 
 export function generateStaticParams() {
 	return routing.locales.flatMap((locale) =>
@@ -16,15 +18,42 @@ export function generateStaticParams() {
 	);
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
 	const { locale, slug } = await params;
 	const post = getBlogPost(locale, slug);
 	if (!post) return {};
+
+	const url = `${SITE_URL}/${locale}/blog/${slug}`;
+	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : undefined;
+
 	return {
 		title: post.title,
 		description: post.description,
-		...(post.cover && { openGraph: { images: [post.cover] } }),
-		...(post.updatedAt && { other: { "article:modified_time": post.updatedAt } }),
+		robots: { index: true, follow: true },
+		alternates: {
+			canonical: url,
+			languages: {
+				en: `${SITE_URL}/en/blog/${slug}`,
+				fr: `${SITE_URL}/fr/blog/${slug}`,
+				"x-default": `${SITE_URL}/en/blog/${slug}`,
+			},
+		},
+		openGraph: {
+			type: "article",
+			title: post.title,
+			description: post.description,
+			url,
+			publishedTime: post.date,
+			...(post.updatedAt && { modifiedTime: post.updatedAt }),
+			...(post.tags && { tags: post.tags }),
+			...(coverUrl && { images: [{ url: coverUrl, width: 1200, height: 630 }] }),
+		},
+		twitter: {
+			card: "summary_large_image",
+			title: post.title,
+			description: post.description,
+			...(coverUrl && { images: [coverUrl] }),
+		},
 	};
 }
 
@@ -36,9 +65,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	if (!post) notFound();
 
 	const readingTime = getReadingTime(post.content);
+	const url = `${SITE_URL}/${locale}/blog/${slug}`;
+
+	const jsonLd = {
+		"@context": "https://schema.org",
+		"@type": "BlogPosting",
+		headline: post.title,
+		description: post.description,
+		url,
+		datePublished: post.date,
+		...(post.updatedAt && { dateModified: post.updatedAt }),
+		...(post.cover && { image: post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}` }),
+		author: {
+			"@type": "Person",
+			name: "Rostand MIGAN",
+			url: SITE_URL,
+			image: `${SITE_URL}/avatar.webp`,
+			sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
+		},
+	};
 
 	return (
 		<article className="py-8">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+			/>
 			<ReadingProgress />
 			<Link
 				href="/blog"

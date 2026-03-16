@@ -5,7 +5,9 @@ import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeftIcon, ChevronRightIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 
-export type Slide = { type: "image"; src: string; alt: string; legend?: string } | { type: "video"; embedUrl: string; legend?: string };
+export type Slide =
+	| { type: "image"; src: string; alt: string; legend?: string }
+	| { type: "video"; embedUrl: string; title?: string; legend?: string };
 
 interface Props {
 	slides: Slide[];
@@ -72,7 +74,7 @@ export default function Lightbox({ slides, initialIndex, open, onClose }: Props)
 								) : (
 									<iframe
 										src={slide.embedUrl}
-										title="Video"
+										title={slide.title ?? "Video"}
 										allow="autoplay; fullscreen; picture-in-picture"
 										allowFullScreen
 										className="h-full w-full rounded-lg"
@@ -111,7 +113,7 @@ export default function Lightbox({ slides, initialIndex, open, onClose }: Props)
 													key={i}
 													onClick={() => setIndex(i)}
 													className={`size-1.5 rounded-full transition ${i === index ? "bg-white" : "bg-white/40"}`}
-													aria-label={`Slide ${i + 1}`}
+													aria-label={`Go to slide ${i + 1} of ${slides.length}`}
 												/>
 											))}
 										</div>

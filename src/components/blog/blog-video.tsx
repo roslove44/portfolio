@@ -15,7 +15,7 @@ export default function BlogVideo({ url, title = "Video", thumbnail }: Props) {
 	const [open, setOpen] = useState(false);
 	const embedUrl = toEmbedUrl(url);
 	const thumbSrc = thumbnail ?? getVideoThumbnail(url);
-	const slides = [{ type: "video" as const, embedUrl }];
+	const slides = [{ type: "video" as const, embedUrl, title }];
 
 	return (
 		<>
@@ -24,6 +24,7 @@ export default function BlogVideo({ url, title = "Video", thumbnail }: Props) {
 					<button
 						type="button"
 						onClick={() => setOpen(true)}
+						aria-label={`Play video: ${title}`}
 						className="group relative w-full cursor-pointer overflow-hidden rounded-lg border border-border/30"
 					>
 						<Image
@@ -37,7 +38,7 @@ export default function BlogVideo({ url, title = "Video", thumbnail }: Props) {
 						/>
 						<div className="absolute inset-0 flex items-center justify-center">
 							<div className="flex size-14 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm transition-transform duration-300 group-hover:scale-110">
-								<PlayIcon size={24} className="ml-0.5 text-white" fill="white" />
+								<PlayIcon size={24} className="ml-0.5 text-white" fill="white" aria-hidden="true" />
 							</div>
 						</div>
 					</button>

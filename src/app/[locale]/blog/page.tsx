@@ -1,14 +1,44 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPosts } from "@/lib/blog";
 import BlogCard from "@/components/blog/blog-card";
 import { Fragment } from "react/jsx-runtime";
+import { SITE_URL } from "@/data/constants";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "blog" });
-	return { title: t("pageTitle") };
+	const tm = await getTranslations({ locale, namespace: "metadata" });
+	const url = `${SITE_URL}/${locale}/blog`;
+	const title = t("pageTitle");
+	const description = tm("blogDescription");
+
+	return {
+		title,
+		description,
+		robots: { index: true, follow: true },
+		alternates: {
+			canonical: url,
+			languages: {
+				en: `${SITE_URL}/en/blog`,
+				fr: `${SITE_URL}/fr/blog`,
+				"x-default": `${SITE_URL}/en/blog`,
+			},
+		},
+		openGraph: {
+			type: "website",
+			title,
+			description,
+			url,
+		},
+		twitter: {
+			card: "summary_large_image",
+			title,
+			description,
+		},
+	};
 }
 
 export default async function BlogPage({ params }: { params: Promise<{ locale: string }> }) {

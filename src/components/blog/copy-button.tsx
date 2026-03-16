@@ -13,17 +13,22 @@ export default function CopyButton({ preRef }: { preRef: RefObject<HTMLPreElemen
 	};
 
 	return (
-		<button
-			type="button"
-			onClick={handleCopy}
-			className="rounded p-1 text-terminal-text-muted transition-colors hover:text-terminal-text"
-			aria-label="Copy code"
-		>
-			{copied ? (
-				<Check size={14} className="text-green-400" />
-			) : (
-				<Copy size={14} />
-			)}
-		</button>
+		<>
+			<button
+				type="button"
+				onClick={handleCopy}
+				className="rounded p-1 text-terminal-text-muted transition-colors hover:text-terminal-text"
+				aria-label={copied ? "Code copied" : "Copy code"}
+			>
+				{copied ? (
+					<Check size={14} className="text-green-400" aria-hidden="true" />
+				) : (
+					<Copy size={14} aria-hidden="true" />
+				)}
+			</button>
+			<span className="sr-only" aria-live="polite" aria-atomic="true">
+				{copied ? "Code copied" : ""}
+			</span>
+		</>
 	);
 }

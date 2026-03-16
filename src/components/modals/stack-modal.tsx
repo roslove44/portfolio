@@ -246,8 +246,8 @@ export default function StackModal({ open, onClose }: { open: boolean; onClose: 
 											className="size-3 rounded-full bg-terminal-dot-close transition-opacity hover:opacity-80"
 											aria-label="Close"
 										/>
-										<div className="size-3 rounded-full bg-terminal-dot-minimize" />
-										<div className="size-3 rounded-full bg-terminal-dot-maximize" />
+										<div className="size-3 rounded-full bg-terminal-dot-minimize" aria-hidden="true" />
+										<div className="size-3 rounded-full bg-terminal-dot-maximize" aria-hidden="true" />
 									</div>
 									<span className="flex-1 text-center text-xs text-terminal-text-muted">
 										rostand@dev: ~/stack
@@ -275,6 +275,7 @@ export default function StackModal({ open, onClose }: { open: boolean; onClose: 
 												className="flex-1 bg-transparent text-terminal-text caret-terminal-prompt outline-none"
 												spellCheck={false}
 												autoComplete="off"
+												aria-label="Terminal command input"
 											/>
 										</form>
 									) : (

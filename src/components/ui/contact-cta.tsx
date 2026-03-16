@@ -17,10 +17,11 @@ export default function ContactCta({ text }: Props) {
 
 	return (
 		<button
+			type="button"
 			className="font-medium text-accent underline decoration-accent/30 underline-offset-4 transition-colors hover:text-accent-hover hover:decoration-accent"
 			onClick={handleClick}
 		>
-			{text} <Bot size={16} className="ml-px inline-block animate-bot-float text-accent" />
+			{text} <Bot size={16} className="ml-px inline-block animate-bot-float text-accent" aria-hidden="true" />
 		</button>
 	);
 }

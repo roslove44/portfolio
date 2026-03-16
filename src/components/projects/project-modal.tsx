@@ -180,7 +180,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 											<div className="absolute bottom-4 left-4 flex items-center gap-1.5 rounded-full bg-black/50 px-3 py-1.5 text-xs font-medium text-white backdrop-blur-sm">
 												<PlayIcon size={12} className="fill-white" />
 												{t("labels.video")}
-												<span className="relative flex size-2">
+												<span className="relative flex size-2" aria-hidden="true">
 													<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white dark:bg-accent opacity-75"></span>
 													<span className="relative inline-flex size-2 rounded-full bg-white dark:bg-accent"></span>
 												</span>
@@ -200,7 +200,7 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 											>
 												<PlayIcon size={12} className="fill-white" />
 												{t("labels.video")}
-												<span className="relative flex size-2">
+												<span className="relative flex size-2" aria-hidden="true">
 													<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white dark:bg-accent opacity-75"></span>
 													<span className="relative inline-flex size-2 rounded-full bg-white dark:bg-accent"></span>
 												</span>

@@ -1,7 +1,12 @@
 import Image from "next/image";
+import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { ArrowLeft, FolderOpen, BookOpen } from "lucide-react";
+
+export const metadata: Metadata = {
+	robots: { index: false, follow: false },
+};
 
 export default async function NotFound() {
 	const t = await getTranslations("notFound");

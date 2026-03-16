@@ -13,11 +13,11 @@ const links = [
 export default function SocialLinks() {
 	return (
 		<div className="flex items-center gap-3">
-			{links.map(({ href, icon: Icon, label }, i) => (
+			{links.map(({ href, icon: Icon, label, internal }, i) => (
 				<a
 					key={label}
 					href={href}
-					target={href.startsWith("http") ? "_blank" : "_blank"} // Idk why too
+					target={href.startsWith("http") || href.startsWith("mailto:") || internal ? "_blank" : undefined}
 					rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
 					aria-label={label}
 					title={label}

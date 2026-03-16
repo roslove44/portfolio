@@ -17,6 +17,7 @@ export default function Avatar({ size = 36 }: Props) {
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
+				aria-label="View photo of Rostand MIGAN"
 				className="avatar-glow shrink-0 cursor-zoom-in rounded-full p-0.5"
 			>
 				<Image

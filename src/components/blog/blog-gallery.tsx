@@ -29,6 +29,7 @@ export default function BlogGallery({ images, alts = [], columns = 2 }: Props) {
 						key={src}
 						type="button"
 						onClick={() => { setLightboxIndex(i); setLightboxOpen(true); }}
+						aria-label={alts[i] ? `View image: ${alts[i]}` : `View image ${i + 1} of ${images.length}`}
 						className="group relative cursor-zoom-in overflow-hidden rounded-lg border border-border/30"
 					>
 						<Image

@@ -54,10 +54,28 @@ export default function ContributionGraph({ weeks, totalContributions }: Props) 
 		});
 	}, []);
 
+	const handleFocus = useCallback((e: React.FocusEvent, day: ContributionDay) => {
+		const rect = e.currentTarget.getBoundingClientRect();
+		setTooltip({
+			x: rect.left + rect.width / 2,
+			y: rect.top,
+			date: day.date,
+			count: day.contributionCount,
+		});
+	}, []);
+
 	const handleMouseLeave = useCallback(() => setTooltip(null), []);
+	const handleBlur = useCallback(() => setTooltip(null), []);
 
 	const formatDate = (dateStr: string) =>
 		new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", year: "numeric" }).format(new Date(dateStr));
+
+	const formatCellLabel = (dateStr: string, count: number) => {
+		const dateLabel = new Intl.DateTimeFormat(locale, { month: "short", day: "numeric" }).format(new Date(dateStr));
+		return count === 1
+			? `${dateLabel}: 1 contribution`
+			: `${dateLabel}: ${count} contributions`;
+	};
 
 	// Day labels: Mon (index 1), Wed (3), Fri (5) in Sun-based week
 	const dayLabels = Array.from({ length: 7 }, (_, i) =>
@@ -67,9 +85,9 @@ export default function ContributionGraph({ weeks, totalContributions }: Props) 
 	return (
 		<div className="mt-4">
 			<div className="overflow-x-auto [scrollbar-width:thin] pb-2">
-				<div className="inline-flex gap-0.75">
+				<div className="inline-flex gap-0.75" role="grid" aria-label="GitHub contribution graph">
 					{/* Day labels */}
-					<div className="flex flex-col gap-0.75">
+					<div className="flex flex-col gap-0.75" role="rowgroup" aria-hidden="true">
 						<span className="h-3.25" />
 						{dayLabels.map((label, i) => (
 							<span key={i} className="flex h-2.5 w-6 items-center text-[10px] leading-none text-text-secondary">
@@ -80,16 +98,21 @@ export default function ContributionGraph({ weeks, totalContributions }: Props) 
 
 					{/* Week columns */}
 					{weeks.map((week, wi) => (
-						<div key={wi} className="flex w-2.5 shrink-0 flex-col gap-0.75">
-							<span className="h-3.25 text-[10px] leading-3.25 text-text-secondary">
+						<div key={wi} className="flex w-2.5 shrink-0 flex-col gap-0.75" role="row">
+							<span className="h-3.25 text-[10px] leading-3.25 text-text-secondary" aria-hidden="true">
 								{getMonthLabel(week, weeks[wi - 1], t)}
 							</span>
 							{week.contributionDays.map((day, di) => (
 								<div
 									key={di}
+									role="gridcell"
+									tabIndex={0}
+									aria-label={formatCellLabel(day.date, day.contributionCount)}
 									className={`h-2.5 w-2.5 rounded-xs ${LEVEL_CLASSES[getLevel(day.contributionCount, maxCount)]}`}
 									onMouseEnter={(e) => handleMouseEnter(e, day)}
 									onMouseLeave={handleMouseLeave}
+									onFocus={(e) => handleFocus(e, day)}
+									onBlur={handleBlur}
 								/>
 							))}
 						</div>
@@ -105,7 +128,7 @@ export default function ContributionGraph({ weeks, totalContributions }: Props) 
 				<div className="flex items-center gap-1">
 					<span>{t("less")}</span>
 					{LEVEL_CLASSES.map((cls, i) => (
-						<div key={i} className={`h-2.5 w-2.5 rounded-xs ${cls}`} />
+						<div key={i} className={`h-2.5 w-2.5 rounded-xs ${cls}`} aria-hidden="true" />
 					))}
 					<span>{t("more")}</span>
 				</div>
@@ -114,6 +137,7 @@ export default function ContributionGraph({ weeks, totalContributions }: Props) 
 			{/* Tooltip */}
 			{tooltip && (
 				<div
+					role="tooltip"
 					className="pointer-events-none fixed z-50"
 					style={{ left: tooltip.x, top: tooltip.y - 8, transform: "translateX(-50%) translateY(-100%)" }}
 				>
