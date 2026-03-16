@@ -8,7 +8,7 @@ export default async function NotFound() {
 
 	return (
 		<div className="flex flex-col items-center justify-center gap-8 py-20 text-center">
-			<Image src="/404.svg" alt={t("title")} width={320} height={280} className="w-full max-w-xs" unoptimized />
+			<Image src="/404.svg" alt={t("title")} width={320} height={280} className="w-full max-w-xs h-auto" loading="eager" unoptimized />
 			<div>
 				<h1 className="text-2xl font-bold tracking-tight text-text-primary">{t("title")}</h1>
 				<p className="mt-2 text-sm text-text-secondary">{t("description")}</p>
