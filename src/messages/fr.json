@@ -103,6 +103,7 @@
     "pageTitle": "Projets",
     "backHome": "Accueil",
     "empty": "Aucun projet ne correspond à ce filtre.",
+    "websiteDisclaimer": "Liste non exhaustive, j'ai également livré d'autres sites web pour des clients via des collaborations freelance.",
     "tabs": {
       "featured": "En vedette",
       "latest": "Récents"
@@ -161,6 +162,40 @@
         "Bibliothèque de 370+ types d'activités pour cibler précisément chaque secteur métier",
         "Export CSV structuré avec score de notoriété calculé automatiquement (note x nombre d'avis)",
         "Mets une étoile, forke-le, utilise-le."
+      ]
+    },
+    "lemarchedelacom": {
+      "name": "Le Marché de la Com'",
+      "role": "Développeur Web Freelance",
+      "type": "Site vitrine",
+      "summary": "Site vitrine pour une agence de communication digitale spécialisée en événementiel à Gisors, France.",
+      "desc": [
+        "Présentation des services : stratégie digitale, création de sites, publicité et événementiel",
+        "Intégration WordPress complète avec gestion autonome par la cliente",
+        "Collaboration freelance de longue durée : développeur attitré sur tous les projets web clients de l'agence jusqu'en août 2025"
+      ]
+    },
+    "fmcbenin": {
+      "name": "FMC Bénin",
+      "role": "Développeur Full Stack",
+      "type": "Site vitrine",
+      "summary": "Site vitrine performant pour un fournisseur d'équipements de protection et de matériaux de construction à Cotonou.",
+      "desc": [
+        "Présentation des 3 gammes de produits : équipements industriels, protection et fournitures",
+        "Pages produits, à propos et contact avec formulaire de demande de devis",
+        "Performance maximisée : site statique-like, léger et rapide"
+      ]
+    },
+    "csplus": {
+      "name": "CS Plus SARL",
+      "role": "Développeur Full Stack",
+      "type": "Site vitrine + catalogue",
+      "summary": "Site corporate avec système d'administration de catalogue complet pour un fournisseur d'équipements de protection au Bénin.",
+      "desc": [
+        "Site vitrine présentant les 3 pôles d'activité : EPI, BTP et services de drone",
+        "Back-office complet : gestion du catalogue produits, catégories, filtres et liste de souhaits",
+        "Interface d'administration pensée pour une gestion autonome par le client",
+        "Fun fact : le moteur de catalogue sous le capot peut gérer des milliers de produits — ils n'en ont pas encore ajouté un seul"
       ]
     },
     "others": {

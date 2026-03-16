@@ -63,6 +63,10 @@ export default function ProjectsList() {
 				</div>
 			</div>
 
+			{(filter === "all" || filter === "website") && (
+				<p className="mb-4 text-[13px] text-text-secondary">{t("websiteDisclaimer")}</p>
+			)}
+
 			{projects.length === 0 ? (
 				<p className="text-sm text-text-secondary text-center">{t("empty")}</p>
 			) : (

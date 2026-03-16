@@ -102,6 +102,7 @@
     "pageTitle": "Projects",
     "backHome": "Home",
     "empty": "No projects match this filter.",
+    "websiteDisclaimer": "Not an exhaustive list, I've also shipped other client websites through freelance collaborations.",
     "list": "All projects",
     "tabs": {
       "featured": "Featured",
@@ -161,6 +162,40 @@
         "Library of 370+ business activity types to precisely target any industry",
         "Structured CSV export with auto-calculated popularity score (rating x review count)",
         "Star it, fork it, use it."
+      ]
+    },
+    "lemarchedelacom": {
+      "name": "Le Marché de la Com'",
+      "role": "Freelance Web Developer",
+      "type": "Corporate website",
+      "summary": "Corporate website for a digital communication agency specializing in events, based in Gisors, France.",
+      "desc": [
+        "Showcase of services : digital strategy, website creation, advertising and events",
+        "Full WordPress integration with autonomous management by the client",
+        "Long-term freelance partnership : lead developer on all the agency's client web projects until August 2025"
+      ]
+    },
+    "fmcbenin": {
+      "name": "FMC Bénin",
+      "role": "Full Stack Developer",
+      "type": "Corporate website",
+      "summary": "High-performance corporate website for a protective equipment and construction materials supplier in Cotonou.",
+      "desc": [
+        "Showcase of 3 product lines : industrial equipment, protection and supplies",
+        "Product pages, about and contact with quote request form",
+        "Performance maximized : static-like, lightweight and fast"
+      ]
+    },
+    "csplus": {
+      "name": "CS Plus SARL",
+      "role": "Full Stack Developer",
+      "type": "Corporate website + catalogue",
+      "summary": "Corporate website with a full catalogue administration system for a protective equipment supplier in Benin.",
+      "desc": [
+        "Corporate site showcasing 3 business lines : PPE, construction and drone services",
+        "Full back-office : product catalogue management, categories, filters and wishlist",
+        "Admin interface designed for autonomous client management",
+        "Fun fact : the catalogue engine under the hood can handle thousands of products — they haven't added a single one yet"
       ]
     },
     "others": {
