@@ -58,6 +58,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			title: t("title"),
 			description: t("description"),
 		},
+		icons: {
+			icon: [
+				{ url: "/icon.svg", type: "image/svg+xml" },
+				{ url: "/icon.png", type: "image/png" },
+				{ url: "/favicon.ico", sizes: "any" },
+			],
+			apple: [{ url: "/apple-icon.png", type: "image/png" }],
+		},
 		appleWebApp: { title: "Portfolio - Rostand MIGAN" },
 		alternates: {
 			canonical: url,
