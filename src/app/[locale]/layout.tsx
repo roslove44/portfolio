@@ -5,6 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { ThemeProvider } from "next-themes";
 import { NextIntlClientProvider } from "next-intl";
+import Script from "next/script";
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL, TWITTER_HANDLE } from "@/data/constants";
@@ -87,6 +88,11 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 
 	return (
 		<html lang={locale} className={`scroll-smooth ${theme === "dark" ? "dark" : ""}`} suppressHydrationWarning data-scroll-behavior="smooth">
+			<head>
+				<Script id="microsoft-clarity" strategy="afterInteractive">
+					{`(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vwsayk7lxq");`}
+				</Script>
+			</head>
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} font-sans antialiased`}
 			>
