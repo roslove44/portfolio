@@ -1,17 +1,18 @@
 import { setRequestLocale, getTranslations } from "next-intl/server";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import ProjectsList from "@/components/projects/projects-list";
 import { SITE_URL } from "@/data/constants";
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "projects" });
 	const tm = await getTranslations({ locale, namespace: "metadata" });
 	const url = `${SITE_URL}/${locale}/projects`;
 	const title = t("pageTitle");
 	const description = tm("projectsDescription");
+	const parentImages = (await parent).openGraph?.images || [];
 
 	return {
 		title,
@@ -30,12 +31,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			title,
 			description,
 			url,
+			siteName: "Rostand MIGAN",
+			images: parentImages,
 		},
 		twitter: {
 			card: "summary_large_image",
 			title,
 			description,
-		}
+			images: parentImages,
+		},
 	};
 }
 

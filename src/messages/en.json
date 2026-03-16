@@ -1,9 +1,9 @@
 {
   "metadata": {
     "title": "Rostand MIGAN | Full Stack Developer & Builder",
-    "description": "Full stack developer. I write code the way I think clearly, efficiently, and always with the end user in mind. Lately, that's been a lot of fintech.",
-    "blogDescription": "Thoughts on full stack development, building in public, and fintech in West Africa.",
-    "projectsDescription": "Full stack projects by Rostand MIGAN - SaaS, tools, web apps and open-source work."
+    "description": "Full stack developer specializing in fintech and web applications. I build clean software, designed for users and grounded in real-world constraints.",
+    "blogDescription": "Thoughts on full stack development, building in public and fintech.",
+    "projectsDescription": "Full stack projects by Rostand MIGAN ; SaaS, fintech tools, web applications and open source contributions."
   },
   "header": {
     "home": "Home",
@@ -99,7 +99,7 @@
   },
   "projects": {
     "title": "Projects",
-    "pageTitle": "Projects | Rostand MIGAN",
+    "pageTitle": "Projects",
     "backHome": "Home",
     "empty": "No projects match this filter.",
     "list": "All projects",
@@ -177,7 +177,7 @@
   "blog": {
     "title": "Blog",
     "list": "All posts",
-    "pageTitle": "Blog | Rostand MIGAN",
+    "pageTitle": "Blog",
     "cta": "See all posts",
     "empty": "No posts yet. Stay tuned.",
     "backHome": "Home"

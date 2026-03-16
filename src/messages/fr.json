@@ -1,9 +1,9 @@
 {
   "metadata": {
     "title": "Rostand MIGAN | Développeur Full Stack & Builder",
-    "description": "Développeur full stack. J'écris du code comme je pense, clairement, efficacement, toujours avec l'utilisateur final en tête. Ces derniers temps, beaucoup de fintech.",
-    "blogDescription": "Réflexions sur le développement full stack, le building en public et la fintech en Afrique de l'Ouest.",
-    "projectsDescription": "Projets full stack de Rostand MIGAN - SaaS, outils, apps web et travaux open source."
+    "description": "Développeur full stack spécialisé en fintech et applications web. Je construis des logiciels propres, pensés pour les utilisateurs et adaptés aux réalités du terrain.",
+    "blogDescription": "Réflexions sur le développement full stack, le building en public et la fintech.",
+    "projectsDescription": "Projets full stack de Rostand MIGAN ; SaaS, outils fintech, applications web et contributions open source."
   },
   "header": {
     "home": "Accueil",
@@ -100,7 +100,7 @@
   "projects": {
     "title": "Projets",
     "list": "Tous les projets",
-    "pageTitle": "Projets | Rostand MIGAN",
+    "pageTitle": "Projets",
     "backHome": "Accueil",
     "empty": "Aucun projet ne correspond à ce filtre.",
     "tabs": {
@@ -177,7 +177,7 @@
   "blog": {
     "title": "Blog",
     "list": "Tous les articles",
-    "pageTitle": "Blog | Rostand MIGAN",
+    "pageTitle": "Blog",
     "cta": "Voir tous les articles",
     "empty": "Aucun article pour le moment.",
     "backHome": "Accueil"

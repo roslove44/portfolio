@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
-import type { Metadata } from "next";
+import type { Metadata, ResolvingMetadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPost, getAllSlugs } from "@/lib/blog";
@@ -18,13 +18,14 @@ export function generateStaticParams() {
 	);
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
 	const { locale, slug } = await params;
 	const post = getBlogPost(locale, slug);
 	if (!post) return {};
 
 	const url = `${SITE_URL}/${locale}/blog/${slug}`;
 	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : undefined;
+	const images = coverUrl ? [{ url: coverUrl, width: 1200, height: 630 }] : (await parent).openGraph?.images || [];
 
 	return {
 		title: post.title,
@@ -43,16 +44,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 			title: post.title,
 			description: post.description,
 			url,
+			siteName: "Rostand MIGAN",
 			publishedTime: post.date,
 			...(post.updatedAt && { modifiedTime: post.updatedAt }),
 			...(post.tags && { tags: post.tags }),
-			...(coverUrl && { images: [{ url: coverUrl, width: 1200, height: 630 }] }),
+			images,
 		},
 		twitter: {
 			card: "summary_large_image",
 			title: post.title,
 			description: post.description,
-			...(coverUrl && { images: [coverUrl] }),
+			images,
 		},
 	};
 }

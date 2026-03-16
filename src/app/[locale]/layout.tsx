@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	const t = await getTranslations({ locale, namespace: "metadata" });
 	const url = `${SITE_URL}/${locale}`;
 	const twitterHandle = TWITTER_HANDLE;
+	const ogLocale = locale === "fr" ? "fr_FR" : "en_US";
 
 	return {
 		metadataBase: new URL(SITE_URL),
@@ -43,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 		},
 		openGraph: {
 			type: "website",
-			locale,
+			locale: ogLocale,
 			url,
 			siteName: "Rostand MIGAN",
 			title: t("title"),
