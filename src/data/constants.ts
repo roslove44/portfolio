@@ -1,4 +1,4 @@
-export const SITE_URL = "https://rostand.dev";
+export const SITE_URL = "https://www.rostand.dev";
 
 export const CAL_LINK = "rostand-dev/let-s-build-something";
 

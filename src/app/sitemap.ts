@@ -18,6 +18,7 @@ function buildAlternates(path: string): { languages: AlternateLanguages } {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+	const now = new Date();
 	const staticRoutes: MetadataRoute.Sitemap = [
 		{ url: "", changeFrequency: "monthly" as const, priority: 1.0 },
 		{ url: "/blog", changeFrequency: "weekly" as const, priority: 0.8 },
@@ -25,6 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	].flatMap(({ url, changeFrequency, priority }) =>
 		locales.map((locale) => ({
 			url: `${SITE_URL}/${locale}${url}`,
+			lastModified: now,
 			changeFrequency,
 			priority,
 			alternates: buildAlternates(url),
