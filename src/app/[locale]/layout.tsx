@@ -74,7 +74,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 				fr: `${SITE_URL}/fr`,
 				"x-default": `${SITE_URL}/en`,
 			},
-			types: { "application/rss+xml": "/feed.xml" },
+			types: {
+				"application/rss+xml": [
+					{ url: "/feed.xml", title: "Rostand MIGAN — Blog (EN)" },
+					{ url: "/feed-fr.xml", title: "Rostand MIGAN — Blog (FR)" },
+				],
+			},
 		},
 	};
 }

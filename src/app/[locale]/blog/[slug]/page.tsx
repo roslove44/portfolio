@@ -30,6 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	return {
 		title: post.title,
 		description: post.description,
+		authors: [{ name: "Rostand MIGAN", url: SITE_URL }],
 		robots: { index: true, follow: true },
 		alternates: {
 			canonical: url,
@@ -69,12 +70,24 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	const readingTime = getReadingTime(post.content);
 	const url = `${SITE_URL}/${locale}/blog/${slug}`;
 
+	const breadcrumbLd = {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
+			{ "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/${locale}/blog` },
+			{ "@type": "ListItem", position: 3, name: post.title },
+		],
+	};
+
 	const jsonLd = {
 		"@context": "https://schema.org",
 		"@type": "BlogPosting",
 		headline: post.title,
 		description: post.description,
 		url,
+		inLanguage: locale === "fr" ? "fr" : "en",
+		mainEntityOfPage: { "@type": "WebPage", "@id": url },
 		datePublished: post.date,
 		...(post.updatedAt && { dateModified: post.updatedAt }),
 		...(post.cover && { image: post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}` }),
@@ -85,10 +98,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 			image: `${SITE_URL}/avatar.webp`,
 			sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
 		},
+		publisher: {
+			"@type": "Person",
+			name: "Rostand MIGAN",
+			url: SITE_URL,
+			image: `${SITE_URL}/avatar.webp`,
+		},
 	};
 
 	return (
 		<article className="py-8">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+			/>
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

@@ -5,6 +5,17 @@ import { Link } from "@/i18n/navigation";
 import ProjectsList from "@/components/projects/projects-list";
 import { SITE_URL } from "@/data/constants";
 
+function buildBreadcrumbLd(locale: string) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
+			{ "@type": "ListItem", position: 2, name: "Projects" },
+		],
+	};
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "projects" });
@@ -51,6 +62,10 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
 
 	return (
 		<section className="py-8">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbLd(locale)) }}
+			/>
 			<Link
 				href="/"
 				className="mb-6 inline-flex items-center gap-1 text-sm text-text-secondary transition-colors hover:text-accent"

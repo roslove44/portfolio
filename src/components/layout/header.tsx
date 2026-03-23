@@ -14,6 +14,8 @@ export default function Header() {
 			<Link href="/" className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors">
 				rostand.dev
 			</Link>
+			<Link href="/projects" className="sr-only">Projects</Link>
+			<Link href="/blog" className="sr-only">Blog</Link>
 			<div className="flex items-center gap-2">
 				<LangSwitch />
 				<ThemeToggle />

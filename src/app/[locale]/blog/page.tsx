@@ -7,6 +7,17 @@ import BlogCard from "@/components/blog/blog-card";
 import { Fragment } from "react/jsx-runtime";
 import { SITE_URL } from "@/data/constants";
 
+function buildBreadcrumbLd(locale: string) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		itemListElement: [
+			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
+			{ "@type": "ListItem", position: 2, name: "Blog" },
+		],
+	};
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "blog" });
@@ -54,6 +65,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
 	return (
 		<section className="py-8">
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbLd(locale)) }}
+			/>
 			<Link
 				href="/"
 				className="mb-6 inline-flex items-center gap-1 text-sm text-text-secondary transition-colors hover:text-accent"

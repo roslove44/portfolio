@@ -29,6 +29,7 @@ export default function Hero() {
 				<div className="flex items-center gap-3">
 					<h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
 						{t("greeting")}
+						<span className="sr-only"> - Full Stack Developer</span>
 					</h1>
 					<Avatar />
 				</div>
