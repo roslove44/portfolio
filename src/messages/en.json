@@ -215,7 +215,8 @@
     "pageTitle": "Blog",
     "cta": "See all posts",
     "empty": "No posts yet. Stay tuned.",
-    "backHome": "Home"
+    "backHome": "Home",
+    "author": "Author"
   },
   "footer": {
     "cta": "Got a project in mind?",

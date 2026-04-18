@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import type { Metadata, ResolvingMetadata } from "next";
@@ -11,6 +11,7 @@ import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
 import { routing } from "@/i18n/routing";
 import { SITE_URL, SOCIAL_LINKS } from "@/data/constants";
+import { UserAvatar } from "@/components/ui/user-avatar";
 
 export function generateStaticParams() {
 	return routing.locales.flatMap((locale) =>
@@ -67,6 +68,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	const post = getBlogPost(locale, slug);
 	if (!post) notFound();
 
+	const t = await getTranslations({ locale, namespace: "blog" });
 	const readingTime = getReadingTime(post.content);
 	const url = `${SITE_URL}/${locale}/blog/${slug}`;
 
@@ -144,6 +146,20 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 					)}
 					<span className="text-text-secondary/80">·</span>
 					<span>{readingTime} min {locale === "fr" ? "de lecture" : "read"}</span>
+				</div>
+				<div className="flex items-center gap-6 mt-6">
+					<div className="flex items-center gap-3">
+						<UserAvatar src="/avatar.webp" firstname="Rostand" lastname="MIGAN" size="xl" />
+						<div className="flex flex-col">
+							<span className="text-xs text-text-secondary">{t("author")}</span>
+							<Link
+								href="/"
+								className="text-sm font-semibold text-text-primary hover:text-accent underline decoration-transparent hover:decoration-current transition-all duration-200"
+							>
+								Rostand MIGAN
+							</Link>
+						</div>
+					</div>
 				</div>
 				{post.tags && post.tags.length > 0 && (
 					<div className="mt-1.5 text-sm flex flex-wrap gap-x-1.5 gap-y-0.5 font-medium" aria-label={`Tags: ${post.tags.join(", ")}`} role="list">

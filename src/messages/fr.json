@@ -215,7 +215,8 @@
     "pageTitle": "Blog",
     "cta": "Voir tous les articles",
     "empty": "Aucun article pour le moment.",
-    "backHome": "Accueil"
+    "backHome": "Accueil",
+    "author": "Auteur"
   },
   "footer": {
     "cta": "Un projet en tête ?",
