@@ -18,6 +18,30 @@ function buildBreadcrumbLd(locale: string) {
 	};
 }
 
+function buildBlogLd(locale: string, posts: ReturnType<typeof getBlogPosts>) {
+	const url = `${SITE_URL}/${locale}/blog`;
+	return {
+		"@context": "https://schema.org",
+		"@type": "Blog",
+		"@id": `${SITE_URL}/#blog`,
+		name: "Rostand MIGAN — Blog",
+		url,
+		inLanguage: locale === "fr" ? "fr" : "en",
+		author: { "@id": `${SITE_URL}/#person` },
+		publisher: { "@id": `${SITE_URL}/#person` },
+		isPartOf: { "@id": `${SITE_URL}/#website` },
+		blogPost: posts.map((post) => ({
+			"@type": "BlogPosting",
+			headline: post.title,
+			description: post.description,
+			url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+			datePublished: post.date,
+			...(post.updatedAt && { dateModified: post.updatedAt }),
+			author: { "@id": `${SITE_URL}/#person` },
+		})),
+	};
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "blog" });
@@ -68,6 +92,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 			<script
 				type="application/ld+json"
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbLd(locale)) }}
+			/>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBlogLd(locale, posts)) }}
 			/>
 			<Link
 				href="/"

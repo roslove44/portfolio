@@ -113,13 +113,18 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 							"@graph": [
 								{
 									"@type": "WebSite",
+									"@id": `${SITE_URL}/#website`,
 									name: "Rostand MIGAN",
 									url: SITE_URL,
 									inLanguage: ["en", "fr"],
+									author: { "@id": `${SITE_URL}/#person` },
+									publisher: { "@id": `${SITE_URL}/#person` },
 								},
 								{
 									"@type": "Person",
+									"@id": `${SITE_URL}/#person`,
 									name: "Rostand MIGAN",
+									alternateName: ["Rostand", "Roslove"],
 									url: SITE_URL,
 									image: `${SITE_URL}/avatar.webp`,
 									jobTitle: "Full-Stack Developer",

@@ -27,8 +27,25 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 	const { locale } = await params;
 	setRequestLocale(locale);
 
+	const url = `${SITE_URL}/${locale}`;
+	const profilePageLd = {
+		"@context": "https://schema.org",
+		"@type": "ProfilePage",
+		"@id": `${url}#profilepage`,
+		url,
+		inLanguage: locale === "fr" ? "fr" : "en",
+		name: "Rostand MIGAN — Full Stack Developer",
+		mainEntity: { "@id": `${SITE_URL}/#person` },
+		about: { "@id": `${SITE_URL}/#person` },
+		isPartOf: { "@id": `${SITE_URL}/#website` },
+	};
+
 	return (
 		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageLd) }}
+			/>
 			<Hero />
 			<Stack />
 			<Activity />

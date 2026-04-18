@@ -10,7 +10,7 @@ import { getReadingTime } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
 import { routing } from "@/i18n/routing";
-import { SITE_URL, SOCIAL_LINKS } from "@/data/constants";
+import { SITE_URL } from "@/data/constants";
 import { UserAvatar } from "@/components/ui/user-avatar";
 
 export function generateStaticParams() {
@@ -93,19 +93,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 		datePublished: post.date,
 		...(post.updatedAt && { dateModified: post.updatedAt }),
 		...(post.cover && { image: post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}` }),
-		author: {
-			"@type": "Person",
-			name: "Rostand MIGAN",
-			url: SITE_URL,
-			image: `${SITE_URL}/avatar.webp`,
-			sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
-		},
-		publisher: {
-			"@type": "Person",
-			name: "Rostand MIGAN",
-			url: SITE_URL,
-			image: `${SITE_URL}/avatar.webp`,
-		},
+		...(post.tags && { keywords: post.tags }),
+		author: { "@id": `${SITE_URL}/#person` },
+		publisher: { "@id": `${SITE_URL}/#person` },
+		isPartOf: { "@id": `${SITE_URL}/#blog` },
 	};
 
 	return (
