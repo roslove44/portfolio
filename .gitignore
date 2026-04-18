@@ -48,6 +48,6 @@ _bmad-output
 .claude
 claude.md
 design-artifacts
-docs
+/docs
 skills-lock.json
 .agents
