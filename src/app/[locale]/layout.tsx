@@ -9,6 +9,7 @@ import Script from "next/script";
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL, TWITTER_HANDLE, SOCIAL_LINKS, STACK_CATEGORIES } from "@/data/constants";
+import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import ThemeCookieSync from "@/components/ui/theme-cookie-sync";
@@ -27,7 +28,7 @@ const geistMono = Geist_Mono({
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "metadata" });
-	const url = `${SITE_URL}/${locale}`;
+	const url = localeUrl(locale);
 	const twitterHandle = TWITTER_HANDLE;
 	const ogLocale = locale === "fr" ? "fr_FR" : "en_US";
 
@@ -68,12 +69,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 		},
 		appleWebApp: { title: "Portfolio - Rostand MIGAN" },
 		alternates: {
-			canonical: url,
-			languages: {
-				en: `${SITE_URL}/en`,
-				fr: `${SITE_URL}/fr`,
-				"x-default": `${SITE_URL}/en`,
-			},
+			...buildMetadataAlternates(locale),
 			types: {
 				"application/rss+xml": [
 					{ url: "/feed.xml", title: "Rostand MIGAN — Blog (EN)" },

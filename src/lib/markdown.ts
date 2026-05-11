@@ -3,6 +3,7 @@ import { PROJECTS, HIGHLIGHTED_PROJECTS } from "@/data/projects";
 import { SITE_URL, SOCIAL_LINKS, STACK_CATEGORIES } from "@/data/constants";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { getReadingTime } from "@/utils/reading-time";
+import { localeUrl } from "@/lib/metadata";
 
 export function estimateTokens(content: string): number {
 	return Math.ceil(content.length / 4);
@@ -68,7 +69,7 @@ function safeTArray(t: Awaited<ReturnType<typeof getTranslations>>, key: string)
 
 export async function buildHomeMarkdown(locale: string): Promise<string> {
 	const t = await getTranslations({ locale });
-	const url = `${SITE_URL}/${locale}`;
+	const url = localeUrl(locale);
 	const lines: string[] = [];
 
 	lines.push(`# Rostand MIGAN — ${t("metadata.title").split("|")[1]?.trim() ?? "Full Stack Developer"}`);
@@ -162,7 +163,7 @@ export async function buildHomeMarkdown(locale: string): Promise<string> {
 export async function buildProjectsMarkdown(locale: string): Promise<string> {
 	const t = await getTranslations({ locale, namespace: "projects" });
 	const tMeta = await getTranslations({ locale, namespace: "metadata" });
-	const url = `${SITE_URL}/${locale}/projects`;
+	const url = localeUrl(locale, "/projects");
 
 	const lines: string[] = [];
 	lines.push(`# ${t("pageTitle")} — Rostand MIGAN`);
@@ -188,7 +189,7 @@ export async function buildProjectsMarkdown(locale: string): Promise<string> {
 export async function buildBlogListMarkdown(locale: string): Promise<string> {
 	const t = await getTranslations({ locale, namespace: "blog" });
 	const tMeta = await getTranslations({ locale, namespace: "metadata" });
-	const url = `${SITE_URL}/${locale}/blog`;
+	const url = localeUrl(locale, "/blog");
 	const posts = getBlogPosts(locale);
 
 	const lines: string[] = [];
@@ -207,7 +208,7 @@ export async function buildBlogListMarkdown(locale: string): Promise<string> {
 		lines.push(t("empty"));
 	} else {
 		for (const post of posts) {
-			lines.push(`## [${post.title}](${SITE_URL}/${locale}/blog/${post.slug})`);
+			lines.push(`## [${post.title}](${localeUrl(locale, `/blog/${post.slug}`)})`);
 			lines.push("");
 			lines.push(`**Published:** ${formatDate(post.date, locale)}  `);
 			if (post.updatedAt) lines.push(`**Updated:** ${formatDate(post.updatedAt, locale)}  `);
@@ -227,7 +228,7 @@ export async function buildBlogPostMarkdown(locale: string, slug: string): Promi
 	const post = getBlogPost(locale, slug);
 	if (!post) return null;
 
-	const url = `${SITE_URL}/${locale}/blog/${slug}`;
+	const url = localeUrl(locale, `/blog/${slug}`);
 	const readingTime = getReadingTime(post.content);
 	const readingLabel = locale === "fr" ? "min de lecture" : "min read";
 

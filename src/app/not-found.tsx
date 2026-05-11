@@ -20,7 +20,7 @@ export default function NotFound() {
 				<div className="min-h-screen bg-background text-text-primary">
 					<div className="mx-auto max-w-3xl px-3 sm:px-6">
 						<header className="flex items-center justify-between py-4">
-							<Link href="/en" className="text-sm font-medium text-text-primary hover:text-accent">
+							<Link href="/" className="text-sm font-medium text-text-primary hover:text-accent">
 								Rostand MIGAN
 							</Link>
 						</header>
@@ -31,7 +31,7 @@ export default function NotFound() {
 									<h1 className="text-2xl font-bold tracking-tight">Page not found</h1>
 									<p className="mt-2 text-sm text-text-secondary">This page doesn&apos;t exist or has been moved.</p>
 								</div>
-								<Link href="/en" className="inline-flex items-center gap-1.5 text-accent hover:underline text-sm">
+								<Link href="/" className="inline-flex items-center gap-1.5 text-accent hover:underline text-sm">
 									<ArrowLeft size={14} />Back to home
 								</Link>
 							</div>

@@ -6,20 +6,21 @@ import { getBlogPosts } from "@/lib/blog";
 import BlogCard from "@/components/blog/blog-card";
 import { Fragment } from "react/jsx-runtime";
 import { SITE_URL } from "@/data/constants";
+import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
 
 function buildBreadcrumbLd(locale: string) {
 	return {
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
 		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
+			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
 			{ "@type": "ListItem", position: 2, name: "Blog" },
 		],
 	};
 }
 
 function buildBlogLd(locale: string, posts: ReturnType<typeof getBlogPosts>) {
-	const url = `${SITE_URL}/${locale}/blog`;
+	const url = localeUrl(locale, "/blog");
 	return {
 		"@context": "https://schema.org",
 		"@type": "Blog",
@@ -34,7 +35,7 @@ function buildBlogLd(locale: string, posts: ReturnType<typeof getBlogPosts>) {
 			"@type": "BlogPosting",
 			headline: post.title,
 			description: post.description,
-			url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+			url: localeUrl(locale, `/blog/${post.slug}`),
 			datePublished: post.date,
 			...(post.updatedAt && { dateModified: post.updatedAt }),
 			author: { "@id": `${SITE_URL}/#person` },
@@ -46,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "blog" });
 	const tm = await getTranslations({ locale, namespace: "metadata" });
-	const url = `${SITE_URL}/${locale}/blog`;
+	const url = localeUrl(locale, "/blog");
 	const title = t("pageTitle");
 	const description = tm("blogDescription");
 	const parentImages = (await parent).openGraph?.images || [];
@@ -55,14 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 		title,
 		description,
 		robots: { index: true, follow: true },
-		alternates: {
-			canonical: url,
-			languages: {
-				en: `${SITE_URL}/en/blog`,
-				fr: `${SITE_URL}/fr/blog`,
-				"x-default": `${SITE_URL}/en/blog`,
-			},
-		},
+		alternates: buildMetadataAlternates(locale, "/blog"),
 		openGraph: {
 			type: "website",
 			title,

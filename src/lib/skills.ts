@@ -20,7 +20,7 @@ Use it whenever you need to read content from \`rostand.dev\` and pass it to an 
 Send the normal human-facing URL with an \`Accept: text/markdown\` header:
 
 \`\`\`bash
-curl -H "Accept: text/markdown" https://www.rostand.dev/en/blog/self-taught-journey
+curl -H "Accept: text/markdown" https://www.rostand.dev/blog/self-taught-journey
 \`\`\`
 
 The URL in your tooling and citations stays the same one a human would visit. Browsers without the header continue to receive HTML.
@@ -81,7 +81,7 @@ Complete map of content published on https://www.rostand.dev. Use this skill to 
 
 ### Profile (home page)
 
-- EN: https://www.rostand.dev/en
+- EN: https://www.rostand.dev/
 - FR: https://www.rostand.dev/fr
 
 Both versions contain the same sections: hero, about, stack, GitHub activity, featured projects, recent blog posts, resume link.
@@ -90,15 +90,16 @@ Both versions contain the same sections: hero, about, stack, GitHub activity, fe
 
 Bilingual (EN/FR). Slugs are identical across locales.
 
-- EN index: https://www.rostand.dev/en/blog
+- EN index: https://www.rostand.dev/blog
 - FR index: https://www.rostand.dev/fr/blog
-- Post URL pattern: \`/{locale}/blog/{slug}\`
+- EN post URL pattern: \`/blog/{slug}\`
+- FR post URL pattern: \`/fr/blog/{slug}\`
 
 ### Projects
 
 Full list with type filters (saas, app, tool, website).
 
-- EN: https://www.rostand.dev/en/projects
+- EN: https://www.rostand.dev/projects
 - FR: https://www.rostand.dev/fr/projects
 
 Featured projects include **ComptaOpen** (fintech SaaS for WAEMU accounting professionals), **Gestiloc.io** (SaaS property management), and **GoogleMapsScrape** (open-source prospecting CLI).

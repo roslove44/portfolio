@@ -11,6 +11,7 @@ import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/data/constants";
+import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
 import { UserAvatar } from "@/components/ui/user-avatar";
 
 export function generateStaticParams() {
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	const post = getBlogPost(locale, slug);
 	if (!post) return {};
 
-	const url = `${SITE_URL}/${locale}/blog/${slug}`;
+	const url = localeUrl(locale, `/blog/${slug}`);
 	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : undefined;
 	const images = coverUrl ? [{ url: coverUrl, width: 1200, height: 630 }] : (await parent).openGraph?.images || [];
 
@@ -33,14 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 		description: post.description,
 		authors: [{ name: "Rostand MIGAN", url: SITE_URL }],
 		robots: { index: true, follow: true },
-		alternates: {
-			canonical: url,
-			languages: {
-				en: `${SITE_URL}/en/blog/${slug}`,
-				fr: `${SITE_URL}/fr/blog/${slug}`,
-				"x-default": `${SITE_URL}/en/blog/${slug}`,
-			},
-		},
+		alternates: buildMetadataAlternates(locale, `/blog/${slug}`),
 		openGraph: {
 			type: "article",
 			title: post.title,
@@ -70,14 +64,14 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
 	const t = await getTranslations({ locale, namespace: "blog" });
 	const readingTime = getReadingTime(post.content);
-	const url = `${SITE_URL}/${locale}/blog/${slug}`;
+	const url = localeUrl(locale, `/blog/${slug}`);
 
 	const breadcrumbLd = {
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
 		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
-			{ "@type": "ListItem", position: 2, name: "Blog", item: `${SITE_URL}/${locale}/blog` },
+			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
+			{ "@type": "ListItem", position: 2, name: "Blog", item: localeUrl(locale, "/blog") },
 			{ "@type": "ListItem", position: 3, name: post.title },
 		],
 	};

@@ -5,13 +5,14 @@ import { Link } from "@/i18n/navigation";
 import ProjectsList from "@/components/projects/projects-list";
 import { SITE_URL } from "@/data/constants";
 import { PROJECTS } from "@/data/projects";
+import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
 
 function buildBreadcrumbLd(locale: string) {
 	return {
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
 		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: `${SITE_URL}/${locale}` },
+			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
 			{ "@type": "ListItem", position: 2, name: "Projects" },
 		],
 	};
@@ -26,7 +27,7 @@ const TYPE_TO_SCHEMA: Record<string, string> = {
 
 async function buildCollectionLd(locale: string) {
 	const t = await getTranslations({ locale, namespace: "projects" });
-	const url = `${SITE_URL}/${locale}/projects`;
+	const url = localeUrl(locale, "/projects");
 
 	const items = PROJECTS.map((project, index) => {
 		const name = t(`${project.key}.name` as never);
@@ -73,7 +74,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 	const { locale } = await params;
 	const t = await getTranslations({ locale, namespace: "projects" });
 	const tm = await getTranslations({ locale, namespace: "metadata" });
-	const url = `${SITE_URL}/${locale}/projects`;
+	const url = localeUrl(locale, "/projects");
 	const title = t("pageTitle");
 	const description = tm("projectsDescription");
 	const parentImages = (await parent).openGraph?.images || [];
@@ -82,14 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 		title,
 		description,
 		robots: { index: true, follow: true },
-		alternates: {
-			canonical: url,
-			languages: {
-				en: `${SITE_URL}/en/projects`,
-				fr: `${SITE_URL}/fr/projects`,
-				"x-default": `${SITE_URL}/en/projects`,
-			},
-		},
+		alternates: buildMetadataAlternates(locale, "/projects"),
 		openGraph: {
 			type: "website",
 			title,

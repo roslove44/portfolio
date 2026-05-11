@@ -1,5 +1,6 @@
 import { getBlogPosts } from "@/lib/blog";
 import { SITE_URL } from "@/data/constants";
+import { localeUrl } from "@/lib/metadata";
 
 function escapeXml(str: string): string {
 	return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -12,8 +13,8 @@ export function GET() {
 		.map((post) => `
 		<item>
 			<title>${escapeXml(post.title)}</title>
-			<link>${SITE_URL}/en/blog/${post.slug}</link>
-			<guid isPermaLink="true">${SITE_URL}/en/blog/${post.slug}</guid>
+			<link>${localeUrl("en", `/blog/${post.slug}`)}</link>
+			<guid isPermaLink="true">${localeUrl("en", `/blog/${post.slug}`)}</guid>
 			<description>${escapeXml(post.description)}</description>
 			<pubDate>${new Date(post.date).toUTCString()}</pubDate>
 			${post.tags.map((tag) => `<category>${escapeXml(tag)}</category>`).join("\n\t\t\t")}

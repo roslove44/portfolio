@@ -12,7 +12,7 @@ Machine-readable markdown version of every content page on ${SITE_URL}, for AI a
 Send any human-facing URL with \`Accept: text/markdown\`:
 
 \`\`\`bash
-curl -H "Accept: text/markdown" ${SITE_URL}/en/blog/self-taught-journey
+curl -H "Accept: text/markdown" ${SITE_URL}/blog/self-taught-journey
 \`\`\`
 
 Your tooling keeps the same URL a human would visit. Browsers without the header receive HTML.

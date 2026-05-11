@@ -2,19 +2,12 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/data/constants";
 import { getBlogPosts } from "@/lib/blog";
 import { routing } from "@/i18n/routing";
+import { buildLanguageAlternates, localeUrl } from "@/lib/metadata";
 
 const locales = routing.locales;
 
-type AlternateLanguages = Record<string, string>;
-
-function buildAlternates(path: string): { languages: AlternateLanguages } {
-	const languages: AlternateLanguages = {
-		"x-default": `${SITE_URL}/en${path}`,
-	};
-	for (const locale of locales) {
-		languages[locale] = `${SITE_URL}/${locale}${path}`;
-	}
-	return { languages };
+function buildAlternates(path: string) {
+	return { languages: buildLanguageAlternates(path) };
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -25,7 +18,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		{ url: "/projects", changeFrequency: "monthly" as const, priority: 0.8 },
 	].flatMap(({ url, changeFrequency, priority }) =>
 		locales.map((locale) => ({
-			url: `${SITE_URL}/${locale}${url}`,
+			url: localeUrl(locale, url),
 			lastModified: now,
 			changeFrequency,
 			priority,
@@ -36,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 	const blogRoutes: MetadataRoute.Sitemap = locales.flatMap((locale) => {
 		const posts = getBlogPosts(locale);
 		return posts.map((post) => ({
-			url: `${SITE_URL}/${locale}/blog/${post.slug}`,
+			url: localeUrl(locale, `/blog/${post.slug}`),
 			lastModified: new Date(post.updatedAt ?? post.date),
 			changeFrequency: "monthly" as const,
 			priority: 0.7,
@@ -44,7 +37,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 		}));
 	});
 
-	// Deduplicate blog routes by URL (both locales may share same slug)
 	const seen = new Set<string>();
 	const uniqueBlogRoutes = blogRoutes.filter((r) => {
 		if (seen.has(r.url)) return false;

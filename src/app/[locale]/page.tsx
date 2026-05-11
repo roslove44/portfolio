@@ -7,19 +7,12 @@ import Projects from "@/components/sections/projects";
 import Resume from "@/components/sections/resume";
 import Blog from "@/components/sections/blog";
 import { SITE_URL } from "@/data/constants";
+import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
 	const { locale } = await params;
-	const url = `${SITE_URL}/${locale}`;
 	return {
-		alternates: {
-			canonical: url,
-			languages: {
-				en: `${SITE_URL}/en`,
-				fr: `${SITE_URL}/fr`,
-				"x-default": `${SITE_URL}/en`,
-			},
-		},
+		alternates: buildMetadataAlternates(locale),
 	};
 }
 
@@ -27,7 +20,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 	const { locale } = await params;
 	setRequestLocale(locale);
 
-	const url = `${SITE_URL}/${locale}`;
+	const url = localeUrl(locale);
 	const profilePageLd = {
 		"@context": "https://schema.org",
 		"@type": "ProfilePage",
