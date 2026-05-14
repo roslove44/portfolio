@@ -1,0 +1,151 @@
+---
+title: "Docker sur Windows mange ta RAM : voici comment le limiter"
+date: "2026-05-14"
+description: "vmmem qui explose dans le Gestionnaire des tâches ? Sur Windows avec Docker Desktop (WSL 2), un simple fichier .wslconfig suffit à reprendre le contrôle de ta mémoire."
+tags: ["docker", "windows", "wsl2", "performance", "devtools"]
+cover: "/blog/docker-memory-limit-windows-wsl2/docker_ressources.webp"
+draft: false
+---
+
+En 2026, une machine de dev Windows ressemble à peu près à ça : Chrome avec ses dizaines d'onglets, VS Code et ses extensions, Docker avec ses containers qui tournent, et depuis quelque temps Claude Code qui vit dans le terminal. Même avec 16 Go de RAM, le Gestionnaire des tâches peut vite devenir stressant.
+
+Et au milieu de tout ça, un nom revient régulièrement en haut de la liste : **`vmmem`**.
+
+---
+
+## Ce qu'est vmmem (et pourquoi il consomme autant)
+
+`vmmem` n'est pas un bug, c'est le processus Windows qui représente la mémoire consommée par la machine virtuelle Linux que fait tourner **WSL 2** (Windows Subsystem for Linux).
+
+Quand tu lances Docker Desktop en mode WSL 2, Docker ne tourne pas directement sous Windows. Il tourne à l'intérieur d'une VM Linux gérée par WSL. Et par défaut, WSL 2 peut s'allouer jusqu'à **50 % de la RAM totale de ta machine**.
+
+Sur 16 Go : jusqu'à 8 Go pour WSL seul. Ajoute Windows OS, Chrome, VS Code et Claude Code. La saturation arrive vite.
+
+---
+
+## Docker Desktop te le dit lui-même
+
+Si tu ouvres Docker Desktop > **Settings > Resources > Advanced**, tu tombes directement sur ce message :
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/docker_ressources.webp"
+  alt="Docker Desktop Settings > Resources, message WSL 2 et Resource Saver"
+  caption="Docker te renvoie vers .wslconfig pour gérer les limites mémoire"
+/>
+
+> *You are using the WSL 2 backend, so resource limits are managed by Windows. You can configure limits on the memory, CPU, and swap size allocated to WSL 2 in a .wslconfig file.*
+
+Docker ne gère pas lui-même les limites quand il utilise WSL 2. C'est Windows, via le fichier `.wslconfig`, qui a la main.
+
+---
+
+## La solution : créer `.wslconfig`
+
+Le fichier `.wslconfig` n'existe pas par défaut sur ta machine. Il faut le créer manuellement dans ton répertoire utilisateur : `C:\Users\<Username>\.wslconfig`.
+
+### Config pour 8 Go de RAM
+
+```ini
+# S'applique à toutes les distributions Linux tournant sous WSL 2
+[wsl2]
+# Plafond de RAM alloué à la VM (défaut : 50% de la RAM totale)
+memory=2GB
+# Espace disque utilisé comme RAM de débordement (défaut : 25% de la RAM)
+swap=1GB
+# Nombre de processeurs logiques accessibles à WSL (défaut : tous)
+processors=2
+
+[experimental]
+# Libère progressivement la mémoire cache quand WSL est moins actif
+autoMemoryReclaim=gradual
+```
+
+### Config pour 16 Go de RAM
+
+```ini
+# S'applique à toutes les distributions Linux tournant sous WSL 2
+[wsl2]
+# Plafond de RAM alloué à la VM (défaut : 50% de la RAM totale)
+memory=4GB
+# Espace disque utilisé comme RAM de débordement (défaut : 25% de la RAM)
+swap=2GB
+# Nombre de processeurs logiques accessibles à WSL (défaut : tous)
+processors=4
+
+[experimental]
+# Libère progressivement la mémoire cache quand WSL est moins actif
+autoMemoryReclaim=gradual
+```
+
+**Ce que font ces paramètres :**
+
+- **`memory`** : plafond de RAM alloué à la VM WSL 2. Docker tourne confortablement dans 2 à 4 Go selon ta charge de travail.
+- **`swap`** : espace disque utilisé comme RAM de débordement. Un SSD le supporte, mais inutile d'en réserver plus que nécessaire.
+- **`processors`** : nombre de processeurs logiques accessibles à WSL. Pour du dev local, 2 à 4 cœurs suffisent largement.
+- **`autoMemoryReclaim=gradual`** : WSL libère progressivement la mémoire cache quand il est moins actif, au lieu de la conserver indéfiniment. *Note : depuis les dernières versions de WSL, la valeur par défaut est `dropCache` (libération immédiate et plus agressive). `gradual` est plus doux sur les performances pendant que tu travailles.*
+
+---
+
+## Appliquer les changements
+
+Les modifications du fichier `.wslconfig` ne prennent pas effet immédiatement. WSL doit être complètement arrêté puis redémarré.
+
+**La règle des 8 secondes :** il faut attendre que la VM s'arrête totalement, ce qui prend environ 8 secondes après la fermeture de toutes les instances WSL.
+
+Le plus simple en PowerShell :
+
+```powershell
+wsl --shutdown
+```
+
+Puis relance Docker Desktop. `vmmem` réapparaîtra dans le Gestionnaire des tâches, mais cette fois dans les limites que tu as définies.
+
+Tu peux vérifier que WSL est bien arrêté avant de redémarrer :
+
+```powershell
+wsl --list --running
+```
+
+Si la réponse est *"There are no running distributions."*, tu peux relancer.
+
+---
+
+## Alternative : WSL Settings (sans toucher au fichier)
+
+Si tu préfères une interface graphique, Windows 11 embarque une application **WSL Settings** accessible directement depuis le menu Démarrer.
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/search_wsl_settings.webp"
+  alt="Recherche 'wsl settings' dans le menu Démarrer Windows 11"
+  caption="Tape 'wsl settings' dans le menu Démarrer"
+/>
+
+Dans la section **Mémoire et processeur**, tu retrouves exactement les mêmes paramètres, mais sous forme de champs éditables. Les modifications sont répercutées dans `.wslconfig` automatiquement.
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/wsl_settings_interface.webp"
+  alt="WSL Settings, section Mémoire et processeur sous Windows 11"
+  caption="WSL Settings > Mémoire et processeur : la même config, sans éditeur de texte"
+/>
+
+---
+
+## Bonus : le Resource Saver de Docker Desktop
+
+Toujours dans Docker Settings > Resources, tu as peut-être remarqué la section **Resource Saver**. C'est une fonctionnalité de Docker Desktop qui réduit automatiquement la consommation CPU et mémoire quand aucun container ne tourne, et la désactive dès qu'un container redémarre.
+
+Le curseur par défaut est à 30 secondes d'inactivité. C'est un complément utile à `.wslconfig` : WSL garde ses limites définies, et Docker lâche encore plus de ressources quand il est inactif.
+
+---
+
+## Résultat
+
+Après `wsl --shutdown` et redémarrage de Docker, `vmmem` reste dans les clous. Le reste de tes applications retrouve de l'air.
+
+Un seul fichier, quelques lignes, et ton setup Windows redevient utilisable même quand tout tourne en même temps.
+
+---
+
+**Source officielle :**
+
+- [Microsoft : Configuration avancée de WSL via .wslconfig](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig)

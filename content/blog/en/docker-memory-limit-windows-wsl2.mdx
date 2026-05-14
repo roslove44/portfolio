@@ -1,0 +1,151 @@
+---
+title: "Docker on Windows is eating your RAM: here's how to fix it"
+date: "2026-05-14"
+description: "vmmem blowing up in Task Manager? On Windows with Docker Desktop (WSL 2), a single .wslconfig file is all it takes to take back control of your memory."
+tags: ["docker", "windows", "wsl2", "performance", "devtools"]
+cover: "/blog/docker-memory-limit-windows-wsl2/docker_ressources.webp"
+draft: false
+---
+
+In 2026, a Windows dev machine looks something like this: Chrome with dozens of tabs, VS Code and its extensions, Docker with containers running, and more recently Claude Code living in the terminal. Even with 16 GB of RAM, Task Manager can get stressful fast.
+
+And right there at the top of the list, one name keeps showing up: **`vmmem`**.
+
+---
+
+## What vmmem is (and why it consumes so much)
+
+`vmmem` is not a bug. It is the Windows process that represents the memory consumed by the Linux virtual machine running inside **WSL 2** (Windows Subsystem for Linux).
+
+When you launch Docker Desktop in WSL 2 mode, Docker does not run directly on Windows. It runs inside a Linux VM managed by WSL. And by default, WSL 2 can allocate up to **50% of your machine's total RAM**.
+
+On 16 GB: up to 8 GB for WSL alone. Add Windows OS, Chrome, VS Code, and Claude Code. Saturation comes quickly.
+
+---
+
+## Docker Desktop tells you itself
+
+Open Docker Desktop > **Settings > Resources > Advanced**, and you land directly on this message:
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/docker_ressources.webp"
+  alt="Docker Desktop Settings > Resources, WSL 2 message and Resource Saver"
+  caption="Docker points you to .wslconfig for memory limit configuration"
+/>
+
+> *You are using the WSL 2 backend, so resource limits are managed by Windows. You can configure limits on the memory, CPU, and swap size allocated to WSL 2 in a .wslconfig file.*
+
+Docker does not manage its own limits when using WSL 2. Windows does, via the `.wslconfig` file.
+
+---
+
+## The fix: create `.wslconfig`
+
+The `.wslconfig` file does not exist by default on your machine. You need to create it manually in your user directory: `C:\Users\<Username>\.wslconfig`.
+
+### Config for 8 GB of RAM
+
+```ini
+# Applies to all Linux distributions running on WSL 2
+[wsl2]
+# RAM ceiling allocated to the VM (default: 50% of total RAM)
+memory=2GB
+# Disk space used as overflow RAM (default: 25% of total RAM)
+swap=1GB
+# Number of logical processors accessible to WSL (default: all)
+processors=2
+
+[experimental]
+# Gradually reclaims cached memory when WSL is less active
+autoMemoryReclaim=gradual
+```
+
+### Config for 16 GB of RAM
+
+```ini
+# Applies to all Linux distributions running on WSL 2
+[wsl2]
+# RAM ceiling allocated to the VM (default: 50% of total RAM)
+memory=4GB
+# Disk space used as overflow RAM (default: 25% of total RAM)
+swap=2GB
+# Number of logical processors accessible to WSL (default: all)
+processors=4
+
+[experimental]
+# Gradually reclaims cached memory when WSL is less active
+autoMemoryReclaim=gradual
+```
+
+**What each setting does:**
+
+- **`memory`**: RAM ceiling for the WSL 2 VM. Docker runs comfortably within 2 to 4 GB depending on your workload.
+- **`swap`**: disk space used as overflow RAM. An SSD handles it fine, but no need to reserve more than necessary.
+- **`processors`**: number of logical processors accessible to WSL. For local development, 2 to 4 cores is plenty.
+- **`autoMemoryReclaim=gradual`**: WSL gradually releases cached memory when less active, instead of holding onto it indefinitely. *Note: recent versions of WSL default to `dropCache` (immediate and more aggressive release). `gradual` is gentler on performance while you are actively working.*
+
+---
+
+## Applying the changes
+
+Changes to `.wslconfig` do not take effect immediately. WSL needs to be fully stopped and restarted.
+
+**The 8-second rule:** you need to wait for the VM to shut down completely, which takes about 8 seconds after closing all WSL instances.
+
+The simplest way, in PowerShell:
+
+```powershell
+wsl --shutdown
+```
+
+Then relaunch Docker Desktop. `vmmem` will reappear in Task Manager, but this time within the limits you defined.
+
+You can verify WSL has fully stopped before relaunching:
+
+```powershell
+wsl --list --running
+```
+
+If the response is *"There are no running distributions."*, you are good to go.
+
+---
+
+## Alternative: WSL Settings (no file editing required)
+
+If you prefer a graphical interface, Windows 11 ships with a **WSL Settings** app accessible directly from the Start menu.
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/search_wsl_settings.webp"
+  alt="Searching 'wsl settings' in the Windows 11 Start menu"
+  caption="Type 'wsl settings' in the Start menu"
+/>
+
+In the **Memory and processor** section, you get the exact same parameters as editable fields. Changes are written back to `.wslconfig` automatically.
+
+<BlogImage
+  src="/blog/docker-memory-limit-windows-wsl2/wsl_settings_interface.webp"
+  alt="WSL Settings, Memory and processor section on Windows 11"
+  caption="WSL Settings > Memory and processor: the same config, no text editor needed"
+/>
+
+---
+
+## Bonus: Docker Desktop Resource Saver
+
+Still in Docker Settings > Resources, you may have noticed the **Resource Saver** section. This Docker Desktop feature automatically reduces CPU and memory usage when no containers are running, and disables itself as soon as a container starts back up.
+
+The default timer is 30 seconds of inactivity. It is a useful complement to `.wslconfig`: WSL stays within its defined limits, and Docker releases even more resources when it is idle.
+
+---
+
+## Result
+
+After `wsl --shutdown` and restarting Docker, `vmmem` stays in check. The rest of your applications get their breathing room back.
+
+One file, a few lines, and your Windows machine becomes usable again even when everything is running at once.
+
+---
+
+**Official reference:**
+
+- [Microsoft: Advanced settings configuration in WSL (.wslconfig)](https://learn.microsoft.com/en-us/windows/wsl/wsl-config#configure-global-options-with-wslconfig)
