@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
+import remarkGfm from "remark-gfm";
 import type { Metadata, ResolvingMetadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
@@ -163,6 +164,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 					components={mdxComponents}
 					options={{
 						mdxOptions: {
+							remarkPlugins: [remarkGfm],
 							rehypePlugins: [
 								[rehypePrettyCode, {
 									theme: "github-dark-dimmed",

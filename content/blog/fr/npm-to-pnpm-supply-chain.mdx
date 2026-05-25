@@ -1,0 +1,221 @@
+---
+title: "npm te laisse vulnérable : Comment migrer vers pnpm ?"
+date: "2026-05-25"
+description: "Axios, TanStack, @antv : en 2026, les attaques supply chain npm se multiplient via les scripts postinstall. pnpm bloque ça nativement depuis la v10. Voici comment migrer."
+tags: ["pnpm", "npm", "security", "supply-chain", "devtools"]
+cover: "/blog/npm-to-pnpm-supply-chain/cover.webp"
+draft: false
+---
+
+En mars 2026, le token npm d'un mainteneur axios est compromis. En quelques heures, une dépendance malveillante avec un script `postinstall` est publiée sur le registre. Le script déploie un RAT (Remote Access Trojan) sur les machines de chaque développeur qui fait un `npm install` (Windows, macOS, Linux). Fenêtre d'exposition : 3 heures. Packages téléchargés par semaine : **100 millions**.<br />Deux mois plus tard, rebelote avec TanStack (42 packages, 84 versions vérolées en 6 minutes) puis avec les packages @antv (639 versions en 22 minutes). Le point commun : le registre npm, et la confiance aveugle qu'on lui accorde à chaque `install`.
+
+---
+
+## Le vrai problème : npm exécute du code sans te demander
+
+Quand tu fais `npm install`, npm exécute automatiquement les scripts `preinstall`, `install` et `postinstall` de chaque dépendance installée, avec tes permissions, dans ton environnement, avec accès à tes variables d'environnement, tes fichiers `.env`, tes clés SSH et tes tokens CI/CD.
+
+C'est conçu pour des cas légitimes : compiler des binaires natifs, générer des types, etc. Mais c'est aussi le vecteur utilisé dans la quasi-totalité des attaques supply chain récentes.
+
+```bash
+# Ce que npm fait silencieusement à chaque install
+npm install some-package
+# → télécharge le package
+# → exécute preinstall (si défini)
+# → exécute install (si défini)
+# → exécute postinstall (si défini)  ← le danger est ici
+# → continue avec les dépendances suivantes
+```
+
+La seule protection native de npm est `--ignore-scripts`, qui désactive tous les scripts globalement, y compris ceux des packages légitimes qui en ont besoin (esbuild, sharp, etc.). C'est trop radical pour être utilisable en pratique.
+
+---
+
+## pnpm inverse le modèle
+
+Depuis **pnpm v10** (sorti début 2025 en réponse directe à l'attaque Rspack), les scripts lifecycle des dépendances sont **bloqués par défaut**. Aucune configuration requise. Tu accordes explicitement la permission aux packages qui en ont besoin, pas l'inverse.
+
+|                                                | npm          | pnpm v10+                                   |
+| ---------------------------------------------- | ------------ | ------------------------------------------- |
+| Scripts `postinstall` par défaut               | **Exécutés** | **Bloqués**                                 |
+| Allowlist par package                          | Non          | `onlyBuiltDependencies` (v10) / `allowBuilds` (v11) |
+| Échec CI sur script non reviewé                | Non          | `strictDepBuilds: true`                     |
+| Délai avant installation d'une version récente | Non          | `minimumReleaseAge` (24h par défaut en v11) |
+| Blocage des dépendances git/tarball            | Non          | `blockExoticSubdeps: true`                  |
+| Structure `node_modules` stricte               | Non          | Oui (pas de phantom dependencies)           |
+
+Sur les attaques récentes : axios, @cap-js/\* SAP et TrapDoor utilisaient tous un `postinstall` ou `preinstall` comme vecteur. Avec pnpm v10+, ces scripts n'auraient pas été exécutés.
+
+---
+
+## Ce que tu gagnes au-delà de la sécurité
+
+La sécurité est la raison de migrer maintenant, mais pnpm est objectivement meilleur sur d'autres points.
+
+**Espace disque.** pnpm utilise un store global content-addressable avec des hard links. Une version d'un package n'est stockée qu'une seule fois sur ta machine, peu importe le nombre de projets qui l'utilisent.
+
+**Vitesse.** Les installations sont significativement plus rapides après la première, car pnpm réutilise les packages déjà présents dans le store plutôt que de les retélécharger.
+
+**Dépendances strictes.** La structure `node_modules` de pnpm est non-aplatie : un package ne peut accéder qu'à ses dépendances explicitement déclarées. Impossible d'utiliser accidentellement un package non listé dans ton `package.json`, ce qui évite une classe entière de bugs silencieux.
+
+**Monorepo natif.** Le flag `-r` (recursive) et le support des workspaces est de première classe, sans plugins supplémentaires.
+
+---
+
+## Migrer un projet existant : step by step
+
+### 1. Installer pnpm
+
+```bash
+npm install -g pnpm
+```
+
+Ou via le script officiel (recommandé pour éviter les droits root) :
+
+```bash
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+```
+
+Vérifie l'installation :
+
+```bash
+pnpm --version
+```
+
+### 2. Importer le lockfile existant
+
+Avant de supprimer quoi que ce soit, utilise `pnpm import` pour générer un `pnpm-lock.yaml` à partir de ton `package-lock.json` existant. Cette commande reproduit les versions exactes déjà résolues plutôt que de tout recalculer depuis les ranges du `package.json`.
+
+```bash
+pnpm import
+```
+
+### 3. Supprimer les artefacts npm
+
+```bash
+rm -rf node_modules
+rm package-lock.json
+```
+
+### 4. Installer les dépendances avec pnpm
+
+```bash
+pnpm install --frozen-lockfile
+```
+
+`--frozen-lockfile` force l'installation à partir du `pnpm-lock.yaml` généré à l'étape précédente, sans recalculer les versions. Committe ce fichier : c'est ton nouveau lockfile.
+
+### 5. Vérifier les scripts du package.json
+
+Dans la section `scripts` de ton `package.json`, les commandes `npm run` deviennent `pnpm run` (ou simplement `pnpm` suivi du nom du script) :
+
+```bash
+# Dans le terminal (et dans les scripts internes du package.json)
+
+# Avant
+npm run dev
+npm run build
+npm run lint
+
+# Après
+pnpm dev
+pnpm build
+pnpm lint
+```
+
+### 6. Mettre à jour le CI/CD
+
+Si tu utilises GitHub Actions, remplace les étapes d'installation :
+
+```yaml
+# Avant
+- name: Install dependencies
+  run: npm ci
+
+# Après
+- uses: pnpm/action-setup@v4
+  with:
+    version: latest
+
+- name: Install dependencies
+  run: pnpm install --frozen-lockfile
+```
+
+### 7. Configurer la sécurité (recommandé)
+
+Ajoute cette section dans ton `package.json` pour déclarer explicitement les packages autorisés à exécuter des scripts de build :
+
+```json
+{
+  "pnpm": {
+    "onlyBuiltDependencies": ["esbuild", "sharp", "@swc/core"]
+  }
+}
+```
+
+Seuls les packages listés ici peuvent exécuter leurs scripts lifecycle. Tout le reste est bloqué silencieusement.
+
+Note : `onlyBuiltDependencies` est la syntaxe pnpm v10. En **pnpm v11**, ce champ est remplacé par `allowBuilds`.
+
+---
+
+## Migrer avec un agent IA
+
+Si tu as plusieurs projets à migrer, tu peux déléguer l'essentiel à un agent IA. Voici le prompt à donner à Claude Code ou tout agent avec accès à ton filesystem :
+
+<PromptBlock>
+You are a Node.js expert. Fully migrate this project from npm to pnpm.
+
+Start by analyzing:
+
+- The package.json and all its scripts
+- CI/CD files (.github/workflows/, .gitlab-ci.yml, etc.)
+- Dockerfiles using npm or node
+- Any existing .npmrc files
+- README files mentioning npm commands
+
+Then execute in order:
+
+1. Run pnpm import to generate pnpm-lock.yaml from the existing package-lock.json (preserves exact resolved versions)
+2. Delete node_modules/ and package-lock.json
+3. Run pnpm install --frozen-lockfile
+3. Replace all "npm run" occurrences with "pnpm" in package.json scripts
+4. Update GitHub Actions files: add the pnpm/action-setup@v4 step before install, replace "npm ci" with "pnpm install --frozen-lockfile", replace "npm run script" with "pnpm script"
+5. In Dockerfiles, replace "RUN npm install" with "RUN npm install -g pnpm && pnpm install", "RUN npm ci" with "RUN pnpm install --frozen-lockfile", "RUN npm run build" with "RUN pnpm build"
+6. Add a pnpm.onlyBuiltDependencies section in package.json listing packages that legitimately need build scripts (esbuild, sharp, @swc/core, canvas, etc., check case by case)
+7. Remove .npmrc if it only contains standard registry config
+
+</PromptBlock>
+
+---
+
+## Les autres alternatives
+
+pnpm n'est pas la seule solution : Yarn Berry, Bun et Deno avancent aussi sur ce terrain. Mais chacun a ses compromis.
+
+| Outil | Scripts bloqués par défaut | Mécanisme d'allowlist | Nuance |
+|---|---|---|---|
+| **Yarn Berry v4** | Oui (`enableScripts: false`) | Par package dans `.yarnrc.yml` | Bugs de contournement connus avec les lockfiles v1 |
+| **Bun** | Oui (top ~366 packages auto-approuvés) | `trustedDependencies` dans `package.json` | Vérification par nom uniquement, pas par contenu (faille PackageGate patchée en v1.3.5) |
+| **Deno** | Oui (le plus strict) | `--allow-scripts` + `deno.json` | Forte friction avec les packages à addons natifs (Prisma, esbuild...) |
+
+pnpm reste actuellement le meilleur équilibre entre sécurité, compatibilité avec l'écosystème npm existant et facilité de migration. Deno est techniquement plus strict, mais son modèle de permissions ajoute une friction réelle sur les projets brownfield.
+
+---
+
+## Une limite à garder en tête
+
+pnpm bloque les scripts malveillants, mais il ne protège pas quand le code malveillant est injecté directement dans le package lui-même. C'est ce qui s'est passé avec TanStack et @antv : les versions publiées sur le registre npm étaient compromises au niveau du code source, avant même que le postinstall entre en jeu.
+
+Pour ce vecteur, la protection complémentaire est [Socket.dev](https://socket.dev), un outil qui analyse les packages avant installation et détecte les comportements suspects dans le code (appels réseau inattendus, lecture de fichiers système, obfuscation, etc.).
+
+pnpm + Socket.dev couvre l'essentiel de la surface d'attaque actuelle.
+
+---
+
+**Sources :**
+
+- [pnpm Supply Chain Security](https://pnpm.io/supply-chain-security)
+- [pnpm v10 : scripts bloqués par défaut](https://socket.dev/blog/pnpm-10-0-0-blocks-lifecycle-scripts-by-default)
+- [GHSA-fw8c-xr5c-95f9 : axios supply chain](https://github.com/advisories/GHSA-fw8c-xr5c-95f9)
+- [CVE-2026-45321 : TanStack Router](https://github.com/TanStack/router/security/advisories/GHSA-g7cv-rxg3-hmpx)
