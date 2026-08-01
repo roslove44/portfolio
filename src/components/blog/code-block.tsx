@@ -20,9 +20,12 @@ export default function CodeBlock({ children, "data-language": lang, ...props }:
 				)}
 				<CopyButton preRef={preRef} />
 			</div>
-			<pre ref={preRef} {...props} className="overflow-x-auto text-sm leading-relaxed" style={{ padding: "20px" }}>
-				{children}
-			</pre>
+			<div className="terminal-scroll relative max-h-[480px] overflow-y-auto">
+				<pre ref={preRef} {...props} className="overflow-x-auto text-sm leading-relaxed" style={{ padding: "20px" }}>
+					{children}
+				</pre>
+				<div className="pointer-events-none sticky bottom-0 -mt-10 h-10 bg-linear-to-t from-terminal-bg to-transparent" />
+			</div>
 		</div>
 	);
 }

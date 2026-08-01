@@ -8,6 +8,22 @@ import Lead from "./lead";
 
 export const mdxComponents: MDXComponents = {
 	pre: (props) => <CodeBlock {...props} />,
+	figure: (props) =>
+		"data-rehype-pretty-code-figure" in props ? (
+			<figure className="my-6 [&>div]:my-0 [&:has(figcaption)>div]:rounded-t-none" {...props} />
+		) : (
+			<figure {...props} />
+		),
+	figcaption: (props) =>
+		"data-rehype-pretty-code-title" in props ? (
+			<figcaption
+				className="rounded-t-lg bg-terminal-header px-4 py-2 font-mono text-xs tracking-wide text-terminal-text-muted"
+				style={{ marginTop: 0, marginBottom: 0 }}
+				{...props}
+			/>
+		) : (
+			<figcaption {...props} />
+		),
 	table: (props) => (
 		<div className="my-6 overflow-x-auto rounded-lg border border-border">
 			<table className="w-full border-collapse text-sm" {...props} 

@@ -10,6 +10,7 @@ import { getBlogPost, getAllSlugs } from "@/lib/blog";
 import { getReadingTime } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
+import BlogCover from "@/components/blog/blog-cover";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/data/constants";
 import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
@@ -157,6 +158,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 					</div>
 				)}
 			</header>
+
+			{post.cover && <BlogCover src={post.cover} alt={post.title} />}
 
 			<div className="prose prose-neutral dark:prose-invert max-w-none prose-headings:tracking-tight prose-a:text-accent prose-a:no-underline hover:prose-a:underline prose-pre:m-0 prose-pre:bg-transparent prose-pre:p-0 prose-code:before:content-none prose-code:after:content-none">
 				<MDXRemote
