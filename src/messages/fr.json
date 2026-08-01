@@ -132,10 +132,9 @@
       "type": "Package open source",
       "summary": "Un fichier .tsx, une image : Open Graph, posts sociaux, bannières. Tes visuels deviennent du code, sans Figma ni navigateur.",
       "desc": [
-        "Tu écris un composant React, tu obtiens une image. La preview se recharge à chaque sauvegarde, le build exporte tous les PNG d'un coup.",
-        "Sous le capot, le moteur d'images de `next/og` (Satori et resvg), utilisable sans Next.",
-        "Les skills fournies donnent à ton agent IA les dimensions officielles de chaque plateforme : Open Graph, LinkedIn, Facebook, X.",
-        "`npx create-brand-artisan my-visuals` pour démarrer. Sur npm, en MIT."
+        "Tu écris un composant React, tu obtiens une image. Plus besoin d'ouvrir Figma pour tes og:image, posts LinkedIn ou bannières.",
+        "Ta charte (couleurs, logo, typo) est écrite une fois. Tous les visuels s'y collent, sans improvisation.",
+        "Ton agent IA connaît les bonnes dimensions et peut décliner un brief en kit complet pour chaque plateforme."
       ]
     },
     "comptaopen": {

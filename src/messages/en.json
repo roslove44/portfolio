@@ -132,10 +132,9 @@
       "type": "Open source package",
       "summary": "One .tsx file, one image : Open Graph, social posts, banners. Your visuals become code, no Figma, no browser.",
       "desc": [
-        "You write a React component, you get an image. The preview reloads on every save, the build exports every PNG at once.",
-        "Under the hood, the image engine behind `next/og` (Satori and resvg), usable without Next.",
-        "The bundled skills give your AI agent each platform's official dimensions : Open Graph, LinkedIn, Facebook, X.",
-        "`npx create-brand-artisan my-visuals` to start. On npm, MIT."
+        "You write a React component, you get an image. No more opening Figma for your og:images, LinkedIn posts, or banners.",
+        "Your brand guidelines (colors, logo, type) are written once. Every visual sticks to them, no freestyling.",
+        "Your AI agent knows the right dimensions and can turn a brief into a full kit for every platform."
       ]
     },
     "comptaopen": {
