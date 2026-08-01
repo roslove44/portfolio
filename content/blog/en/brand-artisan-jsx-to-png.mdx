@@ -1,0 +1,241 @@
+---
+title: "BrandArtisan: JSX in, image out"
+date: "2026-08-01"
+description: "og:image files, LinkedIn visuals, banners: the chores we push to the end of every project. BrandArtisan turns them into React components exported as PNG, no Figma, no browser."
+tags: ["react", "satori", "og-image", "branding", "open-source"]
+cover: "/blog/brand-artisan-jsx-to-png/cover.png"
+draft: false
+---
+
+There are tasks every developer postpones. Not because they are hard, but because they are tedious. Crafting `og:image` files is one of them: the project is done, the code is clean, everything works, and that one line still sits in the todo. Open Figma or Canva, dig up the brand guidelines, realign the logo, export, repeat for every page. When you are an indie hacker shipping alone, that line can linger for weeks.
+
+I will admit it: I found this painful, really painful. Until I discovered `next/og` in Next.js, which let me generate those images in no time, with plain JSX. And then a question hit me: what if I turned this into a standalone tool? Not just for Open Graph, but for visuals at large: LinkedIn posts, banners, carousels, flyers. All of it versioned in a repo, like the rest of the code.
+
+That is how [BrandArtisan](https://github.com/roslove44/brand-artisan) was born.
+
+---
+
+## The spark: next/og
+
+`next/og` is built on two open source libraries from Vercel: **Satori**, which turns a flexbox-styled JSX tree into SVG, and **resvg**, which rasterizes that SVG into PNG. No headless browser, no `react-dom`, no screenshots: just a rendering engine that reads your components and outputs pixels.
+
+The catch is that `next/og` lives inside Next.js, designed to serve images on the fly through routes. But a brand visual is nothing like a route: it is a file you want to preview while you write it, then export once and for all.
+
+So BrandArtisan takes that engine out of Next: the exact same rendering, in a workshop dedicated to your visuals.
+
+---
+
+## JSX in, image out
+
+The principle fits in one sentence: **one `.tsx` file, one image**. If you can write a React component, you already know how to make your visuals.
+
+```bash title="installation"
+npx create-brand-artisan my-visuals
+```
+
+```bash title="preview and export"
+cd my-visuals
+npm run dev    # preview at http://localhost:4000
+npm run build  # exports every PNG to out/
+```
+
+The generated project contains only your brand: the guidelines, the visuals, the asset scripts and the fonts. `npm run dev` starts a small server that lists your templates and reloads the preview on every save. You write your JSX on one side, you see the image on the other, exactly like building a UI.
+
+<BlogImage src="/blog/brand-artisan-jsx-to-png/preview-view.webp" alt="The BrandArtisan preview server showing a template rendered as PNG" caption="npm run dev: every template is rendered and reloaded on save." />
+
+When everything looks right, `npm run build` exports the whole set as PNG into `out/`. No manual exports, no "final version v3 (2).png".
+
+---
+
+## One .tsx file, one image
+
+Each visual is a file under `templates/<project>/` that default-exports a `Template`: a size, a title and a render function.
+
+```tsx title="templates/<project>/my-visual.tsx"
+export default { size: { width: 1200, height: 630 }, title, render } satisfies Template;
+```
+
+Satori enforces three rules, always the same:
+
+- any element with several children must be `display: flex`;
+- fonts are explicit: drop `Sora-700.ttf` into `fonts/` and reference it by name;
+- images are embedded as data URIs, not file paths.
+
+Once those rules sink in, everything else is ordinary React: constants, maps, layout math. And that is where it gets interesting.
+
+---
+
+## A real example: the repository's social preview
+
+Here is the template that produced the GitHub social preview of BrandArtisan itself, at 1280x640. Look at what a code file lets you do that no drawing tool does: the three vertical gaps come out of the same division, so they cannot drift apart; the text block's height is computed from the type itself.
+
+```tsx title="templates/brand-artisan/github-social-preview.tsx"
+import type { ReactNode } from "react";
+import { readFile } from "node:fs/promises";
+import { brand, type Template } from "brand-artisan";
+
+const SIZE = { width: 1280, height: 640 };
+
+const INK = "#171412";
+const PAPER = "#faf9f7";
+const MUTED_DARK = "#a8a29e";
+const RULE_DARK = "#292524";
+
+const PAD = 80;
+
+const logoSvg = await readFile(brand("brand-artisan/logo/logo-dark.svg"));
+const logoSrc = `data:image/svg+xml;base64,${logoSvg.toString("base64")}`;
+const LOGO = { width: 330, height: 38 };
+
+const HERO = 116;
+const HERO_LEADING = 1.05;
+const SUB = 32;
+const SUB_LEADING = 1.4;
+const SUB_LINES = 2;
+const SUB_WIDTH = 900;
+const SUB_GAP = 28;
+
+const BLOCK = HERO * HERO_LEADING + SUB_GAP + SUB * SUB_LEADING * SUB_LINES;
+const GAP = (SIZE.height - LOGO.height - BLOCK) / 3;
+
+const GRID_TOP = Math.round(GAP + LOGO.height * 2);
+const GRID = [320, 560, 800, 1040];
+
+function render(): ReactNode {
+	return (
+		<div
+			style={{
+				width: "100%",
+				height: "100%",
+				display: "flex",
+				flexDirection: "column",
+				position: "relative",
+				paddingTop: GAP,
+				paddingLeft: PAD,
+				paddingRight: PAD,
+				backgroundColor: INK,
+			}}
+		>
+			{GRID.map((x) => (
+				<div
+					key={x}
+					style={{
+						position: "absolute",
+						top: GRID_TOP,
+						left: x,
+						width: 1,
+						height: SIZE.height - GRID_TOP,
+						backgroundColor: RULE_DARK,
+					}}
+				/>
+			))}
+
+			<img src={logoSrc} width={LOGO.width} height={LOGO.height} alt="BrandArtisan" />
+
+			<div style={{ display: "flex", flexDirection: "column", marginTop: GAP }}>
+				<div
+					style={{
+						display: "flex",
+						fontFamily: "Sora",
+						fontWeight: 700,
+						fontSize: HERO,
+						letterSpacing: -4,
+						lineHeight: HERO_LEADING,
+						color: PAPER,
+					}}
+				>
+					JSX in, image out.
+				</div>
+				<div
+					style={{
+						display: "flex",
+						marginTop: SUB_GAP,
+						maxWidth: SUB_WIDTH,
+						fontFamily: "Geist",
+						fontWeight: 400,
+						fontSize: SUB,
+						lineHeight: SUB_LEADING,
+						color: MUTED_DARK,
+					}}
+				>
+					One .tsx file, one image. Open Graph, social posts, banners, carousels. Rendered by next/og's engine, outside Next.
+				</div>
+			</div>
+
+		</div>
+	);
+}
+
+export default { size: SIZE, title: "GitHub social preview", render } satisfies Template;
+```
+
+Changing the title size recomputes the spacing. Changing the palette means editing four constants. And all of it lives in git: every visual has a history, a diff, a possible review. Try doing that with a `.psd`.
+
+---
+
+## Guidelines before pixels
+
+A tool that renders images is not enough: without guardrails, every new visual reinvents the brand. So BrandArtisan organizes each brand as a full project:
+
+- `brands/<project>/brand.md`: palette, logo, typography. This file is **blocking**: no visual without guidelines;
+- `brands/<project>/project.md`: tone, audience, claims;
+- `templates/<project>/`: the visuals themselves;
+- `tools/<project>/`: asset generation, SVG logotypes, favicons, `.ico`.
+
+That constraint is not decorative. It prevents arbitrary design decisions, whether they come from you on a tired evening or from an AI agent feeling a bit too creative. The guidelines are written once, in markdown, and everyone follows them: humans and machines alike.
+
+---
+
+## Your AI agent already knows the right dimensions
+
+That is the other half of the project. I built a set of **skills** that encode each platform's official dimensions and safe zones, installable into Claude Code, Cursor, Copilot and other compatible agents:
+
+```bash title="skills installation"
+npx skills add roslove44/brand-artisan -s "*" -y
+```
+
+Once installed, your agent speaks fluent BrandArtisan:
+
+| Skill | What it produces |
+| --- | --- |
+| `/new-project` | A brand's guidelines, by interview or measured from your existing visuals |
+| `/new-template` | Any visual, aligned with those guidelines |
+| `/og-image` | A 1200x630 share image |
+| `/linkedin-post`, `/facebook-post`, `/x-post` | A post at each platform's official dimensions |
+| `/linkedin-carousel`, `/facebook-carousel`, `/x-carousel` | Carousel cards ready to publish |
+| `/campaign` | One brief, a coherent kit across every platform |
+| `/brand-assets` | Logo, favicon and their variants, generated rather than drawn |
+
+In practice: run `/campaign my-brand` with a feature announcement brief, and the agent rolls the same message out as an Open Graph image, a LinkedIn post, an X post and Facebook visuals, each at the right dimensions, all faithful to `brand.md`. The end-of-project chore becomes a command.
+
+---
+
+## Under the hood
+
+For the curious, the programmatic API imports directly:
+
+```tsx
+import { toPng, renderToFile, brand, root, type Template } from "brand-artisan";
+```
+
+- `Template`: the contract of a visual (size, title, render);
+- `brand(path)`: the path to your brand assets;
+- `root(path)`: resolution from the project root;
+- `toPng(node, size)`: JSX to a PNG `Buffer`;
+- `renderToFile(node, size & { out })`: writes the PNG to disk.
+
+The CLI completes the picture: `brand-artisan dev` for the render server, `brand-artisan build` for the export, and `brand-artisan colors <image> [count]` to measure the palette of an existing image, handy when you import a brand that never formalized its colors.
+
+Requirements: Node.js 22 or higher, TypeScript, React as JSX runtime only (no `react-dom`). All under the MIT license, with bundled fonts under the SIL Open Font License 1.1.
+
+---
+
+## What now
+
+BrandArtisan is [on npm](https://www.npmjs.com/package/brand-artisan) and the code is [on GitHub](https://github.com/roslove44/brand-artisan). It is young, it is open source, and feedback as well as contributions are welcome.
+
+Next time you find yourself postponing your `og:image` files to the end of a project, remember: you already know how to write a React component. So you already know how to make your visuals.
+
+```bash title="installation"
+npx create-brand-artisan my-visuals
+```
