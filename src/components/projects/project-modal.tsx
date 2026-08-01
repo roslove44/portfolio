@@ -3,9 +3,10 @@ import { useState, useCallback, useMemo } from "react";
 import { useTranslations } from "next-intl";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { AnimatePresence, motion } from "motion/react";
-import { ExternalLinkIcon, PlayIcon, XIcon as XMarkIcon } from "lucide-react";
+import { ArrowRight, BookOpenIcon, ExternalLinkIcon, PlayIcon, XIcon as XMarkIcon } from "lucide-react";
 import { GitHubAltIcon, GitHubIcon, LinkedInIcon, XIcon } from "@/components/ui/icons";
 import Image from "next/image";
+import { Link } from "@/i18n/navigation";
 import type { Project } from "@/data/projects";
 import Lightbox, { type Slide } from "@/components/ui/lightbox";
 import { toEmbedUrl } from "@/utils/video";
@@ -24,6 +25,19 @@ function buildSlides(project: { key: string; cover?: string; video?: string; ima
 		}
 	}
 	return slides;
+}
+
+// Renders `backticked` spans of a description as inline code
+function withInlineCode(text: string) {
+	return text.split(/`([^`]+)`/).map((part, i) =>
+		i % 2 === 1 ? (
+			<code key={i} className="rounded border border-border bg-surface px-1 py-px font-mono text-[11.5px] text-text-primary">
+				{part}
+			</code>
+		) : (
+			part
+		)
+	);
 }
 
 const COVER_MASK = "linear-gradient(rgb(0,0,0) 0%, rgba(0,0,0,0.99) 18.5%, rgba(0,0,0,0.953) 34.3%, rgba(0,0,0,0.894) 47.6%, rgba(0,0,0,0.824) 58.5%, rgba(0,0,0,0.74) 67.5%, rgba(0,0,0,0.647) 74.7%, rgba(0,0,0,0.55) 80.3%, rgba(0,0,0,0.45) 84.7%, rgba(0,0,0,0.353) 88%, rgba(0,0,0,0.26) 90.5%, rgba(0,0,0,0.176) 92.5%, rgba(0,0,0,0.106) 94.2%, rgba(0,0,0,0.047) 95.9%, rgba(0,0,0,0.01) 97.7%, transparent 100%)";
@@ -252,11 +266,26 @@ function ModalContent({ project, flip, onClose }: ModalContentProps) {
 									<div className="max-w-none">
 										{desc.map((paragraph, i) => (
 											<p key={i} className="text-sm text-shadow-text-primary leading-snug not-first:mt-2">
-												{paragraph}
+												{withInlineCode(paragraph)}
 											</p>
 										))}
 									</div>
 								</div>
+
+								{/* Related article */}
+								{project.blog && (
+									<Link
+										href={`/blog/${project.blog}`}
+										onClick={onClose}
+										className="group/article flex items-center justify-between gap-3 rounded-lg border border-accent/25 bg-accent/5 px-3 py-2.5 transition-colors hover:border-accent/50 hover:bg-accent/10"
+									>
+										<span className="flex items-center gap-2 text-[13px] font-medium text-text-primary">
+											<BookOpenIcon size={15} className="shrink-0 text-accent" aria-hidden="true" />
+											{t("readArticle")}
+										</span>
+										<ArrowRight size={15} className="shrink-0 text-accent transition-transform duration-200 group-hover/article:translate-x-0.5" aria-hidden="true" />
+									</Link>
+								)}
 
 								{/* Stack tags */}
 								<div className="mt-6 rounded-lg border border-terminal-border bg-terminal-bg p-2">

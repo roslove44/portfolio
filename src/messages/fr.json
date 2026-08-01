@@ -125,6 +125,19 @@
       "owner": "Propriétaire",
       "video": "Présentation"
     },
+    "readArticle": "Lire l'article",
+    "brand-artisan": {
+      "name": "BrandArtisan",
+      "role": "Créateur & Mainteneur",
+      "type": "Package open source",
+      "summary": "Un fichier .tsx, une image : Open Graph, posts sociaux, bannières. Tes visuels deviennent du code, sans Figma ni navigateur.",
+      "desc": [
+        "Tu écris un composant React, tu obtiens une image. La preview se recharge à chaque sauvegarde, le build exporte tous les PNG d'un coup.",
+        "Sous le capot, le moteur d'images de `next/og` (Satori et resvg), utilisable sans Next.",
+        "Les skills fournies donnent à ton agent IA les dimensions officielles de chaque plateforme : Open Graph, LinkedIn, Facebook, X.",
+        "`npx create-brand-artisan my-visuals` pour démarrer. Sur npm, en MIT."
+      ]
+    },
     "comptaopen": {
       "name": "ComptaOpen",
       "role": "Fondateur & Développeur Full Stack",

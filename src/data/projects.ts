@@ -4,6 +4,16 @@ export { PROJECT_TYPES } from "@/types/project";
 
 export const HIGHLIGHTED_PROJECTS: Project[] = [
 	{
+		key: "brand-artisan",
+		type: "tool",
+		featured: true,
+		date: "2026-06-26",
+		stack: ["TypeScript", "React", "Satori", "resvg", "Node.js"],
+		github: "https://github.com/roslove44/brand-artisan",
+		live: "https://www.npmjs.com/package/brand-artisan",
+		cover: "cover.png",
+	},
+	{
 		key: "comptaopen",
 		type: "saas",
 		status: "in-progress",

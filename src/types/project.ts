@@ -13,6 +13,7 @@ export type Project = {
 	stack: string[];
 	github?: string;
 	live?: string;
+	blog?: string; // slug of the related article in content/blog/<locale>/
 	video?: string;
 	images?: string[];
 	cover?: string;
