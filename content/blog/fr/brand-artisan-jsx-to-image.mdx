@@ -3,7 +3,7 @@ title: "BrandArtisan : du JSX en entrée, une image en sortie"
 date: "2026-08-01"
 description: "Les og:image, les visuels LinkedIn, les bannières : ces corvées qu'on repousse en fin de projet. BrandArtisan les transforme en composants React exportés en PNG, sans Figma ni navigateur."
 tags: ["react", "satori", "og-image", "branding", "open-source"]
-cover: "/blog/brand-artisan-jsx-to-png/cover.png"
+cover: "/blog/brand-artisan-jsx-to-image/cover.png"
 draft: false
 ---
 
@@ -41,7 +41,11 @@ npm run build  # exporte tous les PNG dans out/
 
 Le projet généré ne contient que ta marque : la charte, les visuels, les scripts d'assets et les polices. `npm run dev` lance un mini serveur qui liste tes templates et recharge l'aperçu à chaque sauvegarde. Tu écris ton JSX à gauche, tu vois l'image à droite, exactement comme tu développes une UI.
 
-<BlogImage src="/blog/brand-artisan-jsx-to-png/preview-view.webp" alt="Le serveur de prévisualisation de BrandArtisan affichant un template rendu en PNG" caption="npm run dev : chaque template est rendu et rechargé à la sauvegarde." />
+<BlogImage
+  src="/blog/brand-artisan-jsx-to-image/preview-view.webp"
+  alt="Le serveur de prévisualisation de BrandArtisan affichant un template rendu en PNG"
+  caption="npm run dev : chaque template est rendu et rechargé à la sauvegarde."
+/>
 
 Quand tout te plaît, `npm run build` exporte l'ensemble en PNG dans `out/`. Pas d'export manuel, pas de « version finale v3 (2).png ».
 
@@ -102,68 +106,67 @@ const GRID_TOP = Math.round(GAP + LOGO.height * 2);
 const GRID = [320, 560, 800, 1040];
 
 function render(): ReactNode {
-	return (
-		<div
-			style={{
-				width: "100%",
-				height: "100%",
-				display: "flex",
-				flexDirection: "column",
-				position: "relative",
-				paddingTop: GAP,
-				paddingLeft: PAD,
-				paddingRight: PAD,
-				backgroundColor: INK,
-			}}
-		>
-			{GRID.map((x) => (
-				<div
-					key={x}
-					style={{
-						position: "absolute",
-						top: GRID_TOP,
-						left: x,
-						width: 1,
-						height: SIZE.height - GRID_TOP,
-						backgroundColor: RULE_DARK,
-					}}
-				/>
-			))}
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        paddingTop: GAP,
+        paddingLeft: PAD,
+        paddingRight: PAD,
+        backgroundColor: INK,
+      }}
+    >
+      {GRID.map((x) => (
+        <div
+          key={x}
+          style={{
+            position: "absolute",
+            top: GRID_TOP,
+            left: x,
+            width: 1,
+            height: SIZE.height - GRID_TOP,
+            backgroundColor: RULE_DARK,
+          }}
+        />
+      ))}
 
-			<img src={logoSrc} width={LOGO.width} height={LOGO.height} alt="BrandArtisan" />
+      <img src={logoSrc} width={LOGO.width} height={LOGO.height} alt="BrandArtisan" />
 
-			<div style={{ display: "flex", flexDirection: "column", marginTop: GAP }}>
-				<div
-					style={{
-						display: "flex",
-						fontFamily: "Sora",
-						fontWeight: 700,
-						fontSize: HERO,
-						letterSpacing: -4,
-						lineHeight: HERO_LEADING,
-						color: PAPER,
-					}}
-				>
-					JSX in, image out.
-				</div>
-				<div
-					style={{
-						display: "flex",
-						marginTop: SUB_GAP,
-						maxWidth: SUB_WIDTH,
-						fontFamily: "Geist",
-						fontWeight: 400,
-						fontSize: SUB,
-						lineHeight: SUB_LEADING,
-						color: MUTED_DARK,
-					}}
-				>
-					One .tsx file, one image. Open Graph, social posts, banners, carousels. Rendered by next/og's engine, outside Next.
-				</div>
-			</div>
-
-		</div>
-	);
+      <div style={{ display: "flex", flexDirection: "column", marginTop: GAP }}>
+        <div
+          style={{
+            display: "flex",
+            fontFamily: "Sora",
+            fontWeight: 700,
+            fontSize: HERO,
+            letterSpacing: -4,
+            lineHeight: HERO_LEADING,
+            color: PAPER,
+          }}
+        >
+          JSX in, image out.
+        </div>
+        <div
+          style={{
+            display: "flex",
+            marginTop: SUB_GAP,
+            maxWidth: SUB_WIDTH,
+            fontFamily: "Geist",
+            fontWeight: 400,
+            fontSize: SUB,
+            lineHeight: SUB_LEADING,
+            color: MUTED_DARK,
+          }}
+        >
+          One .tsx file, one image. Open Graph, social posts, banners, carousels. Rendered by next/og's engine, outside Next.
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default { size: SIZE, title: "GitHub social preview", render } satisfies Template;
@@ -196,15 +199,15 @@ npx skills add roslove44/brand-artisan -s "*" -y
 
 Une fois installées, ton agent parle couramment BrandArtisan :
 
-| Skill | Ce qu'elle produit |
-| --- | --- |
-| `/new-project` | La charte d'une marque, par interview ou mesurée depuis tes visuels existants |
-| `/new-template` | N'importe quel visuel, aligné sur cette charte |
-| `/og-image` | Une image de partage 1200x630 |
-| `/linkedin-post`, `/facebook-post`, `/x-post` | Un post aux dimensions officielles de chaque plateforme |
-| `/linkedin-carousel`, `/facebook-carousel`, `/x-carousel` | Des cartes de carrousel prêtes à publier |
-| `/campaign` | Un brief, un kit cohérent sur toutes les plateformes |
-| `/brand-assets` | Logo, favicon et leurs variantes, générés plutôt que dessinés |
+| Skill                                                     | Ce qu'elle produit                                                            |
+| --------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `/new-project`                                            | La charte d'une marque, par interview ou mesurée depuis tes visuels existants |
+| `/new-template`                                           | N'importe quel visuel, aligné sur cette charte                                |
+| `/og-image`                                               | Une image de partage 1200x630                                                 |
+| `/linkedin-post`, `/facebook-post`, `/x-post`             | Un post aux dimensions officielles de chaque plateforme                       |
+| `/linkedin-carousel`, `/facebook-carousel`, `/x-carousel` | Des cartes de carrousel prêtes à publier                                      |
+| `/campaign`                                               | Un brief, un kit cohérent sur toutes les plateformes                          |
+| `/brand-assets`                                           | Logo, favicon et leurs variantes, générés plutôt que dessinés                 |
 
 Concrètement : `/campaign my-brand` avec un brief d'annonce de feature, et l'agent décline le même message en Open Graph, post LinkedIn, post X et visuels Facebook, chacun aux bonnes dimensions, tous fidèles au `brand.md`. La corvée de fin de projet devient une commande.
 

@@ -11,7 +11,7 @@ export const HIGHLIGHTED_PROJECTS: Project[] = [
 		stack: ["TypeScript", "React", "Satori", "resvg", "Node.js"],
 		github: "https://github.com/roslove44/brand-artisan",
 		live: "https://www.npmjs.com/package/brand-artisan",
-		blog: "brand-artisan-jsx-to-png",
+		blog: "brand-artisan-jsx-to-image",
 		cover: "cover.png",
 	},
 	{
