@@ -25,11 +25,11 @@ export const HIGHLIGHTED_PROJECTS: Project[] = [
 		video: "", // test video done, will replace with a proper demo once I have one
 	},
 	{
-		key: "gestiloc",
+		key: "bailto",
 		type: "saas",
 		featured: true,
 		date: "2026-01-26",
-		live: "https://gestiloc.io",
+		live: "https://bailto.com",
 		stack: ["Next.js", "Supabase", "TypeScript", "TipTap", "Shadcn/ui"],
 		cover: "cover.webp",
 		owner: { name: "Marius DJENONTIN", url: "https://github.com/mariusdjen", social: "github" }

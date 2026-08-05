@@ -150,8 +150,8 @@
         "Architecture pensée pour évoluer vers ComptaOpenLabs, un ERP collaboratif taillé pour les cabinets comptables"
       ]
     },
-    "gestiloc": {
-      "name": "Gestiloc.io",
+    "bailto": {
+      "name": "Bailto",
       "role": "Développeur Full Stack",
       "type": "Projet collaboratif",
       "summary": "SaaS de gestion locative pensé pour les propriétaires et agences, tout au même endroit.",

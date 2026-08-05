@@ -102,7 +102,7 @@ Full list with type filters (saas, app, tool, website).
 - EN: https://www.rostand.dev/projects
 - FR: https://www.rostand.dev/fr/projects
 
-Featured projects include **ComptaOpen** (fintech SaaS for WAEMU accounting professionals), **Gestiloc.io** (SaaS property management), and **GoogleMapsScrape** (open-source prospecting CLI).
+Featured projects include **ComptaOpen** (fintech SaaS for WAEMU accounting professionals), **Bailto** (SaaS property management), and **GoogleMapsScrape** (open-source prospecting CLI).
 
 ### Resume
 
