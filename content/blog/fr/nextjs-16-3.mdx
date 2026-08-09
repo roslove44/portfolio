@@ -1,0 +1,344 @@
+---
+title: "Next.js 16.3 : les vrais gains, et attention aux images OG"
+date: "2026-08-09"
+description: "Sortie le 3 août 2026, Next.js 16.3 divise par dix la RAM du serveur de dev et accélère les builds. Revue des nouveautés qui comptent, plus l'enquête sur une régression qui renvoie zéro octet sur les images OG dynamiques."
+tags: ["nextjs", "turbopack", "typescript", "performance", "debugging"]
+draft: false
+---
+
+Next.js 16.3 est disponible depuis le **3 août 2026**. C'est la plus grosse mise à jour du framework depuis la 16.0 de novembre dernier, et contrairement à beaucoup de releases mineures, celle-ci se sent immédiatement sans qu'on ait une ligne de code à changer.
+
+J'ai upgradé le portfolio le jour de la sortie. Voici ce qui compte vraiment, ce que j'ai réellement constaté sur ma machine, et le seul bug qui m'a coûté une soirée.
+
+---
+
+## Ce que tu gagnes sans toucher à ton code
+
+### Le serveur de dev arrête de manger ta RAM
+
+C'est le changement le plus visible au quotidien. Turbopack active maintenant par défaut deux mécanismes : le **cache disque** (introduit en 16.1) et l'**éviction mémoire**. Résultat annoncé : jusqu'à **90 % de RAM en moins** sur une longue session de `next dev`.
+
+Les chiffres publiés par Vercel sur leurs propres apps, après compilation de 50 routes :
+
+| Application | Avant | Après | Gain |
+| --- | --- | --- | --- |
+| vercel.com (dashboard) | 21,5 Go | 2 Go | ~90 % |
+| nextjs.org | 4 600 Mo | 840 Mo | ~82 % |
+
+Je développe sur une machine Windows correcte, et c'est typiquement le genre de gain qui ne se mesure pas dans un benchmark mais qui se sent dans les doigts. Avant, au bout de deux ou trois heures de session, le HMR commençait à traîner et il fallait redémarrer le serveur. Depuis la 16.3, la session reste vive. Le processus Node ne gonfle plus indéfiniment.
+
+Si tu tournes sur une machine avec 8 ou 16 Go, entre le navigateur, l'éditeur, Docker et un agent IA dans le terminal, c'est probablement la seule raison dont tu as besoin pour upgrader.
+
+### Des builds plus rapides
+
+Le même cache disque fonctionne désormais avec `next build`, activé par défaut. Vercel annonce jusqu'à **5,5x plus rapide** sur certains projets en CI, sur des builds répétés qui relisent les artefacts inchangés.
+
+Sur nextjs.org : 21 s à froid contre 9,2 s avec le cache. Sur vercel.com/geist : 30 s contre 5,5 s.
+
+Le gain dépend directement de la proportion de ton code qui change entre deux builds. Sur un site de contenu où seuls quelques articles bougent, c'est énorme. Sur une refonte complète, tu repayes le prix fort.
+
+### Du SSR plus rapide
+
+La couche de rendu de l'App Router utilise maintenant les **streams natifs Node.js** au lieu des web streams, ce qui supprime la conversion permanente entre les deux formats pendant le rendu serveur.
+
+Sur les benchmarks Vercel : jusqu'à **22 % de requêtes en plus** encaissées sous charge, sans aucun changement applicatif. Pas d'API à apprendre, pas de flag à activer, c'est juste de la latence en moins.
+
+### Moins de prefetch, meilleur cache d'assets
+
+Deux optimisations discrètes mais utiles :
+
+- Les prefetch en dessous d'une certaine taille de payload sont **regroupés automatiquement**, ce qui réduit le nombre de requêtes qu'un `<Link>` déclenche. Les segments partagés plus lourds restent séparés pour rester réutilisables entre routes.
+- Les **assets statiques immuables** peuvent maintenant être réutilisés d'un déploiement à l'autre. Comme ils sont immuables par définition, aucun risque de skew.
+
+---
+
+## TypeScript 7 pour le type checking
+
+`next build` peut maintenant utiliser TypeScript 7 pour la vérification de types. Un seul changement de dépendance suffit :
+
+```bash
+pnpm add -D typescript@^7
+```
+
+TypeScript 7, sorti en juillet 2026, c'est le portage natif du compilateur, avec des gains de l'ordre de **8x à 12x** sur des builds complets. La codebase de VS Code est passée de 125,7 s à 10,6 s.
+
+Petite parenthèse pour la culture générale : TypeScript aussi est passé par la case "ce serait tellement mieux réécrit en Rust". C'était même le consensus non négociable de l'écosystème pendant deux ans. Microsoft a finalement choisi **Go**, et l'internet dev a mis quelques semaines à s'en remettre.
+
+L'ironie du calendrier, c'est que la même release Next.js ajoute un **React Compiler en Rust** côté Turbopack (voir plus bas). Tout le monde finit par quitter JavaScript pour compiler JavaScript, chacun avec son langage système préféré.
+
+---
+
+## Root params : la fin du prop drilling de la locale
+
+Jusqu'ici, le seul moyen d'accéder aux params d'une route dynamique était de les faire descendre en props depuis la page. Pour un segment défini **au-dessus** du root layout, comme le `[locale]` d'un site bilingue, ça donne du prop drilling sur toute la profondeur de l'arbre pour une valeur qui est de fait globale.
+
+16.3 introduit les **root params**, accessibles depuis n'importe quel Server Component :
+
+```tsx
+import { lang } from 'next/root-params';
+
+export default async function PostPage(props: PageProps<'/[lang]/posts/[slug]'>) {
+	const { slug } = await props.params;
+	const language = await lang();
+
+	return (
+		<article>
+			<p>Langue : {language}</p>
+			<p>Article : {slug}</p>
+		</article>
+	);
+}
+```
+
+Ça marche aussi à l'intérieur d'un scope `use cache`. Pour l'instant c'est limité aux Server Components, le support des route handlers et des Server Actions est annoncé pour plus tard.
+
+Sur un site bilingue comme celui-ci, c'est le genre de détail qui supprime une dizaine de props inutiles.
+
+---
+
+## Error boundaries personnalisées
+
+Avant la 16.3, les error boundaries React dans Next.js entraient en conflit avec le code applicatif appelant `notFound` ou `redirect`. Elles ne pouvaient réinitialiser que l'état client, sans moyen de relancer un Server Component qui avait échoué.
+
+La nouvelle API `catchError` règle les deux problèmes :
+
+```tsx
+'use client';
+import { catchError, type ErrorInfo } from 'next/error';
+
+function ErrorFallback(props: { title: string }, { error, retry }: ErrorInfo) {
+	return (
+		<div>
+			<h2>{props.title}</h2>
+			<p>{error.message}</p>
+			<button onClick={() => retry()}>Réessayer</button>
+		</div>
+	);
+}
+
+export default catchError(ErrorFallback);
+```
+
+Le `retry()` refait le fetch des enfants de la boundary, y compris le re-rendu des Server Components concernés. C'est enfin une vraie récupération d'erreur, pas juste un reset d'état client.
+
+---
+
+## Imports glob natifs
+
+Turbopack supporte maintenant `import.meta.glob`, l'API compatible Vite, pour charger plusieurs modules depuis le système de fichiers :
+
+```tsx
+const posts = import.meta.glob('./posts/*.md', { eager: true });
+```
+
+L'intérêt principal : le hot-module reloading fonctionne pour les Server Components qui lisent des fichiers locaux. Si tu construis un blog en MDX lu depuis le disque, tu vois le résultat sans redémarrer.
+
+---
+
+## Instant Navigations : le gros morceau opt-in
+
+C'est la partie de la release qui prépare la prochaine version majeure. Le constat de l'équipe est honnête : les Server Components ont réduit le JavaScript envoyé et supprimé les cascades réseau, mais ils ont rendu les navigations **moins réactives** qu'une SPA classique.
+
+La réponse tient en deux flags :
+
+```ts
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
+	cacheComponents: true,
+	partialPrefetching: true,
+};
+
+export default nextConfig;
+```
+
+Ce que ça débloque :
+
+- **Partial Prefetching** : Next extrait un loading shell réutilisable depuis n'importe quelle route, au lieu de dépendre d'un `loading.tsx` qu'on oublie une fois sur deux. Le `<Link prefetch={true}>` peut embarquer autant ou aussi peu de contenu que tu veux.
+- **Instant Insights** : un panneau des DevTools qui remonte automatiquement les navigations qui ne sont pas instantanées, avec un prompt prêt à donner à ton agent pour appliquer le correctif.
+- **Navigation Inspector** : met une navigation en pause sur son shell, pour voir exactement ce que l'utilisateur verrait. Utile parce que le prefetch est désactivé en dev.
+- **ISR améliorée** : une page non prérendue au build sert un shell instantané au premier visiteur, puis se met à niveau en arrière-plan. Les visiteurs suivants récupèrent la version finale depuis le cache.
+- **Helper Playwright** : `instant()` permet d'asserter ce qui doit être visible immédiatement pendant une navigation, et le test casse dès qu'un refactor dégrade cette UI.
+
+Ces comportements deviendront le défaut dans une future version majeure. Si tu démarres un projet aujourd'hui, autant s'y mettre tout de suite.
+
+---
+
+## Expérimental : React Compiler en Rust et résilience réseau
+
+Deux features derrière un flag.
+
+Le **React Compiler en Rust** tourne directement dans Turbopack, au lieu de passer par Babel en Node. Sur v0, le temps entre `next dev` et une page prête baisse de 34 % à froid et 46 % à chaud, à condition d'avoir complètement quitté Babel.
+
+```ts
+const nextConfig: NextConfig = {
+	reactCompiler: true,
+	experimental: {
+		turbopackRustReactCompiler: true,
+	},
+};
+```
+
+La **résilience réseau** (`experimental.useOffline`) garde en attente les navigations, fetchs et Server Actions quand la connexion tombe, puis les rejoue au retour du réseau, au lieu de throw. Un hook `useOffline` permet d'afficher l'état à l'utilisateur. Combiné au Partial Prefetching, une route déjà prefetchée continue d'afficher son shell hors ligne.
+
+Pour un usage en Afrique de l'Ouest, où la connexion mobile joue au yoyo plusieurs fois par jour, c'est probablement la feature expérimentale la plus intéressante de la release.
+
+---
+
+## Le point de vigilance : les images OG qui renvoient zéro octet
+
+Maintenant, la partie qui m'a coûté une soirée.
+
+### Le symptôme
+
+Tu démarres le serveur. Tu ouvres `/opengraph-image`, tu obtiens un PNG valide, tout va bien. Tu navigues deux minutes sur le site, tu reviens sur la même URL : le serveur ferme la connexion sans rien renvoyer. Pas de 500, pas de page d'erreur, **zéro octet**. `ERR_EMPTY_RESPONSE` dans le navigateur.
+
+Tu redémarres le serveur, ça remarche. Tu renavigues, ça recasse.
+
+C'est ce comportement en dents de scie qui rend le truc déroutant : le code de la carte OG n'a pas bougé d'un caractère entre le succès et l'échec.
+
+### Ce qui se passe vraiment
+
+**1. Comment une image OG est fabriquée.** `ImageResponse` de `next/og` ne dessine pas un PNG directement. Il enchaîne deux moteurs : **satori** transforme ton JSX en SVG, puis un rasteriseur convertit ce SVG en PNG. Retiens ce point, l'artefact intermédiaire est un SVG.
+
+**2. Qui rasterise ce SVG ?** Historiquement, `@vercel/og` embarquait **resvg**, un moteur compilé en WASM et livré dans le paquet. Aujourd'hui il tente d'abord de charger **sharp**, et ne retombe sur resvg que si le paquet est absent. Le code du bundle ne laisse aucun doute :
+
+```js
+let pngBuffer;
+if (sharp) {
+	pngBuffer = await sharp(new TextEncoder().encode(svg)).resize(options.width).png().toBuffer();
+} else {
+	const resvgJS = new resvg.Resvg(svg, { fitTo: { mode: 'width', value: options.width } });
+	pngBuffer = Buffer.from(resvgJS.render().asPng());
+}
+```
+
+Chez moi sharp est présent, puisqu'il est requis pour l'optimisation d'images en mode standalone. Donc c'est sharp qui rasterise, et il doit **décoder du SVG** pour produire le PNG.
+
+**3. En parallèle, une mesure de sécurité côté images.** En 16.3.0, une PR d'alignement ([#96301](https://github.com/vercel/next.js/pull/96301)) a durci l'optimiseur `/_next/image` pour que l'allowlist des décodeurs sharp corresponde exactement à celle de `detectContentType()`. Concrètement, il interdit à sharp tous les décodeurs libvips, puis en réautorise une poignée :
+
+```ts
+sharp.block({ operation: ['VipsForeignLoad'] });
+sharp.unblock({
+	operation: [
+		'VipsForeignLoadHeif',
+		'VipsForeignLoadJpeg',
+		'VipsForeignLoadNsgif',
+		'VipsForeignLoadPng',
+		'VipsForeignLoadTiff',
+		'VipsForeignLoadWebp',
+	],
+});
+```
+
+Six formats matriciels. **Pas de SVG.** Côté optimiseur, l'omission se défend : décoder du SVG passe par librsvg, qui suit des références externes, ce qui ouvre une surface d'attaque sur des images distantes que tu ne contrôles pas. Et de toute façon, `detectContentType()` filtre déjà en amont, et le SVG non fiable est gardé séparément par `dangerouslyAllowSVG`.
+
+**4. La collision.** `sharp.block()` n'agit ni sur une instance, ni sur un appel : il modifie le **registre global** des opérations libvips, pour tout le process. Et les deux sous-systèmes, l'optimiseur d'un côté, `@vercel/og` de l'autre, importent le même module sharp, donc le même registre.
+
+Résultat : l'optimiseur d'images interdit le décodage SVG pour se protéger, et coupe au passage les jambes du générateur d'OG, qui vient justement de se mettre à décoder du SVG. Deux équipes de la même codebase, une variable globale partagée, aucune des deux n'a tort isolément.
+
+**5. Pourquoi c'est intermittent.** Le `getSharp()` côté optimiseur est paresseux et mémoïsé : le `block()` ne part qu'à la **première requête `/_next/image` en cache miss** du process. Avant elle, les OG marchent. Après, plus aucune, jusqu'au redémarrage. D'où le classique "ça marchait ce matin".
+
+**6. Pourquoi tu ne vois aucune erreur HTTP.** L'échec se produit dans le `start()` du `ReadableStream` que `ImageResponse` passe à `Response`. À cet instant, l'objet `Response` existe déjà mais aucun octet n'a été écrit. Next attrape, ré-enveloppe en `failed to pipe response`, et perd la vraie cause dans le log : elle est dans `error.cause`, jamais affichée. Le client, lui, ne reçoit même pas de status line.
+
+C'est le vrai piège de ce bug : le symptôme visible (`failed to pipe response`) ne dit rien de la cause réelle (`Input buffer contains unsupported image format`). Pour la faire remonter, il faut une route de debug qui `await` le `arrayBuffer()` dans un `try/catch`, ce qui force la résolution du stream en amont du pipe.
+
+### Avant, pendant, après
+
+| Version | Décodeur SVG de sharp | OG dynamiques |
+| --- | --- | --- |
+| ≤ 16.2 | disponible | OK |
+| 16.3.0 | bloqué par l'optimiseur d'images | cassées après la 1re optimisation en cache miss |
+| 16.3.1 | réautorisé (`VipsForeignLoadSvg`) | OK |
+
+### Le correctif
+
+En amont, une ligne dans `image-optimizer.ts` : `VipsForeignLoadSvg` ajouté à la liste d'`unblock`. La PR est mergée depuis le 5 août et disponible dans les canaries.
+
+En attendant la 16.3.1 stable, la même idée peut être appliquée depuis l'appelant, dans le point de passage unique de toutes tes routes OG :
+
+```ts
+sharp.unblock({ operation: ['VipsForeignLoadSvg'] });
+```
+
+À chaque rendu et non au chargement du module, parce que le `block()` de l'optimiseur est paresseux et peut très bien survenir après toi.
+
+### Le verdict
+
+Rien à voir avec ton code, ta config ou tes polices. C'est une régression de Next.js 16.3.0 : deux sous-systèmes du framework se partagent un état global mutable dans une dépendance native, et l'un a resserré les règles sans voir que l'autre en dépendait aussi.
+
+Si tu génères des images OG dynamiques et que sharp est dans tes dépendances, tu es concerné. Sinon, tu ne verras jamais ce bug.
+
+---
+
+## Ce qui arrive dans les 16.3.x
+
+Au 9 août, la 16.3.1 n'est pas encore stable, mais **neuf canaries** sont sorties en six jours. Le rythme donne une idée claire de ce qui est déjà corrigé et attend simplement d'être promu.
+
+Les correctifs notables déjà mergés :
+
+**Routage et navigation**
+
+- Page catch-all servie à la place de tous les autres slugs, corrigé dès la première canary ([#96553](https://github.com/vercel/next.js/pull/96553))
+- Race condition quand l'utilisateur revient en arrière avant la fin de l'hydratation ([#96252](https://github.com/vercel/next.js/pull/96252))
+- Prefetch par segment préservé après une navigation dynamique ([#96583](https://github.com/vercel/next.js/pull/96583))
+- Server Actions prises en charge sur les routes de fallback PPR dynamiques ([#96932](https://github.com/vercel/next.js/pull/96932))
+- Revalidations en attente vidées sur les réponses d'erreur d'action forwardées ([#96945](https://github.com/vercel/next.js/pull/96945))
+
+**Cache**
+
+- Sur-invalidation et sous-invalidation de `use cache` en dev ([#96235](https://github.com/vercel/next.js/pull/96235))
+- Les entrées de cache déjà résolues sont réutilisées sur le reste de la requête ([#96727](https://github.com/vercel/next.js/pull/96727))
+- Seules les entrées antérieures à une revalidation de tag sont jetées, au lieu du lot entier ([#96726](https://github.com/vercel/next.js/pull/96726))
+
+**Images**
+
+- Le décodeur SVG de sharp réautorisé, soit le correctif du bug OG décrit plus haut ([#96681](https://github.com/vercel/next.js/pull/96681))
+- Matching des bots corrigé dans les règles de bypass du prerender ([#96584](https://github.com/vercel/next.js/pull/96584))
+
+**Turbopack**
+
+- Deadlock potentiel dans `scope_and_block` ([#95695](https://github.com/vercel/next.js/pull/95695))
+- Bugs du watcher en mode polling et configuration du DiskWatcher revue ([#96440](https://github.com/vercel/next.js/pull/96440))
+- BOM en tête de fichier qui cassait le parsing CSS ([#96678](https://github.com/vercel/next.js/pull/96678))
+- Chargement des chunks de worker avec un `assetPrefix` ([#96636](https://github.com/vercel/next.js/pull/96636))
+- Runtime partagé et tree shaking CJS activés par défaut ([#96778](https://github.com/vercel/next.js/pull/96778), [#96779](https://github.com/vercel/next.js/pull/96779)), donc des bundles plus légers sans rien configurer
+- Support de `experimental.serverMinification` et extension de `experimental.turbopackMinify` ([#96578](https://github.com/vercel/next.js/pull/96578))
+
+**Divers**
+
+- Styles styled-jsx manquants en SSR Pages Router sur les builds adapter ([#96632](https://github.com/vercel/next.js/pull/96632))
+- Exception `deploymentId` sur les vieux WebKit ([#94604](https://github.com/vercel/next.js/pull/94604))
+- SWC passé en version 75, et React mis à jour deux fois en une semaine
+
+À lire cette liste, la 16.3.1 ressemble surtout à un nettoyage de cache et de navigation, ce qui est logique vu l'ampleur des changements internes de la 16.3.0. Si tu es en production sans rencontrer aucun de ces cas, rien ne presse. Sinon, la canary est publiée quotidiennement sous le tag `canary` :
+
+```bash
+pnpm add next@canary
+```
+
+---
+
+## Faut-il upgrader ?
+
+Oui, et sans hésiter si tu es déjà en 16.x. Les gains mémoire en dev et le SSR plus rapide arrivent sans aucun changement applicatif, et le risque de régression reste faible.
+
+Les deux points de vigilance :
+
+1. Si tu utilises `ImageResponse` avec sharp installé, applique le contournement ci-dessus ou attends la 16.3.1 stable.
+2. Les Instant Navigations sont opt-in et changent le modèle de cache. Active les flags sur une branche, pas un vendredi soir en production.
+
+```bash
+pnpm add next@latest
+```
+
+---
+
+**Sources :**
+
+- [Annonce officielle Next.js 16.3](https://nextjs.org/blog/next-16-3)
+- [Notes de release, canaries comprises](https://github.com/vercel/next.js/releases)
+- [TypeScript 7, le portage natif](https://devblogs.microsoft.com/typescript/typescript-native-port/)
+- [Issue de la régression OG](https://github.com/vercel/next.js/issues/96612)
+- [PR à l'origine de la régression](https://github.com/vercel/next.js/pull/96301)
+- [PR de correction](https://github.com/vercel/next.js/pull/96681)
