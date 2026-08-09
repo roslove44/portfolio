@@ -90,9 +90,9 @@ export default async function PostPage(props: PageProps<'/[lang]/posts/[slug]'>)
 }
 ```
 
-It also works inside a `use cache` scope. For now it is limited to Server Components, with route handlers and Server Actions announced for a future release.
+The imported name matches the segment: a `[lang]` route exports `lang`, a `[locale]` route exports `locale`. It also works inside a `use cache` scope. For now it is limited to Server Components, with route handlers and Server Actions announced for a future release.
 
-On a bilingual site like this one, it is the kind of detail that deletes a dozen useless props.
+On this site I gain nothing from it: next-intl already exposes the locale everywhere through `getLocale()` and `useLocale()`. The value of root params is getting the same thing without a dependency, and above all covering root segments that are not locales, like a tenant id.
 
 ---
 
@@ -131,7 +131,7 @@ Turbopack now supports `import.meta.glob`, the Vite-compatible API, to load mult
 const posts = import.meta.glob('./posts/*.md', { eager: true });
 ```
 
-The main benefit: hot-module reloading works for Server Components that read local files. If you build an MDX blog from disk, you see the result without restarting.
+The main benefit: hot-module reloading works for Server Components that read local files. If you build an MDX blog from disk, you see the result without restarting. One caveat: loading `.md` still requires a loader registered in `next.config.js`, the glob only handles file discovery.
 
 ---
 
@@ -187,7 +187,7 @@ For usage in West Africa, where mobile connectivity yo-yos several times a day, 
 
 ## The catch: OG images returning zero bytes
 
-Now, the part that cost me an evening.
+Now, the part that cost me an evening. It did not happen on this portfolio, whose OG cards are static, but on [ComptaOpen](/en/blog/comptaopen-21-months), where every public page generates its own on the fly.
 
 ### The symptom
 
@@ -208,12 +208,17 @@ let pngBuffer;
 if (sharp) {
 	pngBuffer = await sharp(new TextEncoder().encode(svg)).resize(options.width).png().toBuffer();
 } else {
-	const resvgJS = new resvg.Resvg(svg, { fitTo: { mode: 'width', value: options.width } });
-	pngBuffer = Buffer.from(resvgJS.render().asPng());
+	const resvgJS = new resvg.Resvg(svg, {
+		fitTo: { mode: "width", value: options.width }
+	});
+	const pngData = resvgJS.render();
+	pngBuffer = pngData.asPng();
+	pngData.free();
+	resvgJS.free();
 }
 ```
 
-On my machine sharp is present, since it is required for image optimization in standalone mode. So sharp does the rasterizing, and it has to **decode SVG** to produce the PNG.
+On ComptaOpen sharp is present, since it is required for image optimization in standalone mode. So sharp does the rasterizing, and it has to **decode SVG** to produce the PNG.
 
 **3. Meanwhile, a security measure on the image side.** In 16.3.0, an alignment PR ([#96301](https://github.com/vercel/next.js/pull/96301)) hardened the `/_next/image` optimizer so that sharp's decoder allowlist matches the one in `detectContentType()`. In practice, it blocks every libvips decoder for sharp, then unblocks a handful:
 
@@ -235,7 +240,7 @@ Six raster formats. **No SVG.** From the optimizer's point of view the omission 
 
 **4. The collision.** `sharp.block()` acts neither on an instance nor on a call: it mutates the **global registry** of libvips operations for the entire process. And both subsystems, the optimizer on one side and `@vercel/og` on the other, import the same sharp module, hence the same registry.
 
-The result: the image optimizer forbids SVG decoding to protect itself, and cuts the legs off the OG generator, which just became an SVG decoder. Two teams in the same codebase, one shared global, neither of them wrong in isolation.
+The result: the image optimizer forbids SVG decoding to protect itself, and cuts the legs off the OG generator, whose second-to-last step is exactly that. Two teams in the same codebase, one shared global, neither of them wrong in isolation.
 
 **5. Why it is intermittent.** The optimizer's `getSharp()` is lazy and memoized: `block()` only fires on the **first `/_next/image` cache-miss request** of the process. Before that, OG images work. After that, none do, until a restart. Hence the classic "it worked this morning".
 

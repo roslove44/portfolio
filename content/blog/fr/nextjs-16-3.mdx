@@ -18,7 +18,7 @@ J'ai upgradé le portfolio le jour de la sortie. Voici ce qui compte vraiment, c
 
 C'est le changement le plus visible au quotidien. Turbopack active maintenant par défaut deux mécanismes : le **cache disque** (introduit en 16.1) et l'**éviction mémoire**. Résultat annoncé : jusqu'à **90 % de RAM en moins** sur une longue session de `next dev`.
 
-Les chiffres publiés par Vercel sur leurs propres apps, après compilation de 50 routes :
+Les chiffres publiés par Vercel sur ses propres apps, après compilation de 50 routes :
 
 | Application | Avant | Après | Gain |
 | --- | --- | --- | --- |
@@ -90,9 +90,9 @@ export default async function PostPage(props: PageProps<'/[lang]/posts/[slug]'>)
 }
 ```
 
-Ça marche aussi à l'intérieur d'un scope `use cache`. Pour l'instant c'est limité aux Server Components, le support des route handlers et des Server Actions est annoncé pour plus tard.
+Le nom importé correspond au segment : une route `[lang]` exporte `lang`, une route `[locale]` exporte `locale`. Ça marche aussi à l'intérieur d'un scope `use cache`. Pour l'instant c'est limité aux Server Components, le support des route handlers et des Server Actions est annoncé pour plus tard.
 
-Sur un site bilingue comme celui-ci, c'est le genre de détail qui supprime une dizaine de props inutiles.
+Sur ce site, je n'y gagne rien : next-intl expose déjà la locale partout via `getLocale()` et `useLocale()`. L'intérêt des root params, c'est d'obtenir la même chose sans dépendance, et surtout de couvrir les segments racines qui ne sont pas des locales, comme un identifiant de tenant.
 
 ---
 
@@ -131,7 +131,7 @@ Turbopack supporte maintenant `import.meta.glob`, l'API compatible Vite, pour ch
 const posts = import.meta.glob('./posts/*.md', { eager: true });
 ```
 
-L'intérêt principal : le hot-module reloading fonctionne pour les Server Components qui lisent des fichiers locaux. Si tu construis un blog en MDX lu depuis le disque, tu vois le résultat sans redémarrer.
+L'intérêt principal : le rechargement à chaud fonctionne pour les Server Components qui lisent des fichiers locaux. Si tu construis un blog en MDX lu depuis le disque, tu vois le résultat sans redémarrer. Attention quand même, charger du `.md` suppose un loader déclaré dans `next.config.js`, le glob ne fait que la découverte des fichiers.
 
 ---
 
@@ -187,7 +187,7 @@ Pour un usage en Afrique de l'Ouest, où la connexion mobile joue au yoyo plusie
 
 ## Le point de vigilance : les images OG qui renvoient zéro octet
 
-Maintenant, la partie qui m'a coûté une soirée.
+Maintenant, la partie qui m'a coûté une soirée. Elle ne s'est pas jouée sur ce portfolio, dont les cartes OG sont statiques, mais sur [ComptaOpen](/fr/blog/comptaopen-21-months), où chaque page publique génère la sienne à la volée.
 
 ### Le symptôme
 
@@ -208,12 +208,17 @@ let pngBuffer;
 if (sharp) {
 	pngBuffer = await sharp(new TextEncoder().encode(svg)).resize(options.width).png().toBuffer();
 } else {
-	const resvgJS = new resvg.Resvg(svg, { fitTo: { mode: 'width', value: options.width } });
-	pngBuffer = Buffer.from(resvgJS.render().asPng());
+	const resvgJS = new resvg.Resvg(svg, {
+		fitTo: { mode: "width", value: options.width }
+	});
+	const pngData = resvgJS.render();
+	pngBuffer = pngData.asPng();
+	pngData.free();
+	resvgJS.free();
 }
 ```
 
-Chez moi sharp est présent, puisqu'il est requis pour l'optimisation d'images en mode standalone. Donc c'est sharp qui rasterise, et il doit **décoder du SVG** pour produire le PNG.
+Sur ComptaOpen sharp est présent, puisqu'il est requis pour l'optimisation d'images en mode standalone. Donc c'est sharp qui rasterise, et il doit **décoder du SVG** pour produire le PNG.
 
 **3. En parallèle, une mesure de sécurité côté images.** En 16.3.0, une PR d'alignement ([#96301](https://github.com/vercel/next.js/pull/96301)) a durci l'optimiseur `/_next/image` pour que l'allowlist des décodeurs sharp corresponde exactement à celle de `detectContentType()`. Concrètement, il interdit à sharp tous les décodeurs libvips, puis en réautorise une poignée :
 
@@ -235,7 +240,7 @@ Six formats matriciels. **Pas de SVG.** Côté optimiseur, l'omission se défend
 
 **4. La collision.** `sharp.block()` n'agit ni sur une instance, ni sur un appel : il modifie le **registre global** des opérations libvips, pour tout le process. Et les deux sous-systèmes, l'optimiseur d'un côté, `@vercel/og` de l'autre, importent le même module sharp, donc le même registre.
 
-Résultat : l'optimiseur d'images interdit le décodage SVG pour se protéger, et coupe au passage les jambes du générateur d'OG, qui vient justement de se mettre à décoder du SVG. Deux équipes de la même codebase, une variable globale partagée, aucune des deux n'a tort isolément.
+Résultat : l'optimiseur d'images interdit le décodage SVG pour se protéger, et coupe au passage les jambes du générateur d'OG, dont c'est précisément l'avant-dernière étape. Deux équipes de la même codebase, une variable globale partagée, aucune des deux n'a tort isolément.
 
 **5. Pourquoi c'est intermittent.** Le `getSharp()` côté optimiseur est paresseux et mémoïsé : le `block()` ne part qu'à la **première requête `/_next/image` en cache miss** du process. Avant elle, les OG marchent. Après, plus aucune, jusqu'au redémarrage. D'où le classique "ça marchait ce matin".
 
