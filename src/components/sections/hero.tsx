@@ -40,8 +40,8 @@ export default function Hero() {
 				<Bullet>{t("bullet1")}</Bullet>
 				<Bullet>
 					{t("bullet2_prefix")}
-					<TechName>Symfony</TechName>, <TechName>Next.js</TechName>{" "}
-					{t("and")} <TechName>Go</TechName>
+					<TechName>PHP</TechName>, <TechName>Next.js</TechName>{" "}
+					{t("and")} <TechName>AdonisJS</TechName>
 					{t("bullet2_suffix")}
 				</Bullet>
 				<Bullet>
