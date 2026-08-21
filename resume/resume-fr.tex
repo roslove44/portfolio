@@ -1,0 +1,206 @@
+%-------------------------
+% CV — Rostand MIGAN — version française, marché France / Belgique
+%-------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	pdftitle={Rostand Migan - CV},
+	pdfauthor={Rostand Migan},
+}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+%----------FONT OPTIONS----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Marges
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+% fullpage met \footskip à 0pt, ce dont fancyhdr se plaint même avec un pied vide
+\setlength{\footskip}{4.08003pt}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Formatage des sections
+\titleformat{\section}{
+    \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% PDF lisible par les ATS
+\pdfgentounicode=1
+
+%-------------------------
+% Espace vertical entre deux entrées (Expérience, Projets, Formation, Certifications).
+% Seul réglage à toucher pour resserrer ou aérer le CV.
+\newlength{\entrygap}
+\setlength{\entrygap}{5pt}
+
+% Espace entre la ligne de titre d'une entrée et ses puces.
+% Valeur négative héritée du template : moins négatif = plus d'air.
+\newlength{\headgap}
+\setlength{\headgap}{-4pt}
+
+%-------------------------
+% Commandes
+\newcommand{\resumeItem}[1]{
+    \item\small{
+        {#1 \vspace{-2pt}}
+    }
+}
+
+\newcommand{\resumeSubheading}[4]{
+    \vspace{\entrygap}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & #2 \\
+        \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{\headgap}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{\entrygap}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+        \small#1 & #2 \\
+    \end{tabular*}\vspace{\headgap}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape Rostand Migan} \\ \vspace{2pt}
+    \small Développeur Full-Stack \quad $|$ \quad Cotonou, Bénin (UTC+1, même fuseau que Paris) \\ \vspace{2pt}
+    \small
+    \href{https://rostand.dev}{\underline{rostand.dev}} $|$
+    \href{https://github.com/roslove44}{\underline{github.com/roslove44}} $|$
+    \href{https://linkedin.com/in/rostand-migan}{\underline{linkedin.com/in/rostand-migan}} $|$
+    \href{mailto:hello@rostand.dev}{\underline{hello@rostand.dev}}
+\end{center}
+
+%-----------PROFIL-----------
+\section{Profil}
+\vspace{2pt}
+\small
+Développeur full-stack, 4 ans d'expérience sur React / Next et Node / AdonisJS. Formation initiale en gestion financière et comptabilité, ce qui me rend immédiatement opérationnel sur les produits financiers, comptables et de facturation, sans phase de montée en compétence métier. Trois ans de collaboration à distance avec des équipes françaises, dont 20 mois en continu, sur le même fuseau horaire que Paris. \textbf{Disponible immédiatement, à temps plein.}
+\vspace{4pt}
+
+%-----------EXPERIENCE-----------
+\section{Expérience}
+\resumeSubHeadingListStart
+
+    \resumeSubheading
+        {Développeur Full-Stack, freelance}{Mai 2022 -- aujourd'hui}
+        {DOMMSOFT}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Conception et développement d'applications web, d'API et de solutions sur mesure pour des clients au Bénin et en France}
+        \resumeItem{Prise en charge du cycle complet : cadrage, développement, mise en production et déploiement sur VPS Linux}
+        \resumeItem{Stack : TypeScript, React, Next, Node / AdonisJS, PHP / Symfony, PostgreSQL, Docker, WordPress}
+    \resumeItemListEnd
+
+    \resumeSubheading
+        {Développeur Web}{Août 2025 -- Nov. 2025}
+        {PAYIX}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Refonte complète d'une plateforme de paiement et de services financiers : parcours utilisateurs et interfaces de transaction}
+        \resumeItem{Intégration de fonctionnalités transactionnelles sécurisées et optimisation des tunnels de paiement}
+    \resumeItemListEnd
+
+    \resumeSubheading
+        {Développeur Web, en remote depuis le Bénin}{Oct. 2022 -- Juin 2024}
+        {Le Marché de La Com'}{France}
+    \resumeItemListStart
+        \resumeItem{Développeur web principal pendant 20 mois, en télétravail complet et sur les horaires de l'équipe française}
+        \resumeItem{Conception et développement des sites et applications web, pour les projets internes et pour les clients de l'agence}
+        \resumeItem{Plusieurs sites livrés en production sous WordPress, PHP et Symfony}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------PROJETS-----------
+\section{Projets}
+\resumeSubHeadingListStart
+
+    \resumeProjectHeading
+        {\textbf{ComptaOpen} $|$ \emph{Next, TypeScript, AdonisJS, PostgreSQL, Docker, Gotenberg, TipTap}}{Depuis juin 2024}
+    \resumeItemListStart
+        \resumeItem{Plateforme open source de ressources comptables, fiscales et de gestion pour le marché béninois}
+        \resumeItem{Chaîne de génération documentaire avec Gotenberg et éditeur de texte riche avec TipTap}
+        \resumeItem{Modèle freemium, avec un module ERP visant les cabinets d'expertise comptable}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{BrandArtisan} $|$ \emph{TypeScript, React, Satori, resvg, Node}}{Juin 2026}
+    \resumeItemListStart
+        \resumeItem{Package npm open source qui transforme un composant React en image PNG de marque, pour les visuels Open Graph, les publications sociales et les bannières}
+        \resumeItem{Construit sur Satori et resvg, avec une CLI et un générateur de projet, pour garder tous les visuels sur une charte unique}
+    \resumeItemListEnd
+
+    \resumeProjectHeading
+        {\textbf{Bailto} $|$ \emph{Next, TypeScript, Supabase, TipTap, Shadcn/ui}}{Janv. 2026}
+    \resumeItemListStart
+        \resumeItem{Plateforme de gestion locative livrée pour un client : biens, locataires et suivi des baux}
+        \resumeItem{Données en temps réel avec Supabase, édition de contenu riche avec TipTap, interface sous Shadcn/ui}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------COMPETENCES-----------
+\section{Compétences}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Langages}{ : TypeScript, JavaScript, PHP, Python, Go} \\
+        \textbf{Front}{ : React, Next, Tailwind CSS, Motion, Shadcn/ui} \\
+        \textbf{Back}{ : Node, AdonisJS, Symfony, Laravel, API Platform} \\
+        \textbf{Bases de données}{ : PostgreSQL, MySQL, SQLite, Redis, MongoDB} \\
+        \textbf{Infrastructure}{ : Docker, Linux / VPS, Caddy, GitHub Actions, Vercel} \\
+        \textbf{CMS}{ : WordPress, Payload CMS, Directus} \\
+        \textbf{Tests}{ : Vitest, Jest, Playwright, Cypress} \\
+        \textbf{Domaine}{ : comptabilité, fiscalité, facturation, gestion financière} \\
+        \textbf{Langues}{ : français (langue maternelle), anglais (professionnel)}
+    }}
+\end{itemize}
+
+%-----------FORMATION-----------
+\section{Formation}
+\resumeSubHeadingListStart
+    \resumeSubheading
+        {ENEAM -- Université d'Abomey-Calavi (UAC)}{2018 -- 2021}
+        {Licence en Gestion Financière et Comptabilité}{Bénin}
+    \resumeSubheading
+        {Autodidacte}{Depuis mars 2022}
+        {Développement web}{En ligne}
+\resumeSubHeadingListEnd
+
+%-------------------------------------------
+\end{document}
