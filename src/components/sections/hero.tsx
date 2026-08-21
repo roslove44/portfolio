@@ -12,6 +12,16 @@ function Bullet({ children }: { children: React.ReactNode }) {
 	);
 }
 
+function AvailabilityBadge({ label }: { label: string }) {
+	return (
+		<span className="badge-glow inline-block rounded-full p-px">
+			<span className="block rounded-full bg-background px-3 py-1 text-xs font-medium text-text-secondary">
+				{label}
+			</span>
+		</span>
+	);
+}
+
 function TechName({ children }: { children: React.ReactNode }) {
 	return (
 		<span className="text-text-primary underline decoration-accent/30 underline-offset-4">
@@ -36,7 +46,11 @@ export default function Hero() {
 				<SocialLinks />
 			</div>
 
-			<ul className="mt-6 space-y-2 text-text-primary text-[15px]">
+			<div className="mt-4">
+				<AvailabilityBadge label={t("availability")} />
+			</div>
+
+			<ul className="mt-5 space-y-2 text-text-primary text-[15px]">
 				<Bullet>{t("bullet1")}</Bullet>
 				<Bullet>
 					{t("bullet2_prefix")}
@@ -53,6 +67,7 @@ export default function Hero() {
 					</span>
 					{t("bullet3_suffix")}
 				</Bullet>
+				<Bullet>{t("bullet4")}</Bullet>
 			</ul>
 
 			<p className="mt-6 text-text-primary text-[15px]">
