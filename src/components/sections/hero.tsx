@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import SocialLinks from "@/components/ui/social-links";
 import ContactCta from "@/components/ui/contact-cta";
 import Avatar from "@/components/ui/avatar";
+import AvailabilityBadge from "@/components/ui/availability-badge";
 
 function Bullet({ children }: { children: React.ReactNode }) {
 	return (
@@ -9,16 +10,6 @@ function Bullet({ children }: { children: React.ReactNode }) {
 			<span className="absolute left-0 top-[0.6em] h-1.5 w-1.5 rounded-full bg-text-secondary" aria-hidden="true" />
 			{children}
 		</li>
-	);
-}
-
-function AvailabilityBadge({ label }: { label: string }) {
-	return (
-		<span className="badge-glow inline-block rounded-full p-px">
-			<span className="block rounded-full bg-background px-3 py-1 text-xs font-medium text-text-secondary">
-				{label}
-			</span>
-		</span>
 	);
 }
 
@@ -67,7 +58,6 @@ export default function Hero() {
 					</span>
 					{t("bullet3_suffix")}
 				</Bullet>
-				<Bullet>{t("bullet4")}</Bullet>
 			</ul>
 
 			<p className="mt-6 text-text-primary text-[15px]">

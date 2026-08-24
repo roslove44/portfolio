@@ -18,10 +18,23 @@
     "bullet2_suffix": " ; whatever solves the problem best",
     "bullet3_prefix": "Currently building ",
     "bullet3_suffix": ", an open platform for business management professionals in West Africa. Details below.",
-    "bullet4": "I work remotely with European teams. Cotonou is UTC+1, so I'm on Paris hours.",
     "availability": "Available for freelance work, starting now",
     "cta": "Have a project that needs to actually ship?",
-    "ctaLink": "Let's talk here"
+    "ctaLink": "Let's talk here",
+    "availabilityModal": {
+      "title": "Working with me from Cotonou",
+      "intro": "I work remotely with European teams. Cotonou is UTC+1, so I'm on Paris hours.",
+      "timezoneTitle": "The same working day",
+      "timezoneBody": "Zero to one hour apart from Paris depending on the season. Standups, mid-day check-ins and releases all happen on your clock, not around it.",
+      "trackTitle": "A track record you can check",
+      "trackBody": "Twenty months of continuous work with a French agency, fully remote, as their lead web developer on client projects. Several sites shipped to production.",
+      "readyTitle": "Available right now",
+      "readyBody": "Full time, on a complete project or as reinforcement for an existing team. My code is public, so you can judge the level before we even talk.",
+      "book": "Book a call",
+      "copy": "Copy my email",
+      "copied": "Email copied",
+      "close": "Close"
+    }
   },
   "about": {
     "title": "About me",
