@@ -1,8 +1,10 @@
 %-------------------------
-% Resume — Rostand MIGAN (ASIN)
+% CV — Rostand MIGAN — version ASIN, candidature spontanée stage professionnel
+% Base : resume-fr.tex. Différences : profil orienté service public, téléphone en en-tête,
+% certifications conservées, aucune mention de tarif ni de disponibilité freelance.
 %-------------------------
 
-\documentclass[letterpaper,11pt]{article}
+\documentclass[a4paper,11pt]{article}
 
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
@@ -13,11 +15,13 @@
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \hypersetup{
-	pdftitle={Rostand Migan - Resume},
+	pdftitle={Rostand Migan - CV},
 	pdfauthor={Rostand Migan},
 }
 \usepackage{fancyhdr}
-\usepackage[english]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
 \usepackage{tabularx}
 \input{glyphtounicode}
 
@@ -28,12 +32,15 @@
 \renewcommand{\headrulewidth}{0pt}
 \renewcommand{\footrulewidth}{0pt}
 
-% Adjust margins
+% Marges
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\evensidemargin}{-0.5in}
 \addtolength{\textwidth}{1in}
 \addtolength{\topmargin}{-.5in}
 \addtolength{\textheight}{1.0in}
+
+% fullpage met \footskip à 0pt, ce dont fancyhdr se plaint même avec un pied vide
+\setlength{\footskip}{4.08003pt}
 
 \urlstyle{same}
 
@@ -41,16 +48,23 @@
 \raggedright
 \setlength{\tabcolsep}{0in}
 
-% Sections formatting
+% Formatage des sections
 \titleformat{\section}{
     \vspace{-4pt}\scshape\raggedright\large
 }{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
 
-% Ensure PDF is machine readable/ATS parsable
+% PDF lisible par les ATS
 \pdfgentounicode=1
 
 %-------------------------
-% Custom commands
+\newlength{\entrygap}
+\setlength{\entrygap}{5pt}
+
+\newlength{\headgap}
+\setlength{\headgap}{-4pt}
+
+%-------------------------
+% Commandes
 \newcommand{\resumeItem}[1]{
     \item\small{
         {#1 \vspace{-2pt}}
@@ -58,28 +72,19 @@
 }
 
 \newcommand{\resumeSubheading}[4]{
-    \vspace{-2pt}\item
+    \vspace{\entrygap}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
         \textbf{#1} & #2 \\
         \textit{\small#3} & \textit{\small #4} \\
-    \end{tabular*}\vspace{-7pt}
-}
-
-\newcommand{\resumeSubSubheading}[2]{
-    \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-        \textit{\small#1} & \textit{\small #2} \\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}\vspace{\headgap}
 }
 
 \newcommand{\resumeProjectHeading}[2]{
-    \item
+    \vspace{\entrygap}\item
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
         \small#1 & #2 \\
-    \end{tabular*}\vspace{-7pt}
+    \end{tabular*}\vspace{\headgap}
 }
-
-\newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-4pt}}
 
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
 
@@ -89,118 +94,108 @@
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
 
 %-------------------------------------------
-%%%%%%  RESUME STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 \begin{document}
 
-\begin{flushright}
-    \small Last Updated on March 17th, 2026
-\end{flushright}
-
 \begin{center}
-    \textbf{\Huge \scshape Rostand Migan} \\ \vspace{1pt}
-    \small \href{tel:+2290166534131}{+229 01 66 53 41 31} $|$
+    \textbf{\Huge \scshape Rostand Migan} \\ \vspace{2pt}
+    \small Développeur Full-Stack \quad $|$ \quad Cotonou, Bénin \\ \vspace{2pt}
+    \small
+    \href{tel:+2290166534131}{+229 01 66 53 41 31} $|$
     \href{mailto:hello@rostand.dev}{\underline{hello@rostand.dev}} $|$
     \href{https://rostand.dev}{\underline{rostand.dev}} $|$
     \href{https://github.com/roslove44}{\underline{github.com/roslove44}} $|$
     \href{https://linkedin.com/in/rostand-migan}{\underline{linkedin.com/in/rostand-migan}}
 \end{center}
 
+%-----------PROFIL-----------
+\section{Profil}
+\vspace{2pt}
+\small
+Développeur full-stack, 4 ans de pratique sur React / Next, Node / AdonisJS et PHP / Symfony, avec la prise en charge du cycle complet, du cadrage à la mise en production. Formation initiale en gestion financière et comptable, ce qui me rend opérationnel sans montée en compétence métier sur les applications de gestion, de facturation et de paiement. Je souhaite mettre ces compétences au service des projets numériques de l'administration béninoise, dans le cadre d'un stage professionnel de trois mois. \textbf{Disponible immédiatement, à temps plein, à Cotonou.}
+\vspace{4pt}
+
 %-----------EXPERIENCE-----------
-\section{Experience}
+\section{Expérience}
 \resumeSubHeadingListStart
 
     \resumeSubheading
-        {Full-Stack Developer (Freelance)}{May 2022 -- Present}
-        {DOMMSOFT}{Benin}
+        {Développeur Full-Stack, freelance}{Mai 2022 -- aujourd'hui}
+        {DOMMSOFT}{Bénin}
     \resumeItemListStart
-        \resumeItem{Developing full-stack web applications, APIs, and custom WordPress solutions focused on performance, maintainability, and user experience}
-        \resumeItem{Tech stack: PHP, Symfony, React, WordPress, Next.js, Node.js}
+        \resumeItem{Conception et développement d'applications web, d'API et de solutions sur mesure pour des clients au Bénin et en France}
+        \resumeItem{Prise en charge du cycle complet : cadrage du besoin, développement, recette, mise en production et déploiement sur serveurs Linux}
+        \resumeItem{Stack : TypeScript, React, Next, Node / AdonisJS, PHP / Symfony, PostgreSQL, Docker, WordPress}
     \resumeItemListEnd
 
     \resumeSubheading
-        {Web Developer}{Aug. 2025 -- Nov. 2025}
-        {PAYIX}{Benin}
+        {Développeur Web}{Août 2025 -- Nov. 2025}
+        {PAYIX}{Bénin}
     \resumeItemListStart
-        \resumeItem{Led a complete redesign of a payment and financial services platform, improving UX flows and transaction interfaces}
-        \resumeItem{Integrated secure transactional features and optimized user journeys for payment processing}
+        \resumeItem{Refonte complète d'une plateforme de paiement et de services financiers : parcours utilisateurs et interfaces de transaction}
+        \resumeItem{Intégration de fonctionnalités transactionnelles sécurisées et optimisation des tunnels de paiement}
     \resumeItemListEnd
 
     \resumeSubheading
-        {Web Developer}{Oct. 2022 -- Jun. 2024}
-        {Le March\'{e} de La Com'}{France (Remote)}
+        {Développeur Web, en remote depuis le Bénin}{Oct. 2022 -- Juin 2024}
+        {Le Marché de La Com'}{France}
     \resumeItemListStart
-        \resumeItem{Lead web developer responsible for designing and developing websites and web applications for internal and client-facing projects}
-        \resumeItem{Delivered multiple production sites using WordPress, PHP, and Symfony}
+        \resumeItem{Développeur web principal pendant 20 mois, en télétravail complet et sur les horaires de l'équipe française}
+        \resumeItem{Conception et développement des sites et applications web, pour les projets internes et pour les clients de l'agence}
+        \resumeItem{Plusieurs sites livrés en production sous WordPress, PHP et Symfony}
     \resumeItemListEnd
 
 \resumeSubHeadingListEnd
 
-%-----------PROJECTS-----------
-\section{Projects}
+%-----------PROJETS-----------
+\section{Projets}
 \resumeSubHeadingListStart
 
     \resumeProjectHeading
-        {\textbf{ComptaOpen} $|$ \emph{Next.js, TypeScript, AdonisJS, PostgreSQL, Docker, Gotenberg, TipTap}}{Jun. 2024}
+        {\textbf{ComptaOpen} $|$ \emph{Next, TypeScript, AdonisJS, PostgreSQL, Docker, Gotenberg, TipTap}}{Depuis juin 2024}
     \resumeItemListStart
-        \resumeItem{Open-source platform providing accounting resources, tools, and articles for the Beninese market}
-        \resumeItem{Built a document generation pipeline with Gotenberg and a rich text editor with TipTap}
-        \resumeItem{Designed a freemium model with plans for an ERP module targeting accounting firms}
+        \resumeItem{Plateforme open source de ressources comptables, fiscales et de gestion pour le marché béninois}
+        \resumeItem{Chaîne de génération documentaire avec Gotenberg, éditeur de texte riche avec TipTap, gestion des comptes et des accès}
     \resumeItemListEnd
 
     \resumeProjectHeading
-        {\textbf{Bailto} $|$ \emph{Next.js, TypeScript, Supabase, TipTap, Shadcn/ui}}{Jan. 2026}
+        {\textbf{Bailto} $|$ \emph{Next, TypeScript, Supabase, TipTap, Shadcn/ui}}{Janv. 2026}
     \resumeItemListStart
-        \resumeItem{Rental management platform built for a client, handling properties, tenants, and lease tracking}
-        \resumeItem{Real-time data with Supabase, rich text editing with TipTap, and polished UI with Shadcn/ui}
+        \resumeItem{Plateforme de gestion locative livrée pour un client : biens, locataires, cycle de vie des baux et back-office d'administration}
     \resumeItemListEnd
 
+    \resumeProjectHeading
+        {\textbf{BrandArtisan} $|$ \emph{TypeScript, React, Satori, resvg, Node}}{Juin 2026}
+    \resumeItemListStart
+        \resumeItem{Package npm open source qui transforme un composant React en image de marque, avec une interface en ligne de commande}
+    \resumeItemListEnd
 
 \resumeSubHeadingListEnd
 
-%-----------SKILLS-----------
-\section{Skills}
+%-----------COMPETENCES-----------
+\section{Compétences}
 \begin{itemize}[leftmargin=0.15in, label={}]
     \small{\item{
-        \textbf{Languages}{: JavaScript, TypeScript, PHP, Python, Go} \\
-        \textbf{Frontend}{: React, Next.js, Tailwind CSS, Motion, Shadcn/ui} \\
-        \textbf{Backend}{: Symfony, Laravel, AdonisJS, Node.js, API Platform, Docker, Linux/VPS} \\
-        \textbf{Databases}{: PostgreSQL, MySQL, SQLite, Redis, MongoDB} \\
-        \textbf{CMS}{: WordPress, Payload CMS, Directus} \\
-        \textbf{Testing}{: Jest, Vitest, Playwright, Cypress} \\
-        \textbf{Tools}{: Git, GitHub Actions, Vercel, Figma, VS Code, Claude Code}
+        \textbf{Langages}{ : TypeScript, JavaScript, PHP, Python, Go} \\
+        \textbf{Front}{ : React, Next, Tailwind CSS, Shadcn/ui} \\
+        \textbf{Back}{ : Node, AdonisJS, Symfony, Laravel, API Platform} \\
+        \textbf{Bases de données}{ : PostgreSQL, MySQL, SQLite, Redis, MongoDB} \\
+        \textbf{Infrastructure}{ : Docker, Linux / VPS, Caddy, GitHub Actions, Vercel} \\
+        \textbf{CMS}{ : WordPress, Payload CMS, Directus} \\
+        \textbf{Tests}{ : Vitest, Jest, Playwright, Cypress} \\
+        \textbf{Domaine}{ : comptabilité, fiscalité, facturation, gestion financière} \\
+        \textbf{Langues}{ : français (langue maternelle), anglais (professionnel, B2 certifié)}
     }}
 \end{itemize}
 
-%-----------LANGUAGES-----------
-\section{Languages}
-\begin{itemize}[leftmargin=0.15in, label={}]
-    \small{\item{
-        \textbf{French}{: Native} \\
-        \textbf{English}{: Professional proficiency (B2 certified, advanced reading and comprehension)}
-    }}
-\end{itemize}
-
-%-----------EDUCATION-----------
-\section{Education}
+%-----------FORMATION-----------
+\section{Formation}
 \resumeSubHeadingListStart
     \resumeSubheading
-        {ENEAM -- Universit\'{e} d'Abomey-Calavi (UAC)}{2018 -- 2021}
-        {Bachelor's in Financial Management \& Accounting}{Benin}
+        {ENEAM -- Université d'Abomey-Calavi (UAC)}{2018 -- 2021}
+        {Licence en Gestion Financière et Comptable}{Bénin}
     \resumeSubheading
-        {Self-taught}{Since Mar. 2022}
-        {Web Development}{Online}
-\resumeSubHeadingListEnd
-
-%-----------CERTIFICATIONS-----------
-\section{Certifications}
-\resumeSubHeadingListStart
-    \resumeProjectHeading
-        {\textbf{AI Fluency Framework \& Foundations} $|$ \emph{Anthropic}}{}
-    \resumeProjectHeading
-        {\textbf{Claude Code in Action} $|$ \emph{Anthropic}}{}
-    \resumeProjectHeading
-        {\textbf{Introduction to Model Context Protocol} $|$ \emph{Anthropic}}{}
+        {Autodidacte}{Depuis mars 2022}
+        {Développement web}{En ligne}
 \resumeSubHeadingListEnd
 
 %-------------------------------------------
