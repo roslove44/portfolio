@@ -1,0 +1,201 @@
+%-------------------------
+% CV — Rostand MIGAN — version comptabilité / gestion financière
+%-------------------------
+
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+	pdftitle={Rostand Migan - CV Comptabilité},
+	pdfauthor={Rostand Migan},
+}
+\usepackage{fancyhdr}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{tabularx}
+\input{glyphtounicode}
+
+%----------FONT OPTIONS----------
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Marges
+\addtolength{\oddsidemargin}{-0.5in}
+\addtolength{\evensidemargin}{-0.5in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+% fullpage met \footskip à 0pt, ce dont fancyhdr se plaint même avec un pied vide
+\setlength{\footskip}{4.08003pt}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Formatage des sections
+\titleformat{\section}{
+    \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+% PDF lisible par les ATS
+\pdfgentounicode=1
+
+%-------------------------
+% Espace vertical entre deux entrées (Expérience, Formation).
+% Seul réglage à toucher pour resserrer ou aérer le CV.
+\newlength{\entrygap}
+\setlength{\entrygap}{5pt}
+
+% Espace entre la ligne de titre d'une entrée et ses puces.
+% Valeur négative héritée du template : moins négatif = plus d'air.
+\newlength{\headgap}
+\setlength{\headgap}{-4pt}
+
+%-------------------------
+% Commandes
+\newcommand{\resumeItem}[1]{
+    \item\small{
+        {#1 \vspace{-2pt}}
+    }
+}
+
+\newcommand{\resumeSubheading}[4]{
+    \vspace{\entrygap}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \textbf{#1} & #2 \\
+        \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{\headgap}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \vspace{\entrygap}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+        \small#1 & #2 \\
+    \end{tabular*}\vspace{\headgap}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.15in, label={}]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+\begin{document}
+
+\begin{center}
+    \textbf{\Huge \scshape Rostand Migan} \\ \vspace{2pt}
+    \small Comptable -- Développeur Web -- Fintech Enthousiaste \quad $|$ \quad Cotonou, Bénin \\ \vspace{2pt}
+    \small
+    \href{tel:+2290166534131}{\underline{+229 01 66 53 41 31}} $|$
+    \href{mailto:rostandmigan68@gmail.com}{\underline{rostandmigan68@gmail.com}} $|$
+    \href{https://linkedin.com/in/rostand-migan}{\underline{linkedin.com/in/rostand-migan}}
+\end{center}
+
+%-----------PROFIL-----------
+\section{Profil professionnel}
+\vspace{2pt}
+\small
+Animé par une rigueur exemplaire et un souci constant de précision, je suis titulaire d'une licence en Gestion Financière et Comptable. Doté d'une grande curiosité intellectuelle, j'ai enrichi mon expertise en intégrant des compétences numériques avancées, me permettant d'optimiser les processus comptables ainsi que les stratégies d'optimisation fiscale. Mon ambition est de mettre mon savoir-faire et mon esprit analytique au service de la performance financière et de la croissance durable d'une organisation.
+\vspace{4pt}
+
+%-----------EXPERIENCE-----------
+\section{Expérience professionnelle}
+\resumeSubHeadingListStart
+
+    \resumeSubheading
+        {Développeur Full-Stack}{Juin 2024 -- aujourd'hui}
+        {ComptaOpen}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Plateforme ouverte de ressources comptables et fiscales pour le marché béninois : bibliothèque documentaire, articles et outils de calcul en accès libre}
+        \resumeItem{Moteur de paie au format béninois, du brut au net à payer : IPTS selon la situation familiale, cotisations CNSS et charges patronales, avec formules documentées et versionnées selon la législation en vigueur}
+        \resumeItem{Calculateurs d'impôts dédiés : TVA, IS et charges patronales, chaque formule affichée en clair et rattachée à l'article de fond correspondant}
+        \resumeItem{Conception et développement de bout en bout, du cadrage à la recette ; plateforme en phase de test avant mise en production}
+    \resumeItemListEnd
+
+    \resumeSubheading
+        {Comptable de gestion}{Oct. 2022 -- Juin 2024}
+        {CS PLUS SARL}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Mise en place d'un système complet de gestion comptable participatif basé sur Excel}
+        \resumeItem{Suivi des comptes et des déclarations fiscales, avec réduction des erreurs comptables}
+        \resumeItem{Support pour l'élaboration des états financiers et des dossiers de soumission aux appels d'offres des marchés publics et privés}
+    \resumeItemListEnd
+
+    \resumeSubheading
+        {Conseiller comptable}{Mai 2022 -- Janv. 2023}
+        {DOMMSOFT}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Analyse du projet de l'entreprise : évaluation approfondie des besoins financiers pour établir un business plan}
+        \resumeItem{Formalisation et enregistrement légal de la structure}
+        \resumeItem{Réalisation du bilan d'ouverture}
+        \resumeItem{Assistance en déclaration et liquidation des impôts}
+        \resumeItem{Création d'outils de suivi de gestion}
+    \resumeItemListEnd
+
+    \resumeSubheading
+        {Stagiaire comptable}{Mars 2022 -- Juin 2022}
+        {FECECAM}{Bénin}
+    \resumeItemListStart
+        \resumeItem{Suivi des opérations comptables et financières de l'entreprise}
+    \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------COMPETENCES-----------
+\section{Compétences}
+\begin{itemize}[leftmargin=0.15in, label={}]
+    \small{\item{
+        \textbf{Comptabilité}{ : tenue et suivi des comptes, états financiers, bilan d'ouverture, dossiers d'appels d'offres} \\
+        \textbf{Fiscalité}{ : gestion des déclarations fiscales, liquidation des impôts, suivi des obligations réglementaires} \\
+        \textbf{Gestion}{ : business plan, outils de suivi de gestion, maîtrise des outils comptables et de gestion financière} \\
+        \textbf{Numérique}{ : création et automatisation d'outils sur Excel} \\
+        \textbf{Programmation}{ : Python, PHP, JavaScript, Go} \\
+        \textbf{Langues}{ : français (langue maternelle), anglais (niveau B2)}
+    }}
+\end{itemize}
+
+%-----------FORMATION-----------
+\section{Formations et diplômes}
+\resumeSubHeadingListStart
+
+    \resumeSubheading
+        {Licence en Gestion Financière et Comptable -- mention Bien}{2018 -- 2021}
+        {ENEAM -- Université d'Abomey-Calavi (UAC)}{Bénin}
+
+    \resumeSubheading
+        {Baccalauréat série G2 -- mention Bien}{Août 2018}
+        {Lycée Technique de Bohicon, techniques quantitatives de gestion et comptabilité}{Bénin}
+
+    \resumeSubheading
+        {C.A.P. Aide Comptable -- mention Très Bien}{Juillet 2017}
+        {Lycée Technique de Bohicon, option STAG}{Bénin}
+
+    \resumeSubheading
+        {Développement web}{2021 -- 2022}
+        {Formation autodidacte, en ligne}{}
+
+\resumeSubHeadingListEnd
+
+\vspace{6pt}
+\begin{center}
+    \small\textit{Références disponibles sur demande}
+\end{center}
+
+%-------------------------------------------
+\end{document}
