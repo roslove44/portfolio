@@ -83,6 +83,8 @@ export async function buildHomeMarkdown(locale: string): Promise<string> {
 	lines.push(`**GitHub:** ${SOCIAL_LINKS.github}`);
 	lines.push(`**LinkedIn:** ${SOCIAL_LINKS.linkedin}`);
 	lines.push(`**X:** ${SOCIAL_LINKS.x}`);
+	lines.push(`**npm:** ${SOCIAL_LINKS.npm}`);
+	lines.push(`**Builderswave:** ${SOCIAL_LINKS.builderswave}`);
 	lines.push("");
 	lines.push("---");
 	lines.push("");

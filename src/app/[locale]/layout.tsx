@@ -9,7 +9,7 @@ import Script from "next/script";
 import type { Metadata } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL, TWITTER_HANDLE, SOCIAL_LINKS, STACK_CATEGORIES } from "@/data/constants";
-import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
+import { buildMetadataAlternates, localeUrl, buildAvatarImageObject, AVATAR_ID } from "@/lib/metadata";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 import ThemeCookieSync from "@/components/ui/theme-cookie-sync";
@@ -120,9 +120,9 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 									"@type": "Person",
 									"@id": `${SITE_URL}/#person`,
 									name: "Rostand MIGAN",
-									alternateName: ["Rostand", "Roslove"],
+									alternateName: ["Rostand", "Rostand Migan", "Migan Rostand", "Roslove", "roslove44", "rostand_dev"],
 									url: SITE_URL,
-									image: `${SITE_URL}/avatar.webp`,
+									image: { "@id": AVATAR_ID },
 									jobTitle: "Full-Stack Developer",
 									description: "Full stack developer building web applications, SaaS platforms and developer tools. Comfortable across the entire stack, from React and Next.js to Symfony, Node.js and Go.",
 									knowsAbout: [
@@ -142,8 +142,15 @@ export default async function LocaleLayout({ children, params }: { children: Rea
 									],
 									nationality: { "@type": "Country", name: "Benin" },
 									address: { "@type": "PostalAddress", addressLocality: "Cotonou", addressCountry: "BJ" },
-									sameAs: [SOCIAL_LINKS.github, SOCIAL_LINKS.linkedin, SOCIAL_LINKS.x],
+									sameAs: [
+										SOCIAL_LINKS.github,
+										SOCIAL_LINKS.linkedin,
+										SOCIAL_LINKS.x,
+										SOCIAL_LINKS.npm,
+										SOCIAL_LINKS.builderswave,
+									],
 								},
+								buildAvatarImageObject(),
 							],
 						}),
 					}}

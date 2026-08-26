@@ -1,4 +1,4 @@
-import { SITE_URL } from "@/data/constants";
+import { SITE_URL, AVATAR } from "@/data/constants";
 import { routing } from "@/i18n/routing";
 
 const defaultLocale = routing.defaultLocale;
@@ -34,5 +34,20 @@ export function buildMetadataAlternates(locale: string, path = "") {
 	return {
 		canonical: localeUrl(locale, path),
 		languages: buildLanguageAlternates(path),
+	};
+}
+
+export const AVATAR_ID = `${SITE_URL}/#avatar`;
+export const AVATAR_URL = `${SITE_URL}${AVATAR.path}`;
+
+export function buildAvatarImageObject() {
+	return {
+		"@type": "ImageObject",
+		"@id": AVATAR_ID,
+		url: AVATAR_URL,
+		contentUrl: AVATAR_URL,
+		width: AVATAR.width,
+		height: AVATAR.height,
+		caption: AVATAR.caption,
 	};
 }

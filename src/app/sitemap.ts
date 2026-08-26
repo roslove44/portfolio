@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/data/constants";
 import { getBlogPosts } from "@/lib/blog";
 import { routing } from "@/i18n/routing";
-import { buildLanguageAlternates, localeUrl } from "@/lib/metadata";
+import { buildLanguageAlternates, localeUrl, AVATAR_URL } from "@/lib/metadata";
 
 const locales = routing.locales;
 
@@ -10,19 +10,29 @@ function buildAlternates(path: string) {
 	return { languages: buildLanguageAlternates(path) };
 }
 
+type StaticRoute = {
+	url: string;
+	changeFrequency: NonNullable<MetadataRoute.Sitemap[number]["changeFrequency"]>;
+	priority: number;
+	images?: string[];
+};
+
+const STATIC_ROUTES: StaticRoute[] = [
+	{ url: "", changeFrequency: "monthly", priority: 1.0, images: [AVATAR_URL] },
+	{ url: "/blog", changeFrequency: "weekly", priority: 0.8 },
+	{ url: "/projects", changeFrequency: "monthly", priority: 0.8 },
+];
+
 export default function sitemap(): MetadataRoute.Sitemap {
 	const now = new Date();
-	const staticRoutes: MetadataRoute.Sitemap = [
-		{ url: "", changeFrequency: "monthly" as const, priority: 1.0 },
-		{ url: "/blog", changeFrequency: "weekly" as const, priority: 0.8 },
-		{ url: "/projects", changeFrequency: "monthly" as const, priority: 0.8 },
-	].flatMap(({ url, changeFrequency, priority }) =>
+	const staticRoutes: MetadataRoute.Sitemap = STATIC_ROUTES.flatMap(({ url, changeFrequency, priority, images }) =>
 		locales.map((locale) => ({
 			url: localeUrl(locale, url),
 			lastModified: now,
 			changeFrequency,
 			priority,
 			alternates: buildAlternates(url),
+			...(images && { images }),
 		}))
 	);
 

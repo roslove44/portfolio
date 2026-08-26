@@ -6,11 +6,20 @@ export const SOCIAL_LINKS = {
 	github: "https://github.com/roslove44",
 	linkedin: "https://www.linkedin.com/in/rostand-migan/",
 	x: "https://x.com/migan_rostand",
+	npm: "https://www.npmjs.com/~rostand_dev",
+	builderswave: "https://builderswave.com/builder/rostand-migan",
 	email: "hello@rostand.dev",
 	gmail: "rostandmigan68@gmail.com"
 } as const;
 
 export const TWITTER_HANDLE = "@migan_rostand";
+
+export const AVATAR = {
+	path: "/avatar.webp",
+	width: 896,
+	height: 1152,
+	caption: "Rostand MIGAN",
+} as const;
 
 export type Tech = { name: string; key: string };
 

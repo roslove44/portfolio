@@ -7,7 +7,7 @@ import Projects from "@/components/sections/projects";
 import Resume from "@/components/sections/resume";
 import Blog from "@/components/sections/blog";
 import { SITE_URL } from "@/data/constants";
-import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
+import { buildMetadataAlternates, localeUrl, buildAvatarImageObject, AVATAR_ID } from "@/lib/metadata";
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
 	const { locale } = await params;
@@ -28,6 +28,8 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
 		url,
 		inLanguage: locale === "fr" ? "fr" : "en",
 		name: "Rostand MIGAN — Full Stack Developer",
+		primaryImageOfPage: buildAvatarImageObject(),
+		image: { "@id": AVATAR_ID },
 		mainEntity: { "@id": `${SITE_URL}/#person` },
 		about: { "@id": `${SITE_URL}/#person` },
 		isPartOf: { "@id": `${SITE_URL}/#website` },
