@@ -13,7 +13,7 @@ import ReadingProgress from "@/components/blog/reading-progress";
 import BlogCover from "@/components/blog/blog-cover";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/data/constants";
-import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
+import { buildMetadataAlternates, localeUrl, buildBreadcrumbLd } from "@/lib/metadata";
 import { UserAvatar } from "@/components/ui/user-avatar";
 
 export function generateStaticParams() {
@@ -65,18 +65,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	if (!post) notFound();
 
 	const t = await getTranslations({ locale, namespace: "blog" });
+	const th = await getTranslations({ locale, namespace: "header" });
 	const readingTime = getReadingTime(post.content);
 	const url = localeUrl(locale, `/blog/${slug}`);
 
-	const breadcrumbLd = {
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
-			{ "@type": "ListItem", position: 2, name: "Blog", item: localeUrl(locale, "/blog") },
-			{ "@type": "ListItem", position: 3, name: post.title },
-		],
-	};
+	const breadcrumbLd = buildBreadcrumbLd(locale, `/blog/${slug}`, [
+		{ name: th("home"), path: "" },
+		{ name: t("pageTitle"), path: "/blog" },
+		{ name: post.title },
+	]);
 
 	const jsonLd = {
 		"@context": "https://schema.org",

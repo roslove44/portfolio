@@ -5,18 +5,7 @@ import { Link } from "@/i18n/navigation";
 import ProjectsList from "@/components/projects/projects-list";
 import { SITE_URL } from "@/data/constants";
 import { PROJECTS } from "@/data/projects";
-import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
-
-function buildBreadcrumbLd(locale: string) {
-	return {
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
-			{ "@type": "ListItem", position: 2, name: "Projects" },
-		],
-	};
-}
+import { buildMetadataAlternates, localeUrl, buildBreadcrumbLd } from "@/lib/metadata";
 
 const TYPE_TO_SCHEMA: Record<string, string> = {
 	saas: "SoftwareApplication",
@@ -106,13 +95,18 @@ export default async function ProjectsPage({ params }: { params: Promise<{ local
 	setRequestLocale(locale);
 
 	const t = await getTranslations("projects");
+	const th = await getTranslations("header");
 	const collectionLd = await buildCollectionLd(locale);
+	const breadcrumbLd = buildBreadcrumbLd(locale, "/projects", [
+		{ name: th("home"), path: "" },
+		{ name: t("pageTitle") },
+	]);
 
 	return (
 		<section className="py-8">
 			<script
 				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbLd(locale)) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
 			/>
 			<script
 				type="application/ld+json"

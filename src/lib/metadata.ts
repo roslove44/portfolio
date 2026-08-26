@@ -37,6 +37,25 @@ export function buildMetadataAlternates(locale: string, path = "") {
 	};
 }
 
+export type BreadcrumbCrumb = {
+	name: string;
+	path?: string;
+};
+
+export function buildBreadcrumbLd(locale: string, path: string, crumbs: BreadcrumbCrumb[]) {
+	return {
+		"@context": "https://schema.org",
+		"@type": "BreadcrumbList",
+		"@id": `${localeUrl(locale, path)}#breadcrumb`,
+		itemListElement: crumbs.map((crumb, index) => ({
+			"@type": "ListItem",
+			position: index + 1,
+			name: crumb.name,
+			...(crumb.path !== undefined && { item: localeUrl(locale, crumb.path) }),
+		})),
+	};
+}
+
 export const AVATAR_ID = `${SITE_URL}/#avatar`;
 export const AVATAR_URL = `${SITE_URL}${AVATAR.path}`;
 

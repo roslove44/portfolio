@@ -6,18 +6,7 @@ import { getBlogPosts } from "@/lib/blog";
 import BlogCard from "@/components/blog/blog-card";
 import { Fragment } from "react/jsx-runtime";
 import { SITE_URL } from "@/data/constants";
-import { buildMetadataAlternates, localeUrl } from "@/lib/metadata";
-
-function buildBreadcrumbLd(locale: string) {
-	return {
-		"@context": "https://schema.org",
-		"@type": "BreadcrumbList",
-		itemListElement: [
-			{ "@type": "ListItem", position: 1, name: "Home", item: localeUrl(locale) },
-			{ "@type": "ListItem", position: 2, name: "Blog" },
-		],
-	};
-}
+import { buildMetadataAlternates, localeUrl, buildBreadcrumbLd } from "@/lib/metadata";
 
 function buildBlogLd(locale: string, posts: ReturnType<typeof getBlogPosts>) {
 	const url = localeUrl(locale, "/blog");
@@ -79,13 +68,18 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 	setRequestLocale(locale);
 
 	const t = await getTranslations("blog");
+	const th = await getTranslations("header");
 	const posts = getBlogPosts(locale);
+	const breadcrumbLd = buildBreadcrumbLd(locale, "/blog", [
+		{ name: th("home"), path: "" },
+		{ name: t("pageTitle") },
+	]);
 
 	return (
 		<section className="py-8">
 			<script
 				type="application/ld+json"
-				dangerouslySetInnerHTML={{ __html: JSON.stringify(buildBreadcrumbLd(locale)) }}
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
 			/>
 			<script
 				type="application/ld+json"
