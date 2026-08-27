@@ -22,6 +22,7 @@ function buildBlogLd(locale: string, posts: ReturnType<typeof getBlogPosts>) {
 		isPartOf: { "@id": `${SITE_URL}/#website` },
 		blogPost: posts.map((post) => ({
 			"@type": "BlogPosting",
+			"@id": `${localeUrl(locale, `/blog/${post.slug}`)}#article`,
 			headline: post.title,
 			description: post.description,
 			url: localeUrl(locale, `/blog/${post.slug}`),
