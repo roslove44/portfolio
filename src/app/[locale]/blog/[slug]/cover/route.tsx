@@ -1,7 +1,15 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { ImageResponse } from "next/og";
 import { getBlogPost, getBlogPosts } from "@/lib/blog";
 import { GENERATED_COVER_SIZE } from "@/lib/blog-cover";
 import { routing } from "@/i18n/routing";
+
+/**
+ * The avatar has to be inlined: satori only decodes PNG, APNG, JPEG, GIF and SVG,
+ * so it would reject the WebP served to the browser, and it never hits the network.
+ */
+const AVATAR = `data:image/png;base64,${readFileSync(join(process.cwd(), "public", "avatar-og.png")).toString("base64")}`;
 
 /** Only articles without a frontmatter cover need a generated one. */
 export function generateStaticParams() {
@@ -19,7 +27,6 @@ const COLORS = {
 	textPrimary: "#f9fafb",
 	textSecondary: "#9ca3af",
 	accent: "#60a5fa",
-	brand: "#2563eb",
 };
 
 function titleSize(title: string): number {
@@ -83,22 +90,14 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
 					<div style={{ display: "flex", width: "100%", height: 1, backgroundColor: COLORS.border }} />
 					<div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 34 }}>
 						<div style={{ display: "flex", alignItems: "center", gap: 22 }}>
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									justifyContent: "center",
-									width: 62,
-									height: 62,
-									borderRadius: 14,
-									backgroundColor: COLORS.brand,
-									color: "#ffffff",
-									fontSize: 26,
-									fontWeight: 700,
-								}}
-							>
-								RM
-							</div>
+							{/* eslint-disable-next-line @next/next/no-img-element */}
+							<img
+								src={AVATAR}
+								alt="Rostand MIGAN"
+								width={80}
+								height={80}
+								style={{ borderRadius: 40, objectFit: "cover", border: `1px solid ${COLORS.border}` }}
+							/>
 							<div style={{ display: "flex", flexDirection: "column" }}>
 								<div style={{ display: "flex", fontSize: 28, color: COLORS.textPrimary }}>Rostand MIGAN</div>
 								<div style={{ display: "flex", fontSize: 22, color: COLORS.textSecondary, marginTop: 4 }}>rostand.dev</div>
