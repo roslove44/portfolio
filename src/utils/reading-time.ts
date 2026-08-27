@@ -1,4 +1,7 @@
+export function getWordCount(content: string): number {
+	return content.trim().split(/\s+/).length;
+}
+
 export function getReadingTime(content: string): number {
-	const words = content.trim().split(/\s+/).length;
-	return Math.max(1, Math.round(words / 180));
+	return Math.max(1, Math.round(getWordCount(content) / 180));
 }

@@ -7,7 +7,8 @@ import type { Metadata, ResolvingMetadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPost, getAllSlugs } from "@/lib/blog";
-import { getReadingTime } from "@/utils/reading-time";
+import { getPublicImageSize } from "@/lib/image";
+import { getReadingTime, getWordCount } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
 import BlogCover from "@/components/blog/blog-cover";
@@ -67,6 +68,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 	const t = await getTranslations({ locale, namespace: "blog" });
 	const th = await getTranslations({ locale, namespace: "header" });
 	const readingTime = getReadingTime(post.content);
+	const wordCount = getWordCount(post.content);
 	const url = localeUrl(locale, `/blog/${slug}`);
 
 	const breadcrumbLd = buildBreadcrumbLd(locale, `/blog/${slug}`, [
@@ -75,21 +77,57 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 		{ name: post.title },
 	]);
 
+	const pageId = `${url}#webpage`;
+	const articleId = `${url}#article`;
+	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : null;
+	const coverSize = post.cover && !post.cover.startsWith("http") ? getPublicImageSize(post.cover) : null;
+	const coverLd = coverUrl
+		? {
+			"@type": "ImageObject",
+			"@id": `${url}#cover`,
+			url: coverUrl,
+			contentUrl: coverUrl,
+			...(coverSize && { width: coverSize.width, height: coverSize.height }),
+			caption: post.title,
+		}
+		: null;
+
 	const jsonLd = {
 		"@context": "https://schema.org",
-		"@type": "BlogPosting",
-		headline: post.title,
-		description: post.description,
-		url,
-		inLanguage: locale === "fr" ? "fr" : "en",
-		mainEntityOfPage: { "@type": "WebPage", "@id": url },
-		datePublished: post.date,
-		...(post.updatedAt && { dateModified: post.updatedAt }),
-		...(post.cover && { image: post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}` }),
-		...(post.tags && { keywords: post.tags }),
-		author: { "@id": `${SITE_URL}/#person` },
-		publisher: { "@id": `${SITE_URL}/#person` },
-		isPartOf: { "@id": `${SITE_URL}/#blog` },
+		"@graph": [
+			{
+				"@type": "WebPage",
+				"@id": pageId,
+				url,
+				name: post.title,
+				description: post.description,
+				inLanguage: locale === "fr" ? "fr" : "en",
+				isPartOf: { "@id": `${SITE_URL}/#website` },
+				breadcrumb: { "@id": `${url}#breadcrumb` },
+				...(coverLd && { primaryImageOfPage: { "@id": coverLd["@id"] } }),
+				mainEntity: { "@id": articleId },
+				datePublished: post.date,
+				...(post.updatedAt && { dateModified: post.updatedAt }),
+			},
+			{
+				"@type": "BlogPosting",
+				"@id": articleId,
+				headline: post.title,
+				description: post.description,
+				url,
+				inLanguage: locale === "fr" ? "fr" : "en",
+				mainEntityOfPage: { "@id": pageId },
+				datePublished: post.date,
+				...(post.updatedAt && { dateModified: post.updatedAt }),
+				...(coverLd && { image: coverLd }),
+				...(post.tags && { keywords: post.tags }),
+				wordCount,
+				timeRequired: `PT${readingTime}M`,
+				author: { "@id": `${SITE_URL}/#person` },
+				publisher: { "@id": `${SITE_URL}/#person` },
+				isPartOf: { "@id": `${SITE_URL}/#blog` },
+			},
+		],
 	};
 
 	return (
