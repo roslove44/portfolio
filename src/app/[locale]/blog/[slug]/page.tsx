@@ -3,11 +3,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import rehypePrettyCode from "rehype-pretty-code";
 import remarkGfm from "remark-gfm";
-import type { Metadata, ResolvingMetadata } from "next";
+import type { Metadata } from "next";
 import { ArrowLeft } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { getBlogPost, getAllSlugs } from "@/lib/blog";
-import { getPublicImageSize } from "@/lib/image";
+import { resolveCover } from "@/lib/blog-cover";
 import { getReadingTime, getWordCount } from "@/utils/reading-time";
 import { mdxComponents } from "@/components/blog/mdx-components";
 import ReadingProgress from "@/components/blog/reading-progress";
@@ -23,14 +23,18 @@ export function generateStaticParams() {
 	);
 }
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
 	const { locale, slug } = await params;
 	const post = getBlogPost(locale, slug);
 	if (!post) return {};
 
 	const url = localeUrl(locale, `/blog/${slug}`);
-	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : undefined;
-	const images = coverUrl ? [{ url: coverUrl, width: 1200, height: 630 }] : (await parent).openGraph?.images || [];
+	const cover = resolveCover(locale, post);
+	const images = [{
+		url: cover.url,
+		...(cover.width && cover.height && { width: cover.width, height: cover.height }),
+		alt: post.title,
+	}];
 
 	return {
 		title: post.title,
@@ -79,18 +83,15 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 
 	const pageId = `${url}#webpage`;
 	const articleId = `${url}#article`;
-	const coverUrl = post.cover ? (post.cover.startsWith("http") ? post.cover : `${SITE_URL}${post.cover}`) : null;
-	const coverSize = post.cover && !post.cover.startsWith("http") ? getPublicImageSize(post.cover) : null;
-	const coverLd = coverUrl
-		? {
-			"@type": "ImageObject",
-			"@id": `${url}#cover`,
-			url: coverUrl,
-			contentUrl: coverUrl,
-			...(coverSize && { width: coverSize.width, height: coverSize.height }),
-			caption: post.title,
-		}
-		: null;
+	const cover = resolveCover(locale, post);
+	const coverLd = {
+		"@type": "ImageObject",
+		"@id": `${url}#cover`,
+		url: cover.url,
+		contentUrl: cover.url,
+		...(cover.width && cover.height && { width: cover.width, height: cover.height }),
+		caption: post.title,
+	};
 
 	const jsonLd = {
 		"@context": "https://schema.org",
@@ -104,7 +105,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 				inLanguage: locale === "fr" ? "fr" : "en",
 				isPartOf: { "@id": `${SITE_URL}/#website` },
 				breadcrumb: { "@id": `${url}#breadcrumb` },
-				...(coverLd && { primaryImageOfPage: { "@id": coverLd["@id"] } }),
+				primaryImageOfPage: { "@id": coverLd["@id"] },
 				mainEntity: { "@id": articleId },
 				datePublished: post.date,
 				...(post.updatedAt && { dateModified: post.updatedAt }),
@@ -119,7 +120,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ local
 				mainEntityOfPage: { "@id": pageId },
 				datePublished: post.date,
 				...(post.updatedAt && { dateModified: post.updatedAt }),
-				...(coverLd && { image: coverLd }),
+				image: coverLd,
 				...(post.tags && { keywords: post.tags }),
 				wordCount,
 				timeRequired: `PT${readingTime}M`,
