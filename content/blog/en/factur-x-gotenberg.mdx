@@ -1,0 +1,177 @@
+---
+title: "Factur-X: the standard behind France's e-invoicing reform, and how to generate it with Gotenberg"
+date: "2026-08-27"
+description: "On September 1st 2026, a PDF stops being an invoice in France. What the Factur-X standard actually says, how a compliant file is built, and how to produce one with Gotenberg in a single HTTP request."
+tags: ["factur-x", "e-invoicing", "gotenberg", "pdf", "watch"]
+draft: false
+---
+
+On September 1st 2026, electronic invoicing becomes mandatory in France. Almost every article on the subject is written for executives and accountants: deadlines, penalties, how to pick a platform.
+
+The reading we need is missing. Because underneath the reform there is a standard, a file format, and a technical constraint that will reach any piece of software issuing an invoice to a French company. Including yours, if you build a SaaS, an ERP, a marketplace, or a plain billing module.
+
+Here is what matters, and how to produce a compliant invoice without writing a single line of PDF manipulation.
+
+---
+
+## What the reform actually changes
+
+Three sentences set the scene.
+
+**A PDF is no longer an invoice.** The PDF you email today is, as far as the reform is concerned, a picture. An electronic invoice must carry structured, machine-readable data in a normalized format.
+
+**Invoices no longer travel by email.** They go through an approved platform registered by the tax administration. The French state gave up in October 2024 on building a free public portal that would have done the job: the Portail Public de Facturation keeps only two roles, the central directory that says which platform serves which company, and the concentrator that feeds data back to the tax authority.
+
+**The calendar has two steps.** By September 1st 2026, every VAT-registered company must be able to **receive** an electronic invoice, and large companies and mid-caps must **issue** them. Small and micro businesses switch to issuing on September 1st 2027.
+
+Next to invoicing sits e-reporting: transactions outside the scope of e-invoicing (consumer sales, international operations) and payment data must be reported too. Two flows, two logics, routinely conflated in mainstream coverage.
+
+---
+
+## The standard, from the top of the stack down
+
+The word "format" is misleading. There are three stacked layers, and confusing them is the first mistake everyone makes.
+
+**EN 16931** is the European standard. It does not describe a file, it describes a *semantic model*: the list of information an invoice must carry, cardinalities, and the business rules binding them (the well-known `BR-*` rules, such as "an invoice must have a unique identifier"). It is a dictionary, not a syntax.
+
+**UBL 2.1 and UN/CEFACT CII** are the two XML syntaxes allowed to express that model. Two different vocabularies saying the same thing. UBL comes from the OASIS world and dominates the Peppol network, CII comes from the United Nations and dominates in France and Germany.
+
+**Factur-X** is the hybrid format built on top of CII. One file, two readings: a PDF a human opens, and an XML embedded inside it that a machine parses. In Germany the exact same standard is called ZUGFeRD. Factur-X 1.09.2 and ZUGFeRD 2.5.2, both published on August 4th 2026, are technically identical.
+
+That is the genuinely interesting idea here, and it deserves saying out loud: rather than forcing raw XML nobody can read, Factur-X keeps the human document as the envelope and slips the machine truth inside. One file circulates, one version exists, and the accountant opening the attachment still sees an invoice.
+
+---
+
+## Anatomy of a Factur-X file
+
+A valid Factur-X is a PDF satisfying four constraints.
+
+1. **The container is a PDF/A-3.** The archival profile of ISO 19005, version 3, the only one that allows embedding arbitrary files. An ordinary PDF will not do.
+2. **One embedded file, named exactly `factur-x.xml`.** It lives in the `/Names/EmbeddedFiles` tree of the document catalog. One, not two.
+3. **The relationship is declared.** The `/AFRelationship` key of the file specification dictionary is set to `/Alternative`, meaning: this XML is an alternative representation of the PDF content, not a side attachment.
+4. **XMP metadata carries the Factur-X extension schema.** Four entries: document type, embedded XML filename, schema version, and the profile in use.
+
+That fourth point is where everyone trips. Embedding XML in a PDF is easy, nearly every library can do it. Writing the XMP extension schema correctly is much less so, and a validator will reject the file without it.
+
+---
+
+## The profiles, and which one to pick
+
+Factur-X defines five profiles, from leanest to richest. They determine what the XML actually carries.
+
+| Profile | Content | Use |
+| --- | --- | --- |
+| MINIMUM | Header data and totals, no detailed VAT | Historically calibrated for Chorus Pro |
+| BASIC WL | Full header and footer, **no invoice lines** | Fully automated flows |
+| BASIC | BASIC WL plus essential line items | Simple invoicing |
+| EN 16931 | The full European semantic model | **The sensible default** |
+| EXTENDED | EN 16931 plus sector extensions | Complex business cases |
+
+A sixth name shows up in implementations, XRECHNUNG. It is not strictly a Factur-X profile but a German specialization of EN 16931, mandated for public sector invoicing there.
+
+Practical advice: **target EN 16931 from day one**. MINIMUM and BASIC WL are tolerated at the start of the reform, but they are designed to disappear, and MINIMUM carries no VAT breakdown. Building your mapping on a lean profile only to redo it in eighteen months is the kind of debt you regret fast.
+
+---
+
+## Generating Factur-X with Gotenberg
+
+Gotenberg is a stateless HTTP API for document conversion, shipped as a Docker image. On ComptaOpen I have been using it for months to convert documents of every kind into PDF: you post your file, you get a PDF back, and you ship neither an office suite nor a headless browser inside your application.
+
+Since version 8.34.0, released on June 12th 2026, Gotenberg can produce Factur-X. The route is dedicated:
+
+```bash
+curl --request POST http://localhost:3000/forms/pdfengines/factur-x \
+  --form files=@/path/to/invoice.pdf \
+  --form facturxXml=@/path/to/factur-x.xml \
+  --form 'facturxConformanceLevel=EN 16931' \
+  -o my.pdf
+```
+
+Three fields are enough. Gotenberg embeds the XML under the canonical `factur-x.xml` name, writes the matching XMP metadata, and converts the document to PDF/A-3.
+
+The available fields:
+
+| Field | Required | Detail |
+| --- | --- | --- |
+| `files` | yes | The source PDF or PDFs |
+| `facturxXml` | yes | The CII XML to embed |
+| `facturxConformanceLevel` | yes | MINIMUM, BASIC WL, BASIC, EN 16931, EXTENDED, XRECHNUNG |
+| `facturxDocumentType` | no | INVOICE by default, also ORDER, ORDER_RESPONSE, ORDER_CHANGE |
+| `facturxVersion` | no | 1.0 by default, written into the XMP metadata |
+| `pdfa` | no | Forces a PDF/A-3a, 3b or 3u variant |
+| `pdfua` | no | Enables PDF/UA accessibility compliance |
+
+Useful detail: when every input file already carries PDF/A-3 identification, files are left untouched. Otherwise the whole request is converted to PDF/A-3b, unless a variant is specified. And if you post several PDFs at once, the response is a ZIP archive, not a file.
+
+---
+
+## The full pipeline
+
+In practice the invoice does not exist yet when the request goes out. The realistic chain is two calls against the same instance.
+
+The source PDF can come from any conversion route: an office document through LibreOffice, an HTML template through Chromium. I use the latter here because it is the most common case for an invoice generated by an application.
+
+```ts
+const GOTENBERG = "http://gotenberg:3000"
+
+// 1. The HTML template becomes a PDF
+async function renderPdf(html: string) {
+	const form = new FormData()
+	form.append("files", new Blob([html], { type: "text/html" }), "index.html")
+
+	const res = await fetch(`${GOTENBERG}/forms/chromium/convert/html`, { method: "POST", body: form })
+	if (!res.ok) throw new Error(`Gotenberg HTML: ${res.status}`)
+
+	return res.blob()
+}
+
+// 2. The PDF and the CII XML become a Factur-X
+async function toFacturX(pdf: Blob, xml: string) {
+	const form = new FormData()
+	form.append("files", pdf, "invoice.pdf")
+	form.append("facturxXml", new Blob([xml], { type: "application/xml" }), "factur-x.xml")
+	form.append("facturxConformanceLevel", "EN 16931")
+	form.append("pdfa", "PDF/A-3b")
+
+	const res = await fetch(`${GOTENBERG}/forms/pdfengines/factur-x`, { method: "POST", body: form })
+	if (!res.ok) throw new Error(`Gotenberg Factur-X: ${res.status}`)
+
+	return res.blob()
+}
+```
+
+A `400` means invalid form fields, a `503` means the configured maximum duration was exceeded. The two deserve different handling: the first will never succeed, the second is worth a retry.
+
+---
+
+## What Gotenberg does not do
+
+This is the part announcement posts skip, and the part that costs the most to discover mid-project.
+
+**It does not generate your CII XML.** Gotenberg embeds an XML you hand it. Mapping your data model onto the CII vocabulary, with the right type codes, units, and VAT category codes, is entirely on you. That is the real work.
+
+**It does not validate EN 16931 conformance.** It declares a conformance level in the metadata, it does not check the content honors it. Validation goes through the XSD schemas and Schematron rules published by the FNFE, wired into your CI like any other test.
+
+**It transmits nothing.** Producing the file is not sending it. Transmission goes through an approved platform, with its API, its directory, its acknowledgments and lifecycle statuses. That is a separate integration project, and usually longer than generating the file.
+
+---
+
+## Why watch this from outside France
+
+Because this is not a French subject.
+
+Germany has mandated reception since January 2025 with ZUGFeRD, the same standard under another name. Italy led the way back in 2019. The Peppol network structures exchanges across much of Northern Europe. And the European ViDA package is progressively aligning the continent on EN 16931.
+
+Put differently: a normalized invoice data model, a mandated XML syntax, and approved exchange platforms are becoming the default substrate of invoicing in Europe. If you build business software, this constraint will land on your backlog eventually, whichever country you meet it in first.
+
+Better to read the spec before it becomes an urgent ticket.
+
+---
+
+**Sources:**
+
+- [Everything about e-invoicing, economie.gouv.fr](https://www.economie.gouv.fr/tout-savoir-sur-la-facturation-electronique-pour-les-entreprises)
+- [Be ready for September 1st 2026](https://entreprendre.service-public.gouv.fr/actualites/A18953)
+- [Factur-X specification, FNFE-MPE](https://fnfe-mpe.org/factur-x/)
+- [Gotenberg documentation, Factur-X](https://gotenberg.dev/docs/manipulate-pdfs/factur-x)
+- [Gotenberg 8.34.0 release](https://github.com/gotenberg/gotenberg/releases/tag/v8.34.0)
