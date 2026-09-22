@@ -1,0 +1,166 @@
+---
+title: "Liens morts : lychee et une GitHub Action pour les attraper avant tes lecteurs"
+date: "2026-09-23"
+description: "Un guide qui cite une page disparue perd sa crédibilité en un clic. Comment je vérifie chaque lien d'un corpus markdown avec lychee, un checker écrit en Rust, dans une GitHub Action qui tourne à chaque commit et chaque lundi matin."
+tags: ["lychee", "github-actions", "ci", "markdown"]
+draft: false
+---
+
+Sur un de mes projets, un corpus de guides fiscaux est écrit en markdown, et chacun cite ses sources : textes de loi, sites institutionnels, registres en ligne, documentation officielle. C'est ce qui fait leur valeur. Un guide fiscal sans référence, c'est une opinion.
+
+Le problème, c'est que ces liens meurent. Un ministère refond son site, une page change d'adresse, un registre migre vers une nouvelle application. Rien ne casse dans le dépôt, aucun test ne rougit, et pendant des semaines les lecteurs cliquent sur un 404 sans que personne ne le sache.
+
+J'avais besoin de deux choses : une vérification à chaque modification du contenu, et un passage régulier pour attraper les liens qui meurent sans qu'on ait touché à quoi que ce soit. J'ai fini avec un fichier de workflow de cinquante lignes et un outil que je ne connaissais pas la veille.
+
+---
+
+## Pourquoi lychee
+
+<BlogImage
+  src="/blog/lychee-dead-links-github-actions/logo.svg"
+  alt="Logo de lychee"
+  caption="lychee, vérificateur de liens écrit en Rust"
+/>
+
+Il existe une dizaine de vérificateurs de liens. La plupart sont des scripts Node qui parsent du markdown et lancent des requêtes une par une. Ça marche sur dix fichiers, ça devient pénible sur un corpus.
+
+[lychee](https://github.com/lycheeverse/lychee) est écrit en Rust, asynchrone, distribué en binaire statique. Trois raisons de le retenir, dans l'ordre où elles ont compté pour moi.
+
+**Il lit tout ce qu'on lui donne.** Markdown, HTML, texte brut. Et surtout, il extrait aussi les URL nues, hors syntaxe markdown. Dans mes guides, les références vivent dans le frontmatter sous la forme `references: [{ url: ... }]`, pas dans le corps. Un checker qui ne comprend que `[texte](url)` les ignorerait. lychee les trouve.
+
+**Il est rapide.** Les requêtes partent en parallèle, avec une concurrence configurable, et l'outil sait mettre en cache les résultats d'un passage à l'autre. Sur mon corpus, le temps d'un passage est dominé par l'attente des sites institutionnels lents, pas par l'outil.
+
+**Il est fait pour la CI.** Une [action GitHub officielle](https://github.com/lycheeverse/lychee-action), un rapport en markdown en sortie, des codes de retour distincts selon qu'il y a des liens cassés ou une erreur de configuration, et un fichier `.lycheeignore` pour les exclusions permanentes.
+
+Il est utilisé sur les dépôts de Git, Nuxt, Mermaid, Gradle, containerd, OWASP. Ce n'est pas un projet de week-end.
+
+---
+
+## Le workflow complet
+
+Le fichier tel qu'il tourne sur le dépôt, commentaires compris. Les choix qui s'écartent des défauts sont expliqués ensuite.
+
+```yaml
+name: Content links
+
+# Vérifie que chaque lien du corpus des guides répond encore. Les liens vivent
+# dans les fichiers markdown, corps et frontmatter (`references: url:`) ;
+# lychee lit les deux, il détecte aussi les URL nues hors syntaxe markdown.
+on:
+  push:
+    branches: [staging, main]
+    paths: [content/**]
+  pull_request:
+    paths: [content/**]
+  # Les liens meurent sans commit : un passage hebdomadaire attrape ceux-là.
+  schedule:
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: content-links-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      # 403 compte comme signe de vie : certains sites institutionnels refusent
+      # les robots mais la page existe. Les fragments `#/app/...` des registres
+      # sont des routes SPA, pas des ancres : on ne les vérifie pas.
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --no-progress
+            --verbose
+            --max-concurrency 4
+            --max-retries 2
+            --retry-wait-time 5
+            --timeout 30
+            --accept 200..=299,403
+            --exclude-all-private
+            --exclude '^mailto:'
+            --user-agent "Mozilla/5.0 (compatible; link check; +https://example.com)"
+            'content/**/*.md'
+          fail: true
+
+      # Sur un push ou une PR, GitHub prévient déjà l'auteur par e-mail. Sur le
+      # passage hebdomadaire personne n'a poussé : on ouvre une issue avec le
+      # rapport pour que ça ne se perde pas.
+      - name: Open an issue with the report
+        if: failure() && github.event_name == 'schedule'
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Liens morts dans le contenu des guides
+          content-filepath: ./lychee/out.md
+          labels: contenu
+```
+
+---
+
+## Ce qui a été décidé contre le défaut
+
+Le reste du fichier est du GitHub Actions ordinaire. Ce qui mérite une ligne, ce sont les choix qui vont à l'encontre des réglages par défaut, parce que chacun correspond à un faux positif ou à un angle mort rencontré au premier passage.
+
+**Un passage hebdomadaire, pas seulement sur commit.** Le filtre `paths: [content/**]` sur `push` et `pull_request` est évident. Le `schedule` du lundi est le vrai déclencheur : les liens meurent sans commit, et sans ce passage, un guide écrit en janvier pointe vers une page disparue en mars jusqu'à ce qu'un lecteur le signale, s'il le signale.
+
+**Concurrence à 4, pas 128.** Le défaut de lychee est calibré pour la vitesse. Sur un corpus qui cite vingt fois le même domaine institutionnel, 128 requêtes en parallèle sont le meilleur moyen de se faire limiter, puis de lire des timeouts dans le rapport. Quatre suffisent, le passage reste court, et les sites cités ne voient qu'un robot poli. Le bloc `concurrency` sert la même politesse : deux passages simultanés sur la même branche n'apportent rien.
+
+**403 accepté comme signe de vie.** Plusieurs sites institutionnels refusent tout ce qui ne ressemble pas à un navigateur, page existante ou pas. Un 403 dit que le serveur est là et qu'il a une politique ; un 404 ou un 410 dit que la page a disparu. C'est la seconde catégorie que je veux dans le rapport. Cette seule option a supprimé la majorité des fausses alertes.
+
+**Deux retries espacés de cinq secondes, timeout à trente.** Un timeout ponctuel n'est pas un lien mort, et certaines pages officielles mettent quinze secondes à répondre. Le défaut de vingt secondes était limite.
+
+**Un User-Agent qui s'identifie.** Certains serveurs bloquent les User-Agent génériques ou vides. Le mien porte le nom du projet et son URL, remplacés ici par un placeholder : dire qui vérifie et donner une adresse de contact, c'est ce que la politesse des robots demande de toute façon.
+
+**Les fragments ne sont pas vérifiés.** Plusieurs registres en ligne sont des applications monopage dont les routes ressemblent à `https://registre.example/#/app/recherche`. Pour un checker, `#/app/recherche` est une ancre absente du HTML, donc une erreur. lychee ne vérifie les fragments qu'avec `--include-fragments`. Je ne l'active pas, et ces routes passent.
+
+**Le privé et les e-mails sont exclus.** `--exclude-all-private` écarte les adresses locales, qui n'ont rien à faire dans un guide public. `--exclude '^mailto:'` écarte les adresses e-mail, que lychee sait vérifier mais que je ne veux pas dans un rapport.
+
+---
+
+## Le rapport qui ne se perd pas
+
+Sur un push ou une PR, un job qui échoue prévient quelqu'un : l'auteur reçoit un e-mail, la PR affiche une croix rouge. Sur le passage du lundi matin, personne n'a poussé. Le job échoue, GitHub envoie une notification que personne ne lit, et le lien mort reste mort.
+
+D'où la dernière étape, conditionnée sur `failure() && github.event_name == 'schedule'`. Elle lit le rapport markdown que lychee écrit dans `./lychee/out.md` et l'ouvre en issue, étiquetée `contenu`. Le lien mort devient un ticket avec le fichier, la ligne et le code de réponse. C'est la seule raison de la permission `issues: write`.
+
+---
+
+## En local
+
+L'action n'est qu'un emballage autour du binaire, le même passage se lance depuis un terminal avec les mêmes options :
+
+```bash
+lychee --accept 200..=299,403 --exclude '^mailto:' 'content/**/*.md'
+```
+
+Pour un usage régulier, les options vont dans un `lychee.toml` à la racine et les exclusions permanentes dans `.lycheeignore`, un motif par ligne. Sur un corpus plus gros que le mien, `--cache` combiné à `actions/cache` sur `.lycheecache` évite de revérifier les liens sains d'un passage à l'autre. Je ne l'ai pas activé : le passage complet est court, et sur une vérification hebdomadaire je préfère tout retester.
+
+---
+
+## Ce que ça ne vérifie pas
+
+Un vérificateur de liens répond à une question : la page répond-elle ? Il ne répond pas à la question qui compte vraiment : la page dit-elle encore ce que je cite ?
+
+Un site institutionnel qui redirige toutes ses anciennes adresses vers sa page d'accueil renvoie un 200 impeccable. Une page mise à jour dont le contenu a changé aussi. Une page qui affiche "contenu introuvable" avec un code 200, ce que le web appelle un soft 404, passera le test.
+
+Pour ça, il n'y a pas d'outil. Il y a une relecture des sources à intervalle régulier, et c'est un travail éditorial, pas une ligne de CI. lychee enlève la partie mécanique du problème, et c'est déjà celle qui, sans lui, ne se faisait jamais.
+
+---
+
+**Sources :**
+
+- [lychee, dépôt GitHub](https://github.com/lycheeverse/lychee)
+- [lychee-action, l'action GitHub officielle](https://github.com/lycheeverse/lychee-action)
+- [create-issue-from-file, peter-evans](https://github.com/peter-evans/create-issue-from-file)
+- [Événements déclencheurs de workflow, GitHub Docs](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
